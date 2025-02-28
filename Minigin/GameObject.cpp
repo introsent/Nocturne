@@ -45,6 +45,7 @@ namespace dae {
             m_parent->AddChild(this);
     }
 
+
     // --- CHILDREN MANAGEMENT ---
     void GameObject::AddChild(GameObject* child) {
         if (child == nullptr)

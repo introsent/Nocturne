@@ -17,11 +17,6 @@ namespace dae {
         // --- PARENTING SYSTEM ---
         void SetParent(GameObject* parent, bool keepWorldPosition = false);
 
-        // --- CHILDREN MANAGEMENT ---
-        void AddChild(GameObject* child);
-        void RemoveChild(GameObject* child);
-        bool IsChild(GameObject* potentialChild) const;
-
         // --- TRANSFORM MANAGEMENT ---
         void SetLocalPosition(const glm::vec3& pos);
         const glm::vec3& GetWorldPosition();
@@ -75,6 +70,12 @@ namespace dae {
         GameObject* m_parent;
         std::vector<GameObject*> m_children;
         std::vector<std::unique_ptr<Component>> m_components;
+
+        // --- CHILDREN MANAGEMENT ---
+        void AddChild(GameObject* child);
+        void RemoveChild(GameObject* child);
+        bool IsChild(GameObject* potentialChild) const;
+
     };
 
 } 
