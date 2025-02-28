@@ -99,6 +99,12 @@
     <ClInclude Include="..\3rdParty\imgui-1.91.8\implot_internal.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="PlotComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CacheProfiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -181,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\imgui-1.91.8\implot_items.cpp">
       <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="PlotComponent.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
