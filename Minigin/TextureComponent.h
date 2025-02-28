@@ -11,7 +11,7 @@ namespace dae
     {
     public:
         TextureComponent(GameObject* owner, const std::string& textureFile);  // Change constructor to take raw pointer (GameObject*)
-        void Update([[maybe_unused]] float deltaTime) override {}
+        void Update(float) override {}
         void Render() const override;
 
         void SetTexture(const std::string& filename);

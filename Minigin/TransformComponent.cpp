@@ -28,7 +28,7 @@ namespace dae
         return m_transform.GetLocalPosition();
     }
 
-    void TransformComponent::Update([[maybe_unused]] float deltaTime)
+    void TransformComponent::Update(float)
     {
     }
 }

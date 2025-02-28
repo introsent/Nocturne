@@ -15,7 +15,7 @@ namespace dae
     {
     }
 
-    void TextComponent::Update([[maybe_unused]] float deltaTime)
+    void TextComponent::Update(float)
     {
         if (m_needsUpdate)
         {

@@ -6,7 +6,7 @@ namespace dae
     class Component
     {
     public:
-        virtual void Update([[maybe_unused]] float deltaTime) {} // Overridden in derived components
+        virtual void Update(float deltaTime); // Overridden in derived components
         virtual void Render() const {} // Overridden in derived components
 
         virtual ~Component() = default;
