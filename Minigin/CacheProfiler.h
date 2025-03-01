@@ -1,5 +1,6 @@
 #pragma once
 #include <chrono>
+#include <iostream>
 #include <vector>
 
 
@@ -24,6 +25,16 @@
 
             allResults[u] = results;
         }
+
+        //for (const auto& row : allResults) {
+        //    // Loop over each value in the row and print it
+        //    for (const auto& value : row) {
+        //        std::cout << value << " ";
+        //    }
+        //    // Print a newline after each row
+        //    std::cout << std::endl;
+        //}
+        //std::cout << std::endl;
 
         std::vector<float> averagedResults(allResults[0].size(), 0);
         for (size_t i = 0; i < averagedResults.size(); ++i) {
