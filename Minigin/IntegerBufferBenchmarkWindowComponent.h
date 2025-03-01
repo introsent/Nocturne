@@ -1,32 +1,34 @@
 #pragma once
 #include <mutex>
-
+#include <thread>
+#include <vector>
+#include <atomic>
 #include "Component.h"
 #include "CacheProfiler.h"
 #include "Plot.h"
 
 namespace dae
 {
-	class IntegerBufferBenchmarkWindowComponent final : public Component
-	{
-	public:
-		IntegerBufferBenchmarkWindowComponent(GameObject* owner) : Component(owner) { m_plot = std::make_unique<Plot>("Integer benchmark"); }
+    class IntegerBufferBenchmarkWindowComponent final : public Component
+    {
+    public:
+        IntegerBufferBenchmarkWindowComponent(GameObject* owner);
+        void Render() const override;
+        void Update(float deltaTime) override; // New non-const update method
 
+    private:
+        void StartBenchmark();
 
-		void Render() const override;
-		//void Update(float deltaTime) override;
+        std::unique_ptr<Plot> m_plot;
 
-	private:
-		void StartBenchmark() const;
+        // Now these members are non-mutable because state changes occur in Update()
+        bool m_isCalculating = false;
+        std::vector<float> m_results;
+        std::mutex m_resultMutex;
+        std::thread m_workerThread;
+        int m_sampleCount = 10;
 
-		std::unique_ptr<Plot> m_plot;
-
-		mutable std::atomic<bool> isCalculating = false;
-		mutable std::vector<float> results;
-		mutable std::mutex resultMutex;
-		mutable std::thread workerThread;
-		mutable int sampleCount = 10;
-	};
-
+        // Command flag for triggering benchmark from the UI.
+        bool m_startBenchmarkRequested = false;
+    };
 }
-
