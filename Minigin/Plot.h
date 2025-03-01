@@ -20,6 +20,8 @@ namespace dae
 		std::string m_plotName;
 		bool m_toRender{ false };
 
+		float m_maxY;
+
 		std::vector<float> m_dataX;
 		std::vector<std::vector<float>> m_dataY;
 	

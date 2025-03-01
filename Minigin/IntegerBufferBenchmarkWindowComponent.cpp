@@ -7,7 +7,7 @@ void dae::IntegerBufferBenchmarkWindowComponent::StartBenchmark() const
 {
     isCalculating = true;
 
-    std::vector<int> data(1 << 26, 1);
+    std::vector<int> data(2'000'000'0, 1);
     std::vector<float> computedResults = CacheProfiler::Benchmark(
         data, [](int& value) { value *= 2; }, sampleCount
     );

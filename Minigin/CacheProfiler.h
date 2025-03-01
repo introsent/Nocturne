@@ -20,7 +20,7 @@ public:
                 }
 
                 auto end = high_resolution_clock::now();
-                results.push_back(static_cast<float>(duration_cast<nanoseconds>(end - start).count()));
+                results.push_back(static_cast<float>(duration_cast<microseconds>(end - start).count()));
             }
 
             allResults[u] = results;
