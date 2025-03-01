@@ -2,8 +2,7 @@
 #include <chrono>
 #include <vector>
 
-class CacheProfiler {
-public:
+
     template <typename T, typename Func>
     static std::vector<float> Benchmark(std::vector<T>& data, Func operation, int sampleCount) {
         using namespace std::chrono;
@@ -37,5 +36,4 @@ public:
 
         return averagedResults;
     }
-};
 

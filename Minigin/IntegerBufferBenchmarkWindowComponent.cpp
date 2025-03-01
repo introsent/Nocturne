@@ -7,8 +7,8 @@ void dae::IntegerBufferBenchmarkWindowComponent::StartBenchmark() const
 {
     isCalculating = true;
 
-    std::vector<int> data(2'000'000'0, 1);
-    std::vector<float> computedResults = CacheProfiler::Benchmark(
+    std::vector<int> data(1 << 26, 1);
+    std::vector<float> computedResults = Benchmark(
         data, [](int& value) { value *= 2; }, sampleCount
     );
 
@@ -28,23 +28,13 @@ void dae::IntegerBufferBenchmarkWindowComponent::Render() const
     if (sampleCount < 1) sampleCount = 1;
 
     ImGui::SameLine();
-    if (ImGui::Button("-")) {
-        if (sampleCount > 1)
-            sampleCount--;
-    }
-
-    ImGui::SameLine();
-    if (ImGui::Button("+")) {
-        sampleCount++;
-    }
-
-    ImGui::SameLine();
     ImGui::Text("# Samples");
 
     if (ImGui::Button("Trash the Cache")) {
         m_plot->ClearData();
         if (!isCalculating) {
-            workerThread = std::thread([this]() { StartBenchmark(); });
+          
+            workerThread = std::thread([this]() {   StartBenchmark(); });
             workerThread.detach();
         }
     }
