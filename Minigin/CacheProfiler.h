@@ -25,8 +25,6 @@
             allResults[u] = results;
         }
 
-
-
         std::vector<float> averagedResults(allResults[0].size(), 0);
         for (size_t i = 0; i < averagedResults.size(); ++i) {
             float sum = 0.0f;
