@@ -66,4 +66,9 @@ void dae::Plot::ClearData()
 	m_dataY.clear();
 }
 
+bool dae::Plot::IsEmpty() const
+{
+	return m_dataY.empty();
+}
+
 

@@ -15,6 +15,8 @@ namespace dae
 		void AddData(const std::vector<float>& newData);
 		void ClearData();
 
+		bool IsEmpty() const;
+
 
 	private:
 		std::string m_plotName;
