@@ -99,10 +99,16 @@
     <ClInclude Include="..\3rdParty\imgui-1.91.8\implot_internal.h">
       <Filter>imgui</Filter>
     </ClInclude>
-    <ClInclude Include="PlotComponent.h">
+    <ClInclude Include="Plot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CacheProfiler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegerBufferBenchmarkWindowComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StructVsPointerBenchmarkWindowComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -188,7 +194,13 @@
     <ClCompile Include="..\3rdParty\imgui-1.91.8\implot_items.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="PlotComponent.cpp">
+    <ClCompile Include="Plot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IntegerBufferBenchmarkWindowComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StructVsPointerBenchmarkWindowComponent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

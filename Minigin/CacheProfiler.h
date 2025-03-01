@@ -5,24 +5,37 @@
 class CacheProfiler {
 public:
     template <typename T, typename Func>
-    static std::vector<int> Benchmark(std::vector<T>& data, Func operation) {
+    static std::vector<float> Benchmark(std::vector<T>& data, Func operation, int sampleCount) {
         using namespace std::chrono;
-        std::vector<int> results;
+        std::vector<std::vector<float>> allResults(sampleCount);
 
-        for (int stepSize = 1; stepSize <= 1024; stepSize *= 2) {
-            auto start = high_resolution_clock::now();
+        for (int u = 0; u < sampleCount; ++u) {
+            std::vector<float> results;
 
-            for (size_t i = 0; i < data.size(); i += stepSize) {
-                operation(data[i]);
+            for (int stepSize = 1; stepSize <= 1024; stepSize *= 2) {
+                auto start = high_resolution_clock::now();
+
+                for (size_t i = 0; i < data.size(); i += stepSize) {
+                    operation(data[i]);
+                }
+
+                auto end = high_resolution_clock::now();
+                results.push_back(static_cast<float>(duration_cast<nanoseconds>(end - start).count()));
             }
 
-            auto end = high_resolution_clock::now();
-            auto timeTaken = static_cast<int>(duration_cast<nanoseconds>(end - start).count());
-
-            results.push_back(timeTaken); 
+            allResults[u] = results;
         }
 
-        return results;  
+        // Average results across all samples
+        std::vector<float> averagedResults(allResults[0].size(), 0);
+        for (size_t i = 0; i < averagedResults.size(); ++i) {
+            for (int j = 0; j < sampleCount; ++j) {
+                averagedResults[i] += allResults[j][i];
+            }
+            averagedResults[i] /= float(sampleCount);
+        }
+
+        return averagedResults;
     }
 };
 
