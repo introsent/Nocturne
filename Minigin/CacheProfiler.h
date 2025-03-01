@@ -25,13 +25,30 @@
             allResults[u] = results;
         }
 
-        // Average results across all samples
+
+
         std::vector<float> averagedResults(allResults[0].size(), 0);
         for (size_t i = 0; i < averagedResults.size(); ++i) {
+            float sum = 0.0f;
+            float minVal = std::numeric_limits<float>::max();
+            float maxVal = std::numeric_limits<float>::lowest();
+
             for (int j = 0; j < sampleCount; ++j) {
-                averagedResults[i] += allResults[j][i];
+                float value = allResults[j][i];
+                sum += value;
+                if (value < minVal)
+                    minVal = value;
+                if (value > maxVal)
+                    maxVal = value;
             }
-            averagedResults[i] /= float(sampleCount);
+
+            if (sampleCount > 2) {
+                sum -= (minVal + maxVal);
+                averagedResults[i] = sum / float(sampleCount - 2);
+            }
+            else {
+                averagedResults[i] = sum / float(sampleCount);
+            }
         }
 
         return averagedResults;
