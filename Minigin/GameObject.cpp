@@ -14,6 +14,12 @@ namespace dae {
             component->Render();
     }
 
+    void GameObject::RenderUI() const
+    {
+        for (const auto& component : m_components)
+            component->RenderUI();
+    }
+
     // Constructor
     GameObject::GameObject()
         : m_localPosition(0.f, 0.f, 0.f)

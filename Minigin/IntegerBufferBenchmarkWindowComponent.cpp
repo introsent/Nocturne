@@ -42,14 +42,14 @@ void dae::IntegerBufferBenchmarkWindowComponent::StartBenchmark()
     m_isCalculating = false;
 }
 
-void dae::IntegerBufferBenchmarkWindowComponent::Render() const
+void dae::IntegerBufferBenchmarkWindowComponent::RenderUI() 
 {
     ImGui::Begin("Integer Benchmark");
 
     int sampleCount = m_sampleCount;
     if (ImGui::InputInt("##Samples", &sampleCount))
     {
-        const_cast<dae::IntegerBufferBenchmarkWindowComponent*>(this)->m_sampleCount = sampleCount;
+        m_sampleCount = sampleCount;
     }
     ImGui::SameLine();
     ImGui::Text("# Samples");
@@ -57,7 +57,7 @@ void dae::IntegerBufferBenchmarkWindowComponent::Render() const
     if (ImGui::Button("Thrash the Cache"))
     {
         m_plot->ClearData();
-        const_cast<dae::IntegerBufferBenchmarkWindowComponent*>(this)->m_startBenchmarkRequested = true;
+        m_startBenchmarkRequested = true;
     }
 
     if (m_isCalculating)

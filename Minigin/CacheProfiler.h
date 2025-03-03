@@ -1,7 +1,9 @@
 #pragma once
 #include <chrono>
 #include <iostream>
+#include <numeric>
 #include <vector>
+#include <algorithm>
 
 
     template <typename T, typename Func>
@@ -22,7 +24,6 @@
                 auto end = high_resolution_clock::now();
                 results.push_back(static_cast<float>(duration_cast<microseconds>(end - start).count()));
             }
-
             allResults[u] = results;
         }
 
@@ -36,30 +37,33 @@
         //}
         //std::cout << std::endl;
 
-        std::vector<float> averagedResults(allResults[0].size(), 0);
-        for (size_t i = 0; i < averagedResults.size(); ++i) {
-            float sum = 0.0f;
-            float minVal = std::numeric_limits<float>::max();
-            float maxVal = std::numeric_limits<float>::lowest();
+        std::vector<float> averagedResults(allResults[0].size(), 0.0f);
 
-            for (int j = 0; j < sampleCount; ++j) {
-                float value = allResults[j][i];
-                sum += value;
-                if (value < minVal)
-                    minVal = value;
-                if (value > maxVal)
-                    maxVal = value;
-            }
+        std::for_each(averagedResults.begin(), averagedResults.end(), [&, i = 0](float& result) mutable {
+            auto [sum, minVal, maxVal] = std::accumulate(
+                allResults.begin(), allResults.end(),
+                std::make_tuple(0.0f, std::numeric_limits<float>::max(), std::numeric_limits<float>::lowest()),
+                [i](const auto& acc, const std::vector<float>& vec) {
+                    const float val = vec[i];
+                    auto [currentSum, currentMin, currentMax] = acc;
+                    return std::make_tuple(
+                        currentSum + val,
+                        std::min(currentMin, val),
+                        std::max(currentMax, val)
+                    );
+                }
+            );
 
             if (sampleCount > 2) {
                 sum -= (minVal + maxVal);
-                averagedResults[i] = sum / float(sampleCount - 2);
+                result = sum / (sampleCount - 2);
             }
             else {
-                averagedResults[i] = sum / float(sampleCount);
+                result = sum / sampleCount;
             }
-        }
 
+            ++i; 
+            });
         return averagedResults;
     }
 

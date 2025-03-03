@@ -8,6 +8,7 @@ namespace dae
     public:
         virtual void Update(float deltaTime); // Overridden in derived components
         virtual void Render() const {} // Overridden in derived components
+        virtual void RenderUI() {};
 
         virtual ~Component() = default;
 

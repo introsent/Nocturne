@@ -10,6 +10,7 @@ namespace dae {
     public:
         void Update(float deltaTime);
         void Render() const;
+        void RenderUI() const;
 
         GameObject();
         ~GameObject() = default;

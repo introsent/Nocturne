@@ -20,7 +20,6 @@ namespace dae
 
 	private:
 		std::string m_plotName;
-		bool m_toRender{ false };
 
 		float m_maxY {};
 

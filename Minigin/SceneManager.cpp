@@ -9,13 +9,22 @@ void dae::SceneManager::Update(float deltaTime)
 	}
 }
 
-void dae::SceneManager::Render()
+void dae::SceneManager::Render() const
 {
 	for (const auto& scene : m_scenes)
 	{
 		scene->Render();
 	}
 }
+
+void dae::SceneManager::RenderUI()
+{
+	for (const auto& scene : m_scenes)
+	{
+		scene->RenderUI();
+	}
+}
+
 
 dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 {

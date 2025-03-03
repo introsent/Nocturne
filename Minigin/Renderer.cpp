@@ -50,7 +50,8 @@ void dae::Renderer::Render() const
 
 	SceneManager::GetInstance().Render();
 
-	//ImGui::ShowDemoWindow();
+	SceneManager::GetInstance().RenderUI();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

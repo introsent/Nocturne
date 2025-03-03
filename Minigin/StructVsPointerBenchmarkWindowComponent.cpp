@@ -82,23 +82,23 @@ namespace dae
         m_isPointerCalculating = false;
     }
 
-    void StructVsPointerBenchmarkWindowComponent::Render() const
+    void StructVsPointerBenchmarkWindowComponent::RenderUI()
     {
         ImGui::Begin("Struct vs Pointer Benchmark");
 
         int sampleCount = m_sampleCount;
         if (ImGui::InputInt("##Samples", &sampleCount))
         {
-            const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_sampleCount = sampleCount;
+            m_sampleCount = sampleCount;
         }
         ImGui::SameLine();
         ImGui::Text("# Samples");
 
         if (ImGui::Button("Thrash the cache Struct"))
         {
-            const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_structPlot->ClearData();
-            const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_combinedPlot->ClearData();
-            const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_startStructBenchmarkRequested = true;
+            m_structPlot->ClearData();
+            m_combinedPlot->ClearData();
+            m_startStructBenchmarkRequested = true;
         }
         if (m_isStructCalculating)
         {
@@ -111,9 +111,9 @@ namespace dae
 
         if (ImGui::Button("Thrash the cache Pointer"))
         {
-            const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_pointerPlot->ClearData();
-            const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_combinedPlot->ClearData();
-            const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_startPointerBenchmarkRequested = true;
+            m_pointerPlot->ClearData();
+            m_combinedPlot->ClearData();
+            m_startPointerBenchmarkRequested = true;
         }
 
         if (m_isPointerCalculating)

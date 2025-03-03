@@ -13,7 +13,7 @@ namespace dae
     {
     public:
         IntegerBufferBenchmarkWindowComponent(GameObject* owner);
-        void Render() const override;
+        void RenderUI() override;
         void Update(float deltaTime) override; 
 
     private:

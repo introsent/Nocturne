@@ -41,7 +41,7 @@ namespace dae
     {
     public:
         StructVsPointerBenchmarkWindowComponent(GameObject* owner);
-        void Render() const override;
+        void RenderUI() override;
         void Update(float deltaTime) override;
 
     private:
