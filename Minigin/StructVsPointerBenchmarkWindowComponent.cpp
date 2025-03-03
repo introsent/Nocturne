@@ -94,7 +94,7 @@ namespace dae
         ImGui::SameLine();
         ImGui::Text("# Samples");
 
-        if (ImGui::Button("Trash the cache Struct"))
+        if (ImGui::Button("Thrash the cache Struct"))
         {
             const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_structPlot->ClearData();
             const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_combinedPlot->ClearData();
@@ -109,7 +109,7 @@ namespace dae
             m_structPlot->RenderPlot();
         }
 
-        if (ImGui::Button("Trash the cache Pointer"))
+        if (ImGui::Button("Thrash the cache Pointer"))
         {
             const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_pointerPlot->ClearData();
             const_cast<StructVsPointerBenchmarkWindowComponent*>(this)->m_combinedPlot->ClearData();

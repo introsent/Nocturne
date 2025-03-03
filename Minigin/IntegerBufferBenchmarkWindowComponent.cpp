@@ -54,7 +54,7 @@ void dae::IntegerBufferBenchmarkWindowComponent::Render() const
     ImGui::SameLine();
     ImGui::Text("# Samples");
 
-    if (ImGui::Button("Trash the Cache"))
+    if (ImGui::Button("Thrash the Cache"))
     {
         m_plot->ClearData();
         const_cast<dae::IntegerBufferBenchmarkWindowComponent*>(this)->m_startBenchmarkRequested = true;
