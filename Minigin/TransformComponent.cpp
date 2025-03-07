@@ -1,4 +1,7 @@
 #include "TransformComponent.h"
+
+#include <iostream>
+
 #include "GameObject.h"
 
 namespace dae
@@ -26,12 +29,6 @@ namespace dae
     const glm::vec3& TransformComponent::GetLocalPosition() const
     {
         return m_transform.GetLocalPosition();
-    }
-
-    void TransformComponent::Translate(const glm::vec3& offset)
-    {
-        glm::vec3 currentPos = GetLocalPosition();
-        SetLocalPosition(currentPos + offset);
     }
 
     void TransformComponent::Update(float)

@@ -16,8 +16,6 @@ namespace dae
         void SetLocalPosition(const glm::vec3& position);
         const glm::vec3& GetLocalPosition() const;
 
-        void Translate(const glm::vec3& offset);
-
         void Update(float deltaTime) override;
 
     private:

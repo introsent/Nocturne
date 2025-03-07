@@ -1,5 +1,5 @@
 #include "MoveCommand.h"
-#include "TransformComponent.h" // To access Translate
+#include "TranslationComponent.h" 
 #include <vec3.hpp>
 
 namespace dae
@@ -15,7 +15,7 @@ namespace dae
     {
         if (m_pObject)
         {
-            auto transform = m_pObject->GetComponent<TransformComponent>();
+            auto transform = m_pObject->GetComponent<TranslationComponent>();
             if (transform)
             {
                 glm::vec3 offset(m_direction, 0.f);
