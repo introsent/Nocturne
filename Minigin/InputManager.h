@@ -56,9 +56,8 @@ namespace dae
     public:
         bool ProcessInput();
 
-        void BindCommand(SDL_Keycode key, InputState state, Command* command);
-
-        void BindCommand(int controllerButton, InputState state, Command* command);
+        void BindKeyboardCommand(SDL_Keycode key, InputState state, Command* command);
+        void BindControllerCommand(int controllerButton, InputState state, Command* command);
 
     private:
         std::unordered_map<KeyBinding, Command*, KeyBindingHash> m_KeyBindings;
