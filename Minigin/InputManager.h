@@ -1,17 +1,13 @@
 #pragma once
-#include "Singleton.h"
-#include <SDL.h>
+#include <memory>
 #include <unordered_map>
+#include <SDL.h>
+#include "Command.h"
+#include "InputState.h"
+#include "Singleton.h"
 
 namespace dae
 {
-    enum class InputState
-    {
-        Down,
-        Up,
-        Pressed
-    };
-
     struct KeyBinding
     {
         SDL_Keycode key;
@@ -31,37 +27,20 @@ namespace dae
         }
     };
 
-    struct ControllerBinding
-    {
-        int button;
-        InputState state;
 
-        bool operator==(const ControllerBinding& other) const
-        {
-            return button == other.button && state == other.state;
-        }
-    };
-
-    struct ControllerBindingHash
-    {
-        std::size_t operator()(const ControllerBinding& binding) const
-        {
-            return std::hash<int>()(binding.button) ^ (std::hash<int>()(static_cast<int>(binding.state)) << 1);
-        }
-    };
-
-    class Command; 
+    class XInputImpl;
     class InputManager final : public Singleton<InputManager>
     {
     public:
-        bool ProcessInput();
+        InputManager();
+        ~InputManager() override;
 
-        void BindKeyboardCommand(SDL_Keycode key, InputState state, Command* command);
-        void BindControllerCommand(int controllerButton, InputState state, Command* command);
+        bool ProcessInput();  
+        void BindKeyboardCommand(int key, InputState state, Command* command);
+        void BindControllerCommand(unsigned int button, InputState state, Command* command);
 
     private:
         std::unordered_map<KeyBinding, Command*, KeyBindingHash> m_KeyBindings;
-        std::unordered_map<ControllerBinding, Command*, ControllerBindingHash> m_ControllerBindings;
+        std::unique_ptr<XInputImpl> m_pXInputImpl;
     };
 }
-

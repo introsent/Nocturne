@@ -120,6 +120,12 @@
     <ClInclude Include="TranslationComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="XInputImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -216,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TranslationComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XInputImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
