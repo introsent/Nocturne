@@ -28,6 +28,12 @@ namespace dae
         return m_transform.GetLocalPosition();
     }
 
+    void TransformComponent::Translate(const glm::vec3& offset)
+    {
+        glm::vec3 currentPos = GetLocalPosition();
+        SetLocalPosition(currentPos + offset);
+    }
+
     void TransformComponent::Update(float)
     {
     }
