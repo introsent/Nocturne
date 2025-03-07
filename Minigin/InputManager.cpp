@@ -22,3 +22,11 @@ bool dae::InputManager::ProcessInput()
 
 	return true;
 }
+
+void dae::InputManager::BindCommand(SDL_Keycode key, InputState state, Command* command)
+{
+}
+
+void dae::InputManager::BindCommand(int controllerButton, InputState state, Command* command)
+{
+}
