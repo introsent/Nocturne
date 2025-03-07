@@ -35,6 +35,11 @@ namespace dae
         InputManager();
         ~InputManager() override;
 
+        InputManager(const InputManager& other) = default;
+        InputManager& operator=(const InputManager& other) = default;
+        InputManager(InputManager&& other) noexcept = default;
+        InputManager& operator=(InputManager&& other) noexcept = default;
+
         bool ProcessInput();  
         void BindKeyboardCommand(int key, InputState state, Command* command);
         void BindControllerCommand(unsigned int button, InputState state, Command* command);
