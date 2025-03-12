@@ -5,6 +5,7 @@
 #include "Command.h"
 #include "InputState.h"
 #include "Singleton.h"
+#include "XInputManager.h"
 
 namespace dae
 {
@@ -32,20 +33,20 @@ namespace dae
     class InputManager final : public Singleton<InputManager>
     {
     public:
-        InputManager();
+        InputManager() = default;
         ~InputManager() override;
 
-        InputManager(const InputManager& other) = default;
-        InputManager& operator=(const InputManager& other) = default;
-        InputManager(InputManager&& other) noexcept = default;
-        InputManager& operator=(InputManager&& other) noexcept = default;
+        InputManager(const InputManager& other) = delete;
+        InputManager& operator=(const InputManager& other) = delete;
+        InputManager(InputManager&& other) noexcept = delete;
+        InputManager& operator=(InputManager&& other) noexcept = delete;
 
         bool ProcessInput();  
         void BindKeyboardCommand(int key, InputState state, Command* command);
-        void BindControllerCommand(unsigned int button, InputState state, Command* command);
+        void BindControllerCommand(unsigned int button, InputState state, Command* command) const;
 
     private:
         std::unordered_map<KeyBinding, Command*, KeyBindingHash> m_KeyBindings;
-        std::unique_ptr<XInputImpl> m_pXInputImpl;
+        XInputManager m_XInputManager;
     };
 }

@@ -1,14 +1,8 @@
 #include "InputManager.h"
-#include "XInputImpl.h"
 #include "backends/imgui_impl_sdl2.h"
 
 namespace dae
 {
-    InputManager::InputManager()
-        : m_pXInputImpl(std::make_unique<XInputImpl>())
-    {
-    }
-
     InputManager::~InputManager() = default;
 
     bool InputManager::ProcessInput()
@@ -52,7 +46,7 @@ namespace dae
                 }
             }
         }
-        return m_pXInputImpl->ProcessInput();  // Delegate to Impl
+        return m_XInputManager.ProcessInput();  
     }
 
     void InputManager::BindKeyboardCommand(int key, InputState state, Command* command)
@@ -61,8 +55,8 @@ namespace dae
         m_KeyBindings[binding] = command;
     }
 
-    void InputManager::BindControllerCommand(unsigned int button, InputState state, Command* command)
+    void InputManager::BindControllerCommand(unsigned int button, InputState state, Command* command) const
     {
-        m_pXInputImpl->BindControllerCommand(button, state, command);
+        m_XInputManager.BindControllerCommand(button, state, command);
     }
 }

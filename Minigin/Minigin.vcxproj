@@ -193,8 +193,8 @@
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GamepadButton.h" />
     <ClInclude Include="InputManager.h" />
-    <ClInclude Include="XInputImpl.h" />
     <ClInclude Include="InputState.h" />
     <ClInclude Include="IntegerBufferBenchmarkWindowComponent.h" />
     <ClInclude Include="Minigin.h" />
@@ -213,6 +213,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="TranslationComponent.h" />
+    <ClInclude Include="XInputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\3rdParty\imgui-1.91.8\backends\imgui_impl_opengl3.cpp" />
@@ -230,7 +231,6 @@
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="XInputImpl.cpp" />
     <ClCompile Include="IntegerBufferBenchmarkWindowComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />
@@ -248,6 +248,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="TranslationComponent.cpp" />
+    <ClCompile Include="XInputManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
