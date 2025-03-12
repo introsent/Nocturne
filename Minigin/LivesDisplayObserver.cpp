@@ -4,24 +4,34 @@
 
 namespace dae
 {
-	LivesDisplayObserver::LivesDisplayObserver(std::shared_ptr<GameObject> textObject, int maxLives)
-		: m_textObject(textObject), m_remainingLives(maxLives) {
-		m_textComponent = m_textObject->AddComponent<TextComponent>(m_textObject.get(), "Remaining Lives: " + std::to_string(m_remainingLives));
+	LivesDisplayObserver::LivesDisplayObserver(GameObject* pOwner, TextComponent* textComp) : Component(pOwner), m_textComponent(textComp) {
 	}
 
 	void LivesDisplayObserver::Notify(Event event, Subject* subject)
 	{
 		if (event == Event::PlayerDied)
 		{
-			--m_remainingLives;
-			if (m_textComponent) {
-				m_textComponent->SetText("Remaining Lives: " + std::to_string(m_remainingLives));
+			if (auto player = dynamic_cast<HealthComponent*>(subject)) {
+				int lives = player->GetLives();
+				if (m_textComponent)
+					m_textComponent->SetText("Remaining Lives: " + std::to_string(lives));
+			}
+			else {
+				std::cerr << "Error: Subject is not a PlayerComponent!" << std::endl;
 			}
 		}
 	}
-	void LivesDisplayObserver::Register(HealthComponent* healthComponent)
+
+	void LivesDisplayObserver::Register(HealthComponent* healthComp)
 	{
-		healthComponent->AddObserver(this);
+		healthComp->AddObserver(this);
 	}
+
+	void LivesDisplayObserver::Unregister(HealthComponent* healthComp)
+	{
+		healthComp->RemoveObserver(this);
+	}
+
+	
 }
 

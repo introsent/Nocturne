@@ -9,10 +9,13 @@ namespace dae
     {
     public:
         MoveCommand(GameObject* pObject, float speed, const glm::vec2& direction);
+        ~MoveCommand() override = default;
+        MoveCommand(const MoveCommand&) = delete;
+        MoveCommand& operator=(const MoveCommand&) = delete;
+        MoveCommand(MoveCommand&&) noexcept = delete;
+        MoveCommand& operator=(MoveCommand&&) noexcept = delete;
 
-        virtual ~MoveCommand() = default;
-
-        virtual void Execute() override;
+        void Execute() override;
 
     private:
         GameObject* m_pObject;

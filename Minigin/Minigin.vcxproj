@@ -199,6 +199,7 @@
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="InputState.h" />
     <ClInclude Include="IntegerBufferBenchmarkWindowComponent.h" />
+    <ClInclude Include="KillCommand.h" />
     <ClInclude Include="LivesDisplayObserver.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MoveCommand.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IntegerBufferBenchmarkWindowComponent.cpp" />
+    <ClCompile Include="KillCommand.cpp" />
     <ClCompile Include="LivesDisplayObserver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Minigin.cpp" />

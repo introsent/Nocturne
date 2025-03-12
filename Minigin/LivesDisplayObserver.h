@@ -6,19 +6,17 @@ namespace dae
 {
 	class HealthComponent;
 
-	class LivesDisplayObserver : Observer
+	class LivesDisplayObserver final : public Observer, public Component
 	{
 	public:
-		LivesDisplayObserver(std::shared_ptr<GameObject> textObject, int maxLives);
+		LivesDisplayObserver(GameObject* pOwner, TextComponent* textComp);
+
 		void Notify(Event event, Subject* subject) override;
 
-		void Register(HealthComponent* healthComponent);
+		void Register(HealthComponent* healthComp);
+		void Unregister(HealthComponent* healthComp);
 	private:
-		std::shared_ptr<GameObject> m_textObject;
 		TextComponent* m_textComponent;
-		int m_remainingLives;
-
-	
 	};
 }
 

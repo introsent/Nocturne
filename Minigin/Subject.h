@@ -1,18 +1,25 @@
 #pragma once
 #include <vector>
-#include "Observer.h"
 
+#include "Event.h"
 
-class Subject {
-public:
-    void AddObserver(Observer* observer);
+namespace dae
+{
+    class Observer;
+    class Subject {
+    public:
+        Subject() = default;
+        virtual ~Subject() = default;
 
-    void RemoveObserver(Observer* observer);
+        void AddObserver(Observer* observer);
 
-protected:
-    void NotifyObservers(Event event);
+        void RemoveObserver(Observer* observer);
 
-private:
-    std::vector<Observer*> m_observers;
-};
+    protected:
+        void NotifyObservers(Event event, Subject* subject);
+
+    private:
+        std::vector<Observer*> m_observers;
+    };
+}
 

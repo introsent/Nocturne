@@ -1,20 +1,26 @@
 #include "Subject.h"
 
-void Subject::AddObserver(Observer* observer)
-{
-    m_observers.push_back(observer);
-}
+#include "Observer.h"
 
-void Subject::RemoveObserver(Observer* observer)
+namespace dae
 {
-    std::erase(m_observers, observer);
-}
+    void Subject::AddObserver(Observer* observer)
+    {
+        m_observers.emplace_back(observer);
+    }
 
-void Subject::NotifyObservers(Event event)
-{
-    for (auto observer : m_observers) {
-        observer->Notify(event, this);
+    void Subject::RemoveObserver(Observer* observer)
+    {
+        std::erase(m_observers, observer);
+    }
+
+    void Subject::NotifyObservers(Event event, Subject* subject)
+    {
+        for (auto observer : m_observers) {
+            observer->Notify(event, subject);
+        }
     }
 }
+
 
 

@@ -8,14 +8,14 @@ namespace dae
 {
     class HealthComponent : public Component, public Subject {
     public:
-        HealthComponent(GameObject* owner, int lives);
+        HealthComponent(GameObject* pOwner) : Component(pOwner) {}
 
         void TakeDamage();
 
         int GetLives() const;
 
     private:
-        int m_lives;
+        int m_lives = 3;
     };
 }
 
