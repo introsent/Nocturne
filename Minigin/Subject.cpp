@@ -10,7 +10,7 @@ void Subject::RemoveObserver(Observer* observer)
     std::erase(m_observers, observer);
 }
 
-void Subject::NotifyObservers(const std::string& event)
+void Subject::NotifyObservers(Event event)
 {
     for (auto observer : m_observers) {
         observer->Notify(event, this);

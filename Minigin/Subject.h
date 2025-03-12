@@ -10,7 +10,7 @@ public:
     void RemoveObserver(Observer* observer);
 
 protected:
-    void NotifyObservers(const std::string& event);
+    void NotifyObservers(Event event);
 
 private:
     std::vector<Observer*> m_observers;

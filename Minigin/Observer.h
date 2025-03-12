@@ -1,9 +1,9 @@
 #pragma once
-#include <xstring>
+#include "Event.h"
 
 class Subject;
 class Observer {
 public:
     virtual ~Observer() = default;
-    virtual void Notify(const std::string& event, Subject* subject) = 0;
+    virtual void Notify(Event event, Subject* subject) = 0;
 };

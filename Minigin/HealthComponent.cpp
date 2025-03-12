@@ -6,10 +6,8 @@ dae::HealthComponent::HealthComponent(GameObject* owner, int lives) : Component(
 
 void dae::HealthComponent::TakeDamage()
 {
-    if (--m_lives <= 0) {
-        std::cout << "Player died!" << std::endl;
-        NotifyObservers("PlayerDied");
-    }
+    --m_lives;
+	NotifyObservers(Event::PlayerDied);
 }
 
 int dae::HealthComponent::GetLives() const
