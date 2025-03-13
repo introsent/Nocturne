@@ -159,7 +159,7 @@
     <ClInclude Include="Achievements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CSteamAchievement.h">
+    <ClInclude Include="CSteamAchievements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AchievementsGlobals.h">
@@ -296,7 +296,7 @@
     <ClCompile Include="ScoreCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CSteamAchievement.cpp">
+    <ClCompile Include="CSteamAchievements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AchievementsGlobals.cpp">

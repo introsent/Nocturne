@@ -2,5 +2,6 @@
 
 enum class Event
 {
-	PlayerDied
+	PlayerDied,
+	PlayerScored
 };

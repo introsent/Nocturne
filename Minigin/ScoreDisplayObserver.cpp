@@ -11,7 +11,7 @@ namespace dae
 
 	void ScoreDisplayObserver::Notify(Event event, Subject* subject)
 	{
-		if (event == Event::PlayerDied)
+		if (event == Event::PlayerScored)
 		{
 			if (auto player = dynamic_cast<ScoreComponent*>(subject)) {
 				int playerScore = player->GetScore();
