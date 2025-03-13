@@ -156,6 +156,9 @@
     <ClInclude Include="ScoreCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Achievements.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
