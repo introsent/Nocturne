@@ -204,9 +204,12 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClInclude Include="..\3rdParty\imgui-1.91.8\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.91.8\imstb_truetype.h" />
     <ClInclude Include="Achievements.h" />
+    <ClInclude Include="AchievementsGlobals.h" />
     <ClInclude Include="CacheProfiler.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="CSteamAchievement.h" />
+    <ClInclude Include="EAchievements.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
@@ -252,7 +255,9 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClCompile Include="..\3rdParty\imgui-1.91.8\implot.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.91.8\implot_demo.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.91.8\implot_items.cpp" />
+    <ClCompile Include="AchievementsGlobals.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="CSteamAchievement.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="GameObject.cpp" />
