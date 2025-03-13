@@ -5,7 +5,7 @@
 #include "GameObjectBuilder.h"
 
 // Factory function to create a UI text element.
-std::shared_ptr<dae::GameObject> CreateUIText(const std::string& text, std::shared_ptr<dae::Font> font, const glm::vec3& pos) {
+inline std::shared_ptr<dae::GameObject> CreateUIText(const std::string& text, std::shared_ptr<dae::Font> font, const glm::vec3& pos) {
     return GameObjectBuilder()
         .WithText(text, font)
         .SetPosition(pos)

@@ -2,11 +2,15 @@
 #include "Achievements.h"
 #include <steam_api.h>
 
-class CSteamAchievements
+class CSteamAchievements final
 {
 public:
     CSteamAchievements(Achievement_t* pAchievements, int numAchievements);
     ~CSteamAchievements();
+    CSteamAchievements(const CSteamAchievements&) = delete;             
+    CSteamAchievements& operator=(const CSteamAchievements&) = delete;  
+    CSteamAchievements(CSteamAchievements&&) = delete;                 
+    CSteamAchievements& operator=(CSteamAchievements&&) = delete;
 
     bool static RequestStats();
 
