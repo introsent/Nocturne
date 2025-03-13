@@ -206,6 +206,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClInclude Include="Achievements.h" />
     <ClInclude Include="AchievementsGlobals.h" />
     <ClInclude Include="CacheProfiler.h" />
+    <ClInclude Include="CharacterFactory.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSteamAchievement.h" />
@@ -214,6 +215,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="GamepadButton.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="InputManager.h" />
@@ -242,6 +244,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="TranslationComponent.h" />
+    <ClInclude Include="UIFactory.h" />
     <ClInclude Include="XInputManager.h" />
   </ItemGroup>
   <ItemGroup>
