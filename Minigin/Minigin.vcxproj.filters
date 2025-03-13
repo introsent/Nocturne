@@ -162,9 +162,6 @@
     <ClInclude Include="CSteamAchievement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EAchievements.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AchievementsGlobals.h">
       <Filter>Header Files</Filter>
     </ClInclude>

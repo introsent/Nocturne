@@ -210,7 +210,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClInclude Include="Command.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSteamAchievement.h" />
-    <ClInclude Include="EAchievements.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="FPSComponent.h" />
