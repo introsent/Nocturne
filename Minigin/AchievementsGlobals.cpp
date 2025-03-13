@@ -1,15 +1,10 @@
 #include "AchievementsGlobals.h"
-#include "CSteamAchievement.h"
 
-// Define your achievement IDs (must match your Steam configuration)
-enum EAchievements
-{
-    ACH_WIN_ONE_GAME = 0,
+#include <array>
+
+#include "Achievements.h"
+
+// Define g_Achievements in only one .cpp file
+std::array<Achievement_t, 1> g_Achievements = {
+    _ACH_ID(static_cast<int>(EAchievements::ACH_WIN_ONE_GAME), "Winner")
 };
-
-Achievement_t g_Achievements[] =
-{
-    _ACH_ID(ACH_WIN_ONE_GAME, "Winner")
-};
-
-CSteamAchievements* g_SteamAchievements = nullptr;
