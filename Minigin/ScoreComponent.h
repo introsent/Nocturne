@@ -1,11 +1,13 @@
 #pragma once
 #include "Component.h"
-#include "Subject.h"
+#include "Event.h"
 
 namespace dae
 {
-    class ScoreComponent : public Component, public Subject {
+    class ScoreComponent : public Component {
     public:
+
+        Event<int> OnScoreChanged;
         ScoreComponent(GameObject* pOwner) : Component(pOwner) {}
 
         void AddScore(int amount);

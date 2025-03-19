@@ -1,21 +1,19 @@
 #pragma once
-#include "Observer.h"
 #include "TextComponent.h"
 
 namespace dae
 {
 	class HealthComponent;
 
-	class LivesDisplayObserver final : public Observer, public Component
+	class LivesDisplayObserver final : public Component
 	{
 	public:
 		LivesDisplayObserver(GameObject* pOwner, TextComponent* textComp);
 
-		void Notify(Event event, Subject* subject) override;
-
 		void Register(HealthComponent* healthComp);
 		void Unregister(HealthComponent* healthComp);
 	private:
+		int m_subscriptionToken = -1;
 		TextComponent* m_textComponent;
 	};
 }

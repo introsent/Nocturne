@@ -8,30 +8,25 @@ namespace dae
 {
 	ScoreDisplayObserver::ScoreDisplayObserver(GameObject* pOwner, TextComponent* textComp) : Component(pOwner), m_textComponent(textComp) {
 	}
-
-	void ScoreDisplayObserver::Notify(Event event, Subject* subject)
-	{
-		if (event == Event::PlayerScored)
-		{
-			if (auto player = dynamic_cast<ScoreComponent*>(subject)) {
-				int playerScore = player->GetScore();
-				if (m_textComponent)
-					m_textComponent->SetText("Score: " + std::to_string(playerScore));
-			}
-			else {
-				std::cerr << "Error: Subject is not a PlayerComponent!" << std::endl;
-			}
-		}
-	}
+	 
 
 	void ScoreDisplayObserver::Register(ScoreComponent* scoreComp)
 	{
-		scoreComp->AddObserver(this);
+		m_subscriptionToken = scoreComp->OnScoreChanged.Subscribe(
+			[this, scoreComp](int newScore) {
+				if (m_textComponent)
+					m_textComponent->SetText("Score: " + std::to_string(newScore));
+			}
+		);
 	}
 
 	void ScoreDisplayObserver::Unregister(ScoreComponent* scoreComp)
 	{
-		scoreComp->RemoveObserver(this);
+		if (m_subscriptionToken != -1)
+		{
+			scoreComp->OnScoreChanged.Unsubscribe(m_subscriptionToken);
+			m_subscriptionToken = -1;
+		}
 	}
 
 

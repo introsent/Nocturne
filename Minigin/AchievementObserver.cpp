@@ -5,32 +5,28 @@
 #include "AchievementsGlobals.h"
 #include "CSteamAchievements.h"
 
-void dae::AchievementObserver::Notify(Event event, Subject* subject)
-{
-	if (event == Event::PlayerScored)
-	{
-		if (auto player = dynamic_cast<ScoreComponent*>(subject)) {
-			if (player->GetScore() >= 500)
-			{
-				if (g_SteamAchievements)
-				{
-					g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
-					Unregister(player);
-				}
-			}
-		}
-		else {
-			std::cerr << "Error: Subject is not a PlayerComponent!" << std::endl;
-		}
-	}
-}
-
 void dae::AchievementObserver::Register(ScoreComponent* scoreComp)
 {
-	scoreComp->AddObserver(this);
+    m_subscriptionToken = scoreComp->OnScoreChanged.Subscribe(
+        [this, scoreComp](int newScore) {
+            if (newScore >= 500)
+            {
+                if (g_SteamAchievements)
+                {
+                    g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+                    // unsubscribe after unlocking the achievement.
+                    Unregister(scoreComp);
+                }
+            }
+        }
+    );
 }
 
 void dae::AchievementObserver::Unregister(ScoreComponent* scoreComp)
 {
-	scoreComp->RemoveObserver(this);
+    if (m_subscriptionToken != -1)
+    {
+        scoreComp->OnScoreChanged.Unsubscribe(m_subscriptionToken);
+        m_subscriptionToken = -1;
+    }
 }

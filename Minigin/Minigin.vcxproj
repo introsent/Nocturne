@@ -237,7 +237,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClInclude Include="LivesDisplayObserver.h" />
     <ClInclude Include="Minigin.h" />
     <ClInclude Include="MoveCommand.h" />
-    <ClInclude Include="Observer.h" />
     <ClInclude Include="Plot.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -249,7 +248,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClInclude Include="ScoreDisplayObserver.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="StructVsPointerBenchmarkWindowComponent.h" />
-    <ClInclude Include="Subject.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="TextureComponent.h" />
@@ -295,7 +293,6 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayObserver.cpp" />
     <ClCompile Include="StructVsPointerBenchmarkWindowComponent.cpp" />
-    <ClCompile Include="Subject.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="TextureComponent.cpp" />

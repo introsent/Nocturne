@@ -2,13 +2,16 @@
 #include <iostream>
 
 #include "Component.h"
-#include "Subject.h"
+#include "Event.h"
 
 namespace dae
 {
-    class HealthComponent : public Component, public Subject {
+    class HealthComponent : public Component {
     public:
         HealthComponent(GameObject* pOwner) : Component(pOwner) {}
+
+        // event triggered whenever health changes.
+        Event<> OnHealthChanged;
 
         void TakeDamage();
 

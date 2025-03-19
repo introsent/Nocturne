@@ -4,7 +4,9 @@
 void dae::HealthComponent::TakeDamage()
 {
     --m_lives;
-    NotifyObservers(Event::PlayerDied, this);
+    // notify all subscribers. at the same time
+    OnHealthChanged();
+
 }
 
 int dae::HealthComponent::GetLives() const

@@ -129,12 +129,6 @@
     <ClInclude Include="GamepadButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Observer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Subject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HealthComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -276,9 +270,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="XInputManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Subject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HealthComponent.cpp">

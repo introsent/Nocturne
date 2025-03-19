@@ -1,13 +1,9 @@
 #include "ScoreComponent.h"
 
-#include "Achievements.h"
-#include "AchievementsGlobals.h"
-#include "CSteamAchievements.h"
-
 void dae::ScoreComponent::AddScore(int amount)
 {
 	m_score += amount;
-	NotifyObservers(Event::PlayerScored, this);
+	OnScoreChanged(m_score);
 }
 
 int dae::ScoreComponent::GetScore() const
