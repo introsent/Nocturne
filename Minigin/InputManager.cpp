@@ -49,14 +49,14 @@ namespace dae
         return m_XInputManager.ProcessInput();  
     }
 
-    void InputManager::BindKeyboardCommand(int key, InputState state, Command* command)
+    void InputManager::BindKeyboardCommand(int key, InputState state, std::unique_ptr<Command> command)
     {
         KeyBinding binding{ key, state };
-        m_KeyBindings[binding] = command;
+        m_KeyBindings[binding] = std::move(command);
     }
 
-    void InputManager::BindControllerCommand(unsigned int button, InputState state, Command* command) const
+    void InputManager::BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command) const
     {
-        m_XInputManager.BindControllerCommand(button, state, command);
+        m_XInputManager.BindControllerCommand(button, state, std::move(command));
     }
 }

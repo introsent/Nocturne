@@ -12,10 +12,10 @@ namespace dae
     {
     public:
         bool ProcessInput();
-        void BindControllerCommand(unsigned int button, InputState state, Command* command);
+        void BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command);
 
     private:
-        std::unordered_map<unsigned int, std::vector<std::pair<InputState, Command*>>> m_ControllerCommands;
+        std::unordered_map<unsigned int, std::vector<std::pair<InputState, std::unique_ptr<Command>>>> m_ControllerCommands;
         XINPUT_STATE m_PreviousState{};
     };
 
@@ -47,9 +47,9 @@ namespace dae
         return true;
     }
 
-    void XInputManager::XInputImpl::BindControllerCommand(unsigned int button, InputState state, dae::Command* command)
+    void XInputManager::XInputImpl::BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command)
     {
-        m_ControllerCommands[button].emplace_back(state, command);
+        m_ControllerCommands[button].emplace_back(state, std::move(command));
     }
 
     XInputManager::XInputManager() : m_XInputManager(std::make_unique<XInputImpl>())
@@ -58,9 +58,9 @@ namespace dae
 
     XInputManager::~XInputManager() = default;
 
-    void XInputManager::BindControllerCommand(unsigned int button, InputState state, dae::Command* command) const
+    void XInputManager::BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command) const
     {
-        m_XInputManager->BindControllerCommand(button, state, command);
+        m_XInputManager->BindControllerCommand(button, state, std::move(command));
     }
 
    

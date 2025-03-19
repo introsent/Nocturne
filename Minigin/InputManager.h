@@ -42,11 +42,11 @@ namespace dae
         InputManager& operator=(InputManager&& other) noexcept = delete;
 
         bool ProcessInput();  
-        void BindKeyboardCommand(int key, InputState state, Command* command);
-        void BindControllerCommand(unsigned int button, InputState state, Command* command) const;
+        void BindKeyboardCommand(int key, InputState state, std::unique_ptr<Command> command);
+        void BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command) const;
 
     private:
-        std::unordered_map<KeyBinding, Command*, KeyBindingHash> m_KeyBindings;
+        std::unordered_map<KeyBinding, std::unique_ptr<Command>, KeyBindingHash> m_KeyBindings;
         XInputManager m_XInputManager;
     };
 }

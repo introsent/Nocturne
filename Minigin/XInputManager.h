@@ -19,7 +19,7 @@ namespace dae
 
 		static uint16_t GetXInputValue(GamepadButton gamepadButton);
 		bool ProcessInput() const;
-		void BindControllerCommand(unsigned int button, InputState state, dae::Command* command) const;
+		void BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command) const;
 	private:
 		class XInputImpl;
 		std::unique_ptr<XInputImpl> m_XInputManager;
