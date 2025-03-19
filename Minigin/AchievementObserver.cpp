@@ -13,7 +13,10 @@ void dae::AchievementObserver::Notify(Event event, Subject* subject)
 			if (player->GetScore() >= 500)
 			{
 				if (g_SteamAchievements)
+				{
 					g_SteamAchievements->SetAchievement("ACH_WIN_ONE_GAME");
+					Unregister(player);
+				}
 			}
 		}
 		else {
