@@ -28,7 +28,8 @@ public:
 
     // invoke all subscribers immediately
     void Invoke(Args... args) const {
-        for (const auto& handlerPair : m_handlers) {
+        auto handlersCopy = m_handlers;  // make a copy of the handlers, so we can unsubscribe safely
+        for (const auto& handlerPair : handlersCopy) {
             handlerPair.second(args...);
         }
     }
