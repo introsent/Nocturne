@@ -4,8 +4,6 @@
 #include <unordered_map>
 #include <XInput.h>
 
-#include "MoveCommand.h"
-
 namespace dae
 {
     class XInputManager::XInputImpl
