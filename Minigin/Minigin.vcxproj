@@ -156,9 +156,7 @@
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib</AdditionalDependencies>
@@ -214,9 +212,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib</AdditionalDependencies>
@@ -247,9 +243,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib</AdditionalDependencies>
@@ -313,9 +307,7 @@ xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)3rdParty\SDL2\lib\$(PlatformTarget)\SDL2.dll" "$(OutputPath)" /R /Y
 xcopy "$(SolutionDir)3rdParty\SDL2_image\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y
-xcopy $(SolutionDir)3rdParty\steamworks\redistributable_bin\win64\*.dll $(OutputPath) /Y
-xcopy $(SolutionDir)steam_appid.txt $(OutputPath) /Y</Command>
+xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPath)" /R /Y</Command>
     </PostBuildEvent>
     <Lib>
       <AdditionalDependencies>xinput.lib</AdditionalDependencies>
