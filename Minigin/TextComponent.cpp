@@ -4,7 +4,6 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "Texture2D.h"
-#include "TransformComponent.h"
 #include "Component.h"
 #include "GameObject.h"
 

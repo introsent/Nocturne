@@ -2,7 +2,6 @@
 #include <string>
 #include <memory>
 #include "Component.h"
-#include "Transform.h"
 
 namespace dae
 {

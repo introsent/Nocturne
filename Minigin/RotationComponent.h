@@ -1,8 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "TransformComponent.h"
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
 
 namespace dae
 {

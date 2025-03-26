@@ -5,7 +5,6 @@
 #include "GameObject.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
-#include "TransformComponent.h"
 #include "Component.h"
 
 namespace dae

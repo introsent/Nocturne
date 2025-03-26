@@ -176,6 +176,7 @@
   <ItemGroup>
     <ClInclude Include="CharacterFactory.h" />
     <ClInclude Include="FPSComponent.h" />
+    <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="LivesDisplayObserver.h" />
@@ -183,6 +184,7 @@
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />
+    <ClInclude Include="UIFactory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
