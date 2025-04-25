@@ -7,8 +7,6 @@
 
 
 #include "Minigin.h"
-
-
 #include "CharacterFactory.h"
 #include "GameObjectBuilder.h"
 #include "InputManager.h"
@@ -64,6 +62,9 @@ void load()
 
     auto info2 = CreateUIText("Use D-Pad to move Slick Sam, X to inflict damage, A and B to pick up pellets", fontInfo, glm::vec3(0.f, 120.f, 0.f));
     scene.Add(info2);
+
+    auto info3 = CreateUIText("Use Y on gamepad or V on keyboard to play a sound", fontInfo, glm::vec3(0.f, 140.f, 0.f));
+    scene.Add(info3);
 
     auto fpsText = GameObjectBuilder()
         .WithText("FPS", font)
@@ -155,22 +156,6 @@ void load()
 
     dae::InputManager::GetInstance().BindControllerCommand(m_XInputManager.GetXInputValue(GamepadButton::North), InputState::Up,
         std::make_unique<dae::TestSoundCommand>());
-
-    //auto exercise1 = std::make_shared<dae::GameObject>();
-    //exercise1->AddComponent<dae::IntegerBufferBenchmarkWindowComponent>(exercise1.get());
-    //exercise1->SetLocalPosition(glm::vec3(80.f, 50.f, 0.f));
-    //scene.Add(exercise1);
-    //
-    //auto exercise2 = std::make_shared<dae::GameObject>();
-    //exercise1->AddComponent<dae::StructVsPointerBenchmarkWindowComponent>(exercise2.get());
-    //exercise1->SetLocalPosition(glm::vec3(200.f, 50.f, 0.f));
-    //scene.Add(exercise2);
-
-    //--Checked--
-    //char1->RemoveChild(char2.get());
-
-    //--Checked--
-    //char1->RemoveComponent<dae::RotationComponent>();
 }
 
 
