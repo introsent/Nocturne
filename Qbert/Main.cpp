@@ -21,11 +21,21 @@
 #include "SceneManager.h"
 #include "ScoreCommand.h"
 #include "ScoreDisplayObserver.h"
+#include "SoundService.h"
+#include "SoundServiceLocator.h"
+#include "TestSoundCommand.h"
 #include "UIFactory.h"
 
 
 void load()
 {
+	dae::SoundServiceLocator::Register(std::make_unique<dae::SoundService>());
+
+    // Load initial sounds
+    auto* sound_service = dae::SoundServiceLocator::GetService();
+    sound_service->LoadSound("test", "../Data/coily_snake.wav");
+
+
     auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
 
     // Create background and logo objects.
@@ -121,6 +131,9 @@ void load()
     dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_x, InputState::Down,
         std::make_unique<dae::ScoreCommand>(char1.get(), 100));
 
+    dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_v, InputState::Down,
+        std::make_unique<dae::TestSoundCommand>());
+
 
     dae::XInputManager m_XInputManager;
     // Bind D-Pad for char2 (controller)
@@ -139,6 +152,9 @@ void load()
         std::make_unique<dae::ScoreCommand>(char2.get(), 10));
     dae::InputManager::GetInstance().BindControllerCommand(m_XInputManager.GetXInputValue(GamepadButton::East), InputState::Up,
         std::make_unique<dae::ScoreCommand>(char2.get(), 100));
+
+    dae::InputManager::GetInstance().BindControllerCommand(m_XInputManager.GetXInputValue(GamepadButton::North), InputState::Up,
+        std::make_unique<dae::TestSoundCommand>());
 
     //auto exercise1 = std::make_shared<dae::GameObject>();
     //exercise1->AddComponent<dae::IntegerBufferBenchmarkWindowComponent>(exercise1.get());

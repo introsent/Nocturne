@@ -172,6 +172,7 @@
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayObserver.cpp" />
+    <ClCompile Include="TestSoundCommand.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterFactory.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />
+    <ClInclude Include="TestSoundCommand.h" />
     <ClInclude Include="UIFactory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

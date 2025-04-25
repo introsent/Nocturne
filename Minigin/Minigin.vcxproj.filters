@@ -16,6 +16,12 @@
     <Filter Include="imgui">
       <UniqueIdentifier>{a2985e4c-7301-4c4b-b132-ed51a0762305}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Sound Headers">
+      <UniqueIdentifier>{2fc90a54-43e1-480e-8bb8-220bde930e66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sound Source">
+      <UniqueIdentifier>{d9a396f8-9099-4da1-9b09-584e54514ecb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Singleton.h">
@@ -108,6 +114,21 @@
     <ClInclude Include="Event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ISoundService.h">
+      <Filter>Header Files\Sound Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundServiceLocator.h">
+      <Filter>Header Files\Sound Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundService.h">
+      <Filter>Header Files\Sound Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadSoundCommand.h">
+      <Filter>Header Files\Sound Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySoundCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">
@@ -184,6 +205,18 @@
     </ClCompile>
     <ClCompile Include="XInputManager.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundService.cpp">
+      <Filter>Source Files\Sound Source</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadSoundCommand.cpp">
+      <Filter>Source Files\Sound Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaySoundCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundServiceLocator.cpp">
+      <Filter>Source Files\Sound Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

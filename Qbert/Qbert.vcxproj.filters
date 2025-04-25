@@ -42,6 +42,9 @@
     <ClCompile Include="ScoreDisplayObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestSoundCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterFactory.h">
@@ -75,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UIFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSoundCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
