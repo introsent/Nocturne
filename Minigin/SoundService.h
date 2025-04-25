@@ -4,7 +4,7 @@
 
 namespace dae
 {
-    class SoundService : public ISoundService {
+    class SoundService final : public ISoundService {
     public:
         SoundService();
         ~SoundService() override;
