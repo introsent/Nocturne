@@ -4,6 +4,7 @@
 #include <mutex>
 #include <queue>
 #include <condition_variable>
+#include <ranges>
 #include <unordered_map>
 
 #include "Command.h"
@@ -51,10 +52,14 @@ namespace dae
             m_queueCV.notify_all();
             m_workerThread.join();
 
-            for (auto& [id, chunk] : m_sounds)
+            for (auto& chunk : m_sounds | std::views::values)
                 Mix_FreeChunk(chunk);
             Mix_CloseAudio();
         }
+        MixerImpl(const MixerImpl&) = delete;
+        MixerImpl& operator=(const MixerImpl&) = delete;
+        MixerImpl(MixerImpl&&) = delete;
+        MixerImpl& operator=(MixerImpl&&) = delete;
 
         void LoadSound(const std::string& id, const std::string& path) {
             std::lock_guard lock(m_queueMutex);
