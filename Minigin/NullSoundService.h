@@ -7,8 +7,8 @@ namespace dae
     class NullSoundService final : public ISoundService
     {
     public:
-        void LoadSound(const std::string& id, const std::string& path) override {}
-        void PlaySound(const std::string& id) override {}
+        void LoadSound(const std::string&, const std::string&) override {}
+        void PlaySound(const std::string&) override {}
     };
 };
 

@@ -23,17 +23,23 @@ namespace dae
 
         void WorkerLoop() {
             while (m_running) {
-                std::unique_lock lock(m_queueMutex);
-                m_queueCV.wait(lock, [this] {
-                    return !m_commandQueue.empty() || !m_running;
-                    });
+                std::queue<std::unique_ptr<Command>> localQueue;
 
-                while (!m_commandQueue.empty()) {
-                    auto cmd = std::move(m_commandQueue.front());
-                    m_commandQueue.pop();
-                    lock.unlock();
+                {
+                    std::unique_lock lock(m_queueMutex);
+                    m_queueCV.wait(lock, [this] {
+                        return !m_commandQueue.empty() || !m_running;
+                        });
+
+                    if (!m_running) break;
+
+                    std::swap(localQueue, m_commandQueue);
+                }
+
+                while (!localQueue.empty()) {
+                    auto cmd = std::move(localQueue.front());
+                    localQueue.pop();
                     cmd->Execute();
-                    lock.lock();
                 }
             }
         }
