@@ -20,7 +20,7 @@ static constexpr glm::vec2 FrameSize = { 32.f, 32.f };
 // Helper to convert tile grid coords to world space (assuming isometric projection)
 namespace {
     glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
-        constexpr glm::vec2 Origin{ 50.f, 50.f };  // Center point
+        constexpr glm::vec2 Origin{ 400.f, 100.f };  // Center point
         constexpr float VisualTileW = 64.f;  // Display width (twice frame width)
         constexpr float VisualTileH = 32.f;  // Display height
 
