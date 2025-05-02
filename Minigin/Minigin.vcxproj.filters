@@ -127,7 +127,10 @@
       <Filter>Header Files\Sound Headers</Filter>
     </ClInclude>
     <ClInclude Include="PlaySoundCommand.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Sound Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="NullSoundService.h">
+      <Filter>Header Files\Sound Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -212,10 +215,13 @@
     <ClCompile Include="LoadSoundCommand.cpp">
       <Filter>Source Files\Sound Source</Filter>
     </ClCompile>
-    <ClCompile Include="PlaySoundCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SoundServiceLocator.cpp">
+      <Filter>Source Files\Sound Source</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaySoundCommand.cpp">
+      <Filter>Source Files\Sound Source</Filter>
+    </ClCompile>
+    <ClCompile Include="NullSoundService.cpp">
       <Filter>Source Files\Sound Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -335,6 +335,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClInclude Include="ISoundService.h" />
     <ClInclude Include="LoadSoundCommand.h" />
     <ClInclude Include="Minigin.h" />
+    <ClInclude Include="NullSoundService.h" />
     <ClInclude Include="PlaySoundCommand.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -367,6 +368,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LoadSoundCommand.cpp" />
     <ClCompile Include="Minigin.cpp" />
+    <ClCompile Include="NullSoundService.cpp" />
     <ClCompile Include="PlaySoundCommand.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
