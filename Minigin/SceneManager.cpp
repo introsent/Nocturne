@@ -1,28 +1,46 @@
 #include "SceneManager.h"
+#include <iostream>
 #include "Scene.h"
+
+void dae::SceneManager::SetActiveScene(const std::string& name)
+{
+	for (auto& scene : m_scenes)
+	{
+		if (scene->GetName() == name)
+		{
+			m_pActiveScene = scene.get();
+			return;
+		}
+	}
+
+	std::cerr << "Scene '" << name << "' not found!\n";
+	m_pActiveScene = nullptr;
+}
+
+dae::Scene* dae::SceneManager::GetActiveScene() const
+{
+	return m_pActiveScene;
+}
+
 
 void dae::SceneManager::Update(float deltaTime)
 {
-	for(auto& scene : m_scenes)
+	if (m_pActiveScene)
 	{
-		scene->Update(deltaTime);
+		m_pActiveScene->Update(deltaTime);
 	}
 }
 
 void dae::SceneManager::Render() const
 {
-	for (const auto& scene : m_scenes)
-	{
-		scene->Render();
-	}
+	if (m_pActiveScene)
+		m_pActiveScene->Render();
 }
 
 void dae::SceneManager::RenderUI()
 {
-	for (const auto& scene : m_scenes)
-	{
-		scene->RenderUI();
-	}
+	if (m_pActiveScene)
+		m_pActiveScene->RenderUI();
 }
 
 

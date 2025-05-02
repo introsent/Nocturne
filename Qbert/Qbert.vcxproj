@@ -163,9 +163,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationComponent.cpp" />
+    <ClCompile Include="ColorRule.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="KillCommand.cpp" />
+    <ClCompile Include="Level.cpp" />
+    <ClCompile Include="LevelComponent.cpp" />
     <ClCompile Include="LivesDisplayObserver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
@@ -173,19 +177,25 @@
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayObserver.cpp" />
     <ClCompile Include="TestSoundCommand.cpp" />
+    <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="CharacterFactory.h" />
+    <ClInclude Include="ColorRule.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="KillCommand.h" />
+    <ClInclude Include="Level.h" />
+    <ClInclude Include="LevelComponent.h" />
     <ClInclude Include="LivesDisplayObserver.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />
     <ClInclude Include="TestSoundCommand.h" />
+    <ClInclude Include="Tile.h" />
     <ClInclude Include="UIFactory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

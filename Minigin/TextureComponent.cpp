@@ -23,7 +23,14 @@ namespace dae
             {
               
                 const auto pos = owner->GetWorldPosition();
-                Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);  // Render the texture using the owner's position
+                if (m_srcRect.z == 0.f && m_srcRect.w == 0.f)
+                {
+                    Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+                }
+                else
+                {
+                    Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_srcRect);
+                }
                 
             }
         }
@@ -32,5 +39,19 @@ namespace dae
     void TextureComponent::SetTexture(const std::string& filename)
     {
         m_texture = ResourceManager::GetInstance().LoadTexture(filename);  // Load texture using ResourceManager
+        if (m_texture)
+        {
+            // Default srcRect to full texture area
+            m_srcRect = {
+                0.f, 0.f,
+                static_cast<float>(m_texture->GetSize().x),
+                static_cast<float>(m_texture->GetSize().y)
+            };
+        }
+    }
+
+    void TextureComponent::SetSrcRect(const glm::vec4& srcRect)
+    {
+        m_srcRect = srcRect;
     }
 }

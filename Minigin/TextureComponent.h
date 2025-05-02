@@ -16,7 +16,10 @@ namespace dae
 
         void SetTexture(const std::string& filename);
 
+        void SetSrcRect(const glm::vec4& srcRect);
+
     private:
         std::shared_ptr<Texture2D> m_texture;
+        glm::vec4                  m_srcRect{ 0.f, 0.f, 0.f, 0.f };
     };
 }
