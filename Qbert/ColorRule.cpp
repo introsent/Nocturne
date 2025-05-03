@@ -1,85 +1,58 @@
 #include "ColorRule.h"
 #include "Tile.h"
 
-void OneHitRule::Apply(Tile& tile)
-{
-    // start every tile at color index 0
+// OneHitRule: 0(start) -> 1(target)
+void OneHitRule::ConfigureTile(Tile& tile) const {
+    tile.SetStartColor(0);
+    tile.SetTargetColor(1);
     tile.SetColorIndex(0);
 }
-void OneHitRule::OnJump(Tile& tile)
-{
-    if (!tile.HasReachedTarget())
-        tile.SetToTarget();
+
+void OneHitRule::OnJump(Tile& tile) {
+    if (!tile.HasReachedTarget()) tile.SetToTarget();
 }
 
-bool OneHitRule::IsTileCompleted(const Tile& tile) const
-{
-    return tile.GetColorIndex() == 1;
-}
-
-bool OneHitRule::IsCompleted(const std::vector<std::unique_ptr<Tile>>& tiles) const
-{
-    for (const auto& tile : tiles)
-    {
-        if (!tile->HasReachedTarget())
-            return false;
-    }
+bool OneHitRule::IsTileCompleted(const Tile& tile) const { return tile.GetColorIndex() == 1; }
+bool OneHitRule::IsCompleted(const std::vector<std::unique_ptr<Tile>>& tiles) const {
+    for (const auto& t : tiles) if (!t->HasReachedTarget()) return false;
     return true;
 }
 
-void TwoHitRule::Apply(Tile& tile)
-{
+// TwoHitRule: 0 -> 1 -> 2
+void TwoHitRule::ConfigureTile(Tile& tile) const {
+    tile.SetStartColor(0);
+    tile.SetIntermediateColor(1);
+    tile.SetTargetColor(2);
     tile.SetColorIndex(0);
 }
 
-void TwoHitRule::OnJump(Tile& tile)
-{
-    if (!tile.HasReachedTarget())
-    {
-        if (!tile.IsInIntermediateState())
-            tile.SetToIntermediate();
-        else
-            tile.SetToTarget();
+void TwoHitRule::OnJump(Tile& tile) {
+    if (!tile.HasReachedTarget()) {
+        if (!tile.IsInIntermediateState()) tile.SetToIntermediate();
+        else tile.SetToTarget();
     }
 }
-bool TwoHitRule::IsTileCompleted(const Tile& tile) const
-{
-    return tile.GetColorIndex() == 2;
-}
 
-
-bool TwoHitRule::IsCompleted(const std::vector<std::unique_ptr<Tile>>& tiles) const
-{
-    for (const auto& tile : tiles)
-    {
-        if (!tile->HasReachedTarget())
-            return false;
-    }
+bool TwoHitRule::IsTileCompleted(const Tile& tile) const { return tile.GetColorIndex() == 2; }
+bool TwoHitRule::IsCompleted(const std::vector<std::unique_ptr<Tile>>& tiles) const {
+    for (const auto& t : tiles) if (!t->HasReachedTarget()) return false;
     return true;
 }
-bool ToggleRule::IsTileCompleted(const Tile& tile) const
-{
-    return tile.GetColorIndex() == 1;
-}
-void ToggleRule::Apply(Tile& tile)
-{
+
+// ToggleRule: 0 <-> 1
+void ToggleRule::ConfigureTile(Tile& tile) const {
+    tile.SetStartColor(0);
+    tile.SetTargetColor(1);
     tile.SetColorIndex(0);
 }
 
-void ToggleRule::OnJump(Tile& tile)
-{
-    if (tile.HasReachedTarget())
-        tile.SetToStart();
-    else
-        tile.SetToTarget();
+void ToggleRule::OnJump(Tile& tile) {
+    if (tile.HasReachedTarget()) tile.SetToStart();
+    else tile.SetToTarget();
 }
 
-bool ToggleRule::IsCompleted(const std::vector<std::unique_ptr<Tile>>& tiles) const
-{
-    for (const auto& tile : tiles)
-    {
-        if (!tile->HasReachedTarget())
-            return false;
-    }
+bool ToggleRule::IsTileCompleted(const Tile& tile) const { return tile.GetColorIndex() == 1; }
+bool ToggleRule::IsCompleted(const std::vector<std::unique_ptr<Tile>>& tiles) const {
+    for (const auto& t : tiles) if (!t->HasReachedTarget()) return false;
     return true;
 }

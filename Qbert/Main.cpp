@@ -33,18 +33,19 @@ void load()
     // 1) Create the Level1 scene
     auto& level1Scene = dae::SceneManager::GetInstance().CreateScene("Level1");
     dae::SceneManager::GetInstance().SetActiveScene("Level1");
+    // Create background and logo objects.
+    auto bg = GameObjectBuilder()
+        .WithTexture("../Data/background.png")
+        .SetPosition(glm::vec3(0.f, 0.f, 0.f))
+        .Build();
+    level1Scene.Add(bg);
 
     // 2) Add a LevelController GameObject which will spawn everything
     auto levelController = std::make_shared<dae::GameObject>();
     levelController->AddComponent<LevelComponent>(levelController.get(), 1);
     level1Scene.Add(levelController);
 
-    // Create background and logo objects.
-    auto bg = GameObjectBuilder()
-        .WithTexture("background.tga")
-        .SetPosition(glm::vec3(0.f, 0.f, 0.f))
-        .Build();
-    level1Scene.Add(bg);
+
     // 3) Tell the engine to start on this scene
    
 

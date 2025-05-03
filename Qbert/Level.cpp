@@ -1,42 +1,37 @@
 #include "Level.h"
 #include "Tile.h"
 #include "ColorRule.h"
-
 Level::Level(int levelNumber, int numRows)
-    : m_rows(numRows)
+    : m_levelNumber(levelNumber),
+    m_rows(numRows)
 {
-    switch (levelNumber)
-    {
-    case 1: m_colorRule = std::make_unique<OneHitRule>();    break;
-    case 2: m_colorRule = std::make_unique<TwoHitRule>();    break;
-    case 3: m_colorRule = std::make_unique<ToggleRule>();    break;
-    default: m_colorRule = std::make_unique<OneHitRule>();   break;
+    switch (m_levelNumber) {
+    case 1: m_colorRule = std::make_unique<OneHitRule>(); break;
+    case 2: m_colorRule = std::make_unique<TwoHitRule>(); break;
+    case 3: m_colorRule = std::make_unique<ToggleRule>(); break;
+    default: m_colorRule = std::make_unique<OneHitRule>(); break;
     }
     CreateTiles();
-    ApplyInitialRule();
+    ConfigureTiles();
 }
 
 Level::~Level() = default;
 
-void Level::CreateTiles()
-{
+void Level::CreateTiles() {
     m_tiles.clear();
-    m_tiles.reserve(m_rows * (m_rows + 1) / 2);
 
-    for (int row = 0; row < m_rows; ++row)
-    {
-        for (int col = 0; col <= row; ++col)
-        {
-            m_tiles.push_back(std::make_unique<Tile>(glm::ivec2{ col, row }));
+    for (int row = 0; row < m_rows; ++row) {
+        // Generate columns for this row (row + 1 tiles)
+        for (int col = 0; col <= row; ++col) {
+            // Center tiles under the previous row
+            int centeredCol = col - (row / 2);
+            m_tiles.push_back(std::make_unique<Tile>(glm::ivec2{ centeredCol, row }));
         }
     }
 }
-
-void Level::ApplyInitialRule()
-{
-    for (auto& tilePtr : m_tiles)
-    {
-        m_colorRule->Apply(*tilePtr);
+void Level::ConfigureTiles() {
+    for (auto& tilePtr : m_tiles) {
+        m_colorRule->ConfigureTile(*tilePtr);
     }
 }
 

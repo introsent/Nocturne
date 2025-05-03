@@ -10,7 +10,9 @@ public:
                        dae::TextureComponent* texComp,
                        glm::vec2 frameSize,
                        int numFrames,
-                       float frameDuration);
+                       float frameDuration,
+					   int rows,
+					   int cols);
 
     void Update(float deltaTime) override;
 
@@ -23,5 +25,11 @@ private:
     float                  m_frameDuration; // seconds per frame
     float                  m_accTime{};
     int                    m_currentFrame{};
+
+	int 				   m_currentRow{};
+	int                    m_currentCol{};
+
+    int                    m_maxRows;
+	int                    m_maxCols;
 };
 
