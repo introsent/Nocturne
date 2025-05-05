@@ -10,9 +10,9 @@
 
 namespace {
     glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
-        constexpr glm::vec2 Origin{ 400.f, 100.f };
+        constexpr glm::vec2 Origin{ 200.f, 100.f };
         constexpr float TileWidth = 32.f;
-        constexpr float TileHeight = 24.f; // Square tiles for 1:1 aspect ratio
+        constexpr float TileHeight = 24.f; // For regular triangle spacing
 
         int row = gridPos.y;
         int col = gridPos.x;

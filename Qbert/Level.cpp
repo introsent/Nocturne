@@ -24,7 +24,7 @@ void Level::CreateTiles() {
         // Generate columns for this row (row + 1 tiles)
         for (int col = 0; col <= row; ++col) {
             // Center tiles under the previous row
-            int centeredCol = col - (row / 2);
+            int centeredCol = col - (row / m_rows);
             m_tiles.push_back(std::make_unique<Tile>(glm::ivec2{ centeredCol, row }));
         }
     }
