@@ -22,7 +22,7 @@ namespace dae
 
 		void RenderTexture(const Texture2D& texture, float x, float y) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, const glm::vec4& srcRect) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, const glm::vec4& srcRect, float scale) const;
 		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height, const glm::vec4& srcRect) const;
 
 

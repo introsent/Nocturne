@@ -10,7 +10,7 @@ namespace dae
     class TextureComponent : public Component
     {
     public:
-        TextureComponent(GameObject* owner, const std::string& textureFile);  // Change constructor to take raw pointer (GameObject*)
+        TextureComponent(GameObject* owner, const std::string& textureFile, float scale = 1.f); 
         void Update(float) override {}
         void Render() const override;
 
@@ -21,5 +21,6 @@ namespace dae
     private:
         std::shared_ptr<Texture2D> m_texture;
         glm::vec4                  m_srcRect{ 0.f, 0.f, 0.f, 0.f };
+		float                      m_scale{ 1.f };  
     };
 }

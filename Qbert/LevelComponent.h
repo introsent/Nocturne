@@ -25,7 +25,11 @@ private:
 
     // Texture parameters
     static constexpr char const* TileAtlasFile = "../Data/Qbert Cubes.png";
-    static constexpr glm::vec2 FrameSize = { 32.f, 32.f };
+    static constexpr glm::vec2 MapFrameSize = { 32.f, 32.f };
+
+    static constexpr char const* QbertFile = "../Data/Qbert P1 Spritesheet.png";
+    static constexpr glm::vec2 QbertFrameSize = { 17.f, 16.f };
+
     static constexpr int AtlasColumns = 6;
     static constexpr int AtlasRows = 3;
 };

@@ -10,9 +10,9 @@
 
 namespace {
     glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
-        constexpr glm::vec2 Origin{ 200.f, 100.f };
-        constexpr float TileWidth = 32.f;
-        constexpr float TileHeight = 24.f; // For regular triangle spacing
+        constexpr glm::vec2 Origin{ 300.f, 100.f };
+        constexpr float TileWidth = 64.f;
+        constexpr float TileHeight = 48.f; // For regular triangle spacing
 
         int row = gridPos.y;
         int col = gridPos.x;
@@ -30,6 +30,7 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
     , m_pLevel(std::make_unique<Level>(levelIndex))
 {
     SpawnTiles();
+	SpawnQBert();
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
 }
 
@@ -51,12 +52,12 @@ void LevelComponent::SpawnTiles() {
             ->Translate(glm::vec3(worldPos.x, worldPos.y, -tile.GetGridPosition().y));
 
         // Texture and animation setup
-        auto textureComp = tileGO->AddComponent<dae::TextureComponent>(tileGO.get(), TileAtlasFile);
+        auto textureComp = tileGO->AddComponent<dae::TextureComponent>(tileGO.get(), TileAtlasFile, 2.f);
 
         auto animationComp = tileGO->AddComponent<AnimationComponent>(
             tileGO.get(),
             textureComp,
-            FrameSize,       // 32x32 per frame
+            MapFrameSize,       // 32x32 per frame
             18,              // Total frames (6 columns * 3 rows)
             0.f,             // No auto-advance
             3,               // Rows (states)
@@ -95,27 +96,30 @@ void LevelComponent::OnTileColored(const Tile& tile) {
         }
     }
 }
-//void LevelComponent::SpawnQBert() {
-//    auto qbertGO = std::make_shared<dae::GameObject>();
-//    auto startTile = m_pLevel->GetTileAt({ 0, 0 });
-//
-//    glm::vec2 worldPos = GridToWorld(startTile->GetGridPosition());
-//    auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
-//    translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
-//
-//    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), "QBert.png");
-//    qbertGO->AddComponent<AnimationComponent>(
-//        qbertGO.get(),
-//        textureComp,
-//        glm::vec2{ 64.f, 64.f },
-//        4,
-//        0.2f
-//    );
-//
-//    m_pQBertGO = qbertGO;
-//    dae::SceneManager::GetInstance().GetActiveScene()->Add(qbertGO);
-//}
-//
+void LevelComponent::SpawnQBert() {
+    auto qbertGO = std::make_shared<dae::GameObject>();
+    auto startTile = m_pLevel->GetTileAt({ 2, 3 });
+
+    glm::vec2 worldPos = GridToWorld(startTile->GetGridPosition());
+    auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
+    translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
+
+    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), "../Data/Qbert P2 Spritesheet.png", 2.f);
+    auto animationComp = qbertGO->AddComponent<AnimationComponent>(
+        qbertGO.get(),
+        textureComp,
+        QbertFrameSize, // Frame size
+        4,                        // Total frames
+        0.2f,                     // Time per frame
+        1,                        // Rows
+        4                         // Columns
+    );
+    animationComp->SetFrame(3);
+
+    m_pQBertGO = qbertGO;
+    dae::SceneManager::GetInstance().GetActiveScene()->Add(qbertGO);
+}
+
 //void LevelComponent::SpawnDiscs() {
 //    dae::ResourceManager::GetInstance().LoadTexture("Disc.png");
 //

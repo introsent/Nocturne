@@ -9,9 +9,10 @@
 
 namespace dae
 {
-    TextureComponent::TextureComponent(GameObject* owner, const std::string& textureFile)
+    TextureComponent::TextureComponent(GameObject* owner, const std::string& textureFile, float scale)
         : Component(owner)
     {
+        m_scale = scale;
         SetTexture(textureFile);  // Initialize texture when component is created
     }
 
@@ -29,7 +30,7 @@ namespace dae
                 }
                 else
                 {
-                    Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_srcRect);
+                    Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_srcRect, m_scale);
                 }
                 
             }
