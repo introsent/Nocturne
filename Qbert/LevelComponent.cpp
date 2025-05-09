@@ -90,8 +90,8 @@ void LevelComponent::SpawnQBert() {
     auto startTile = m_pLevel->GetTileAt({ 0, 0 });
 
     glm::vec2 worldPos = GridToWorldCharacter(startTile->GetGridPosition());
-    //auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
-    //translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
+    auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
+    translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
 
     auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), QbertFile, 2.f);
     auto animationComp = qbertGO->AddComponent<AnimationComponent>(

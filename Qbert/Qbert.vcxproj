@@ -165,8 +165,11 @@
   <ItemGroup>
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="ColorRule.cpp" />
+    <ClCompile Include="DeadState.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="IdleState.cpp" />
+    <ClCompile Include="JumpingState.cpp" />
     <ClCompile Include="KillCommand.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelComponent.cpp" />
@@ -184,15 +187,19 @@
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="CharacterFactory.h" />
     <ClInclude Include="ColorRule.h" />
+    <ClInclude Include="DeadState.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="IdleState.h" />
+    <ClInclude Include="JumpingState.h" />
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelComponent.h" />
     <ClInclude Include="LivesDisplayObserver.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="QBertPlayer.h" />
+    <ClInclude Include="QBertState.h" />
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />

@@ -32,7 +32,7 @@ private:
     void SpawnQBert();
     void BindCommands() const;
 
-   // void SpawnDiscs();
+    // void SpawnDiscs();
  
 
     // Texture parameters
