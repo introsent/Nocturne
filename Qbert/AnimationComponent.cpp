@@ -1,4 +1,3 @@
-// AnimationComponent.cpp
 #include "AnimationComponent.h"
 #include "TextureComponent.h"
 
@@ -22,7 +21,8 @@ AnimationComponent::AnimationComponent(GameObject* pOwner,
 }
 
 void AnimationComponent::Update(float) {
-   
+
+    //TODO: FOR ENEMIES FUTURE IMPLEMENTATION
     //m_accTime += dt;
     //if (m_accTime >= m_frameDuration) {
     //    m_accTime -= m_frameDuration;
@@ -41,8 +41,8 @@ void AnimationComponent::SetFrame(int frameIndex) {
     m_currentRow = frameIndex / m_maxCols;    // Color state (0=blue, 1=yellow, 2=red)
 
     m_pTex->SetSrcRect({
-         m_currentCol * m_frameSize.x,
-         m_currentRow * m_frameSize.y,
+         static_cast<float>(m_currentCol) * m_frameSize.x,
+    	 static_cast<float>(m_currentRow)* m_frameSize.y,
          m_frameSize.x,
          m_frameSize.y
         });
