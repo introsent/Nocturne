@@ -1,7 +1,7 @@
 #include "Tile.h"
 
-Tile::Tile(const glm::ivec2& gridPos)
-    : m_gridPos(gridPos), m_colorIndex(m_startColor) {
+Tile::Tile(const glm::ivec2& gridPos, TileType type)
+    : m_type (type), m_gridPos(gridPos), m_colorIndex(m_startColor) {
 }
 
 // Color state configuration

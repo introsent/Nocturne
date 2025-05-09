@@ -30,6 +30,7 @@ void LevelComponent::SpawnTiles() {
     const int levelColumn = levelNumber - 1; // Convert to 0-based column index
 
     for (auto const& tilePtr : m_pLevel->GetTiles()) {
+        if (tilePtr->GetType() == TileType::DEATH) continue;
         const Tile& tile = *tilePtr;
 
         auto tileGO = std::make_shared<dae::GameObject>();
@@ -52,7 +53,6 @@ void LevelComponent::SpawnTiles() {
             6                // Columns (levels)
         );
 
-        // Calculate frame: (state_row * 6) + level_column
         const int stateRow = tile.GetColorIndex();
         const int frame = stateRow * 6 + levelColumn;
         animationComp->SetFrame(frame);

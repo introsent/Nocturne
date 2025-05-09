@@ -28,6 +28,8 @@ private:
     void CreateTiles();
     void ConfigureTiles();
 
+    void CreateDeathBorder();
+
     int m_levelNumber; 
     int m_rows;
     std::vector<std::unique_ptr<Tile>> m_tiles;

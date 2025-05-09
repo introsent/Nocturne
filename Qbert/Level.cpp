@@ -28,10 +28,31 @@ void Level::CreateTiles() {
             m_tiles.push_back(std::make_unique<Tile>(glm::ivec2{ centeredCol, row }));
         }
     }
+
+    CreateDeathBorder();
 }
 void Level::ConfigureTiles() {
     for (auto& tilePtr : m_tiles) {
         m_colorRule->ConfigureTile(*tilePtr);
+    }
+}
+void Level::CreateDeathBorder() {
+    // Create death tiles around the main pyramid
+    for (int row = -1; row <= m_rows; ++row) {
+        // Determine column range for this row
+        int minCol = -1;
+        int maxCol = (row >= -1 && row < m_rows) ? row + 1 : m_rows + 1;
+
+        for (int col = minCol; col <= maxCol; ++col) {
+            // Match the original pyramid's column centering logic
+            int centeredCol = col - (row >= -1 && row < m_rows ? row / m_rows : 0);
+            glm::ivec2 pos{ centeredCol, row };
+
+            // Skip positions that exist in main pyramid
+            if (!GetTileAt(pos)) {
+                m_tiles.push_back(std::make_unique<Tile>(pos, TileType::DEATH));
+            }
+        }
     }
 }
 

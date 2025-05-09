@@ -6,13 +6,13 @@
 class JumpingState : public QBertState
 {
 public:
-    void Enter(QBertPlayer* player) override;
+    void Enter(dae::GameObject* player) override;
 
-    void Update(QBertPlayer* player, float deltaTime) override;
+    void Update(dae::GameObject* player, float deltaTime) override;
 
-    void HandleInput(QBertPlayer*, const glm::ivec2&) override {}
+    void HandleInput(dae::GameObject*, const glm::ivec2&) override {}
 
-    void Exit(QBertPlayer* player) override;
+    void Exit(dae::GameObject* player) override;
 
     std::string GetName() const override { return "Jumping"; }
 

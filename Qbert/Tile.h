@@ -1,9 +1,12 @@
 #pragma once
 #include <vec2.hpp>
 
+enum class TileType { NORMAL, DEATH };
+
 class Tile {
 public:
-    explicit Tile(const glm::ivec2& gridPos);
+
+    explicit Tile(const glm::ivec2& gridPos, TileType type = TileType::NORMAL);
 
     // Color state management
     void SetStartColor(int color);
@@ -19,12 +22,14 @@ public:
     int GetColorIndex() const;
     void SetColorIndex(int index);
 
+    TileType GetType() const { return m_type; }
     // Position
     glm::ivec2 GetGridPosition() const;
     bool IsOccupied() const;
     void SetOccupied(bool occupied);
 
 private:
+    TileType m_type;
     glm::ivec2 m_gridPos;
     int m_colorIndex;
     int m_startColor{ 0 };

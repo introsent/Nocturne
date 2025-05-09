@@ -6,6 +6,7 @@
 #include "DeadState.h"
 #include "IdleState.h"
 #include "LevelComponent.h"
+#include "Tile.h"
 #include "utils.h"
 
 // Anonymous namespace for hash implementation (avoiding global scope pollution)
@@ -32,28 +33,40 @@ QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level)
 
 void QBertPlayer::Update(float deltaTime) {
     if (m_pCurrentState) {
-        m_pCurrentState->Update(this, deltaTime);
+        m_pCurrentState->Update(GetOwner(), deltaTime);
+    }
+
+    if (m_pLevel->GetTileAt(m_CurrentGridPos)->GetType() == TileType::DEATH && m_pCurrentState->GetName() != "Dead") {
+        Die();
     }
 }
 
 void QBertPlayer::ChangeState(std::unique_ptr<QBertState> newState) {
     if (m_pCurrentState) {
-        m_pCurrentState->Exit(this);
+        m_pCurrentState->Exit(GetOwner());
     }
     m_pCurrentState = std::move(newState);
     if (m_pCurrentState) {
-        m_pCurrentState->Enter(this);
+        m_pCurrentState->Enter(GetOwner());
     }
 }
 
 bool QBertPlayer::TryStartJump(const glm::ivec2& direction) {
+    if (m_pCurrentState->GetName() == "Dead") return false;
+
     const glm::ivec2 newPos = m_CurrentGridPos + direction;
-    if (m_pLevel->GetTileAt(newPos)) {
+    Tile* targetTile = m_pLevel->GetTileAt(newPos);
+
+    if (targetTile) {
+
+        // Valid movement
         m_CurrentDirection = direction;
         m_CurrentGridPos = newPos;
         m_JumpTargetPos = glm::vec3(GridToWorldCharacter(newPos), 0.f);
         return true;
     }
+
+    // No tile exists (shouldn't happen with death border)
     return false;
 }
 

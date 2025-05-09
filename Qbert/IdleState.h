@@ -3,13 +3,13 @@
 
 class IdleState : public QBertState
 {
-    void Enter(QBertPlayer* player) override;
+    void Enter(dae::GameObject* player) override;
 
-    void Update(QBertPlayer*, float) override {}
+    void Update(dae::GameObject*, float) override {}
 
-    void HandleInput(QBertPlayer* player, const glm::ivec2& direction) override;
+    void HandleInput(dae::GameObject* player, const glm::ivec2& direction) override;
 
-    void Exit(QBertPlayer*) override {}
+    void Exit(dae::GameObject*) override {}
 
     std::string GetName() const override { return "Idle"; }
 };
