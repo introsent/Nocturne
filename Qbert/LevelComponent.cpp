@@ -98,13 +98,13 @@ void LevelComponent::OnTileColored(const Tile& tile) {
 }
 void LevelComponent::SpawnQBert() {
     auto qbertGO = std::make_shared<dae::GameObject>();
-    auto startTile = m_pLevel->GetTileAt({ 2, 3 });
+    auto startTile = m_pLevel->GetTileAt({ 0, 0 });
 
     glm::vec2 worldPos = GridToWorld(startTile->GetGridPosition());
     auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
     translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
 
-    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), "../Data/Qbert P2 Spritesheet.png", 2.f);
+    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), QbertFile, 2.f);
     auto animationComp = qbertGO->AddComponent<AnimationComponent>(
         qbertGO.get(),
         textureComp,
