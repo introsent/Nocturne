@@ -31,7 +31,8 @@ void Level::CreateTiles() {
 
     CreateDeathBorder();
 }
-void Level::ConfigureTiles() {
+void Level::ConfigureTiles() const
+{
     for (auto& tilePtr : m_tiles) {
         m_colorRule->ConfigureTile(*tilePtr);
     }

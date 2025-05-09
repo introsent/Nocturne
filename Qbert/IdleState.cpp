@@ -1,6 +1,5 @@
 #include "IdleState.h"
 #include "QBertPlayer.h"
-#include <iostream>
 
 #include "AnimationComponent.h"
 #include "JumpingState.h"

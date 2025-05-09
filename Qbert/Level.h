@@ -26,7 +26,7 @@ public:
 
 private:
     void CreateTiles();
-    void ConfigureTiles();
+    void ConfigureTiles() const;
 
     void CreateDeathBorder();
 

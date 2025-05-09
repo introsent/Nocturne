@@ -7,6 +7,9 @@ class QBertState;
 class Level;
 class AnimationComponent;
 
+///
+/// QBert player controller component handling movement, state and animations
+///
 class QBertPlayer : public dae::Component {
 public:
     QBertPlayer(dae::GameObject* owner, Level* level);
@@ -14,47 +17,48 @@ public:
     void Update(float deltaTime) override;
     void Render() const override {}
 
-	// Position management
+    // --- Position Management ---
     glm::vec3 GetCurrentPosition() const { return GetOwner()->GetWorldPosition(); }
     void SetPosition(const glm::vec3& pos) { GetOwner()->SetLocalPosition(pos); }
 
-    // State management
+    // --- State Management ---
     void ChangeState(std::unique_ptr<QBertState> newState);
-    void Die();
-    void Respawn();
+    void Die();         // Handle player death sequence
+    void Respawn();     // Reset player to starting position
 
-    // Getters
+    // --- Getters ---
     AnimationComponent* GetAnimation() const { return m_pAnimation; }
     float GetJumpDuration() const { return m_JumpDuration; }
     float GetJumpHeight() const { return m_JumpHeight; }
     glm::vec3 GetJumpTargetPos() const { return m_JumpTargetPos; }
-    int GetDeathFrame() { return 3; }
+    int GetDeathFrame() { return 3; } // Frame 3 contains death animation
     glm::ivec2 GetCurrentDirection() const { return m_CurrentDirection; }
 
-
-    // State handling
+    // --- Input Handling ---
     bool CanAcceptInput() const {
         return m_pCurrentState->GetName() == "Idle";
     }
     QBertState* GetState() const { return m_pCurrentState.get(); }
 
-    // Movement
-    bool TryStartJump(const glm::ivec2& direction);
-    void CompleteJump();
-    void UpdateSpriteDirection(const glm::ivec2& direction);
+    // --- Movement System ---
+    bool TryStartJump(const glm::ivec2& direction); // Attempt to initiate jump
+    void CompleteJump();                            // Finalize jump position
+    void UpdateSpriteDirection(const glm::ivec2& direction) const; // Update animation frame based on move direction
 
 private:
-    friend class QBertState;
+    friend class QBertState; // Allow state classes access to private members
 
-
+    // --- Components & References ---
     std::unique_ptr<QBertState> m_pCurrentState;
     AnimationComponent* m_pAnimation;
     Level* m_pLevel;
 
-    glm::ivec2 m_CurrentGridPos{ 0,0 };
-    glm::ivec2 m_CurrentDirection{ 0,0 };
-    glm::vec3 m_JumpTargetPos;
+    // --- Movement Properties ---
+    glm::ivec2 m_CurrentGridPos{ 0,0 };      // Current grid position (logical position)
+    glm::ivec2 m_CurrentDirection{ 0,0 };    // Last movement direction
+    glm::vec3 m_JumpTargetPos;               // World position target for current jump
 
-    const float m_JumpDuration{ 0.4f };
-    const float m_JumpHeight{ 5.f };
+    // --- Jump Parameters ---
+    const float m_JumpDuration{ 0.4f };  // Time to complete jump in seconds
+    const float m_JumpHeight{ 5.f };     // Vertical arc height during jump
 };

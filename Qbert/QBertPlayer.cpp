@@ -1,7 +1,5 @@
 #include "QBertPlayer.h"
-
 #include <stdexcept>
-
 #include "AnimationComponent.h"
 #include "DeadState.h"
 #include "IdleState.h"
@@ -9,20 +7,19 @@
 #include "Tile.h"
 #include "utils.h"
 
-// Anonymous namespace for hash implementation (avoiding global scope pollution)
 namespace {
-    // Custom hash implementation for glm::ivec2 to enable use in unordered_map
+    // Hash implementation for glm::ivec2 to use in unordered_map
     struct IVec2Hash {
         size_t operator()(const glm::ivec2& vec) const {
-            // Combine hashes of x and y components using bitwise operations
-            // Note: XOR with shifted bits helps prevent collisions for similar values
+            // Combine hashes of x and y components using bit shifting
             return std::hash<int>()(vec.x) ^ (std::hash<int>()(vec.y) << 1);
         }
     };
 }
 
 QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level)
-    : Component(owner), m_pLevel(level)
+    : Component(owner)
+    , m_pLevel(level)
 {
     m_pAnimation = GetOwner()->GetComponent<AnimationComponent>();
     if (!m_pAnimation) {
@@ -36,11 +33,14 @@ void QBertPlayer::Update(float deltaTime) {
         m_pCurrentState->Update(GetOwner(), deltaTime);
     }
 
-    if (m_pLevel->GetTileAt(m_CurrentGridPos)->GetType() == TileType::DEATH && m_pCurrentState->GetName() != "Dead") {
+    // Check for fatal tile occupation if not already dead
+    if (m_pLevel->GetTileAt(m_CurrentGridPos)->GetType() == TileType::DEATH &&
+        m_pCurrentState->GetName() != "Dead") {
         Die();
     }
 }
 
+// --- State Management ---
 void QBertPlayer::ChangeState(std::unique_ptr<QBertState> newState) {
     if (m_pCurrentState) {
         m_pCurrentState->Exit(GetOwner());
@@ -51,6 +51,7 @@ void QBertPlayer::ChangeState(std::unique_ptr<QBertState> newState) {
     }
 }
 
+// --- Movement System ---
 bool QBertPlayer::TryStartJump(const glm::ivec2& direction) {
     if (m_pCurrentState->GetName() == "Dead") return false;
 
@@ -58,23 +59,26 @@ bool QBertPlayer::TryStartJump(const glm::ivec2& direction) {
     Tile* targetTile = m_pLevel->GetTileAt(newPos);
 
     if (targetTile) {
-
-        // Valid movement
+        // Update movement parameters for state machine
         m_CurrentDirection = direction;
         m_CurrentGridPos = newPos;
+        // Convert grid position to world space
         m_JumpTargetPos = glm::vec3(GridToWorldCharacter(newPos), 0.f);
         return true;
     }
 
-    // No tile exists (shouldn't happen with death border)
+    // Movement blocked (edge of map)
     return false;
 }
 
-void QBertPlayer::CompleteJump() {
+void QBertPlayer::CompleteJump()
+{
+    // Snap to final position and notify level of completed jump
     GetOwner()->SetLocalPosition(m_JumpTargetPos);
     m_pLevel->HandleJump(m_CurrentGridPos);
 }
 
+// --- Lifecycle Management ---
 void QBertPlayer::Die() {
     if (m_pCurrentState->GetName() != "Dead") {
         ChangeState(std::make_unique<DeadState>());
@@ -82,25 +86,28 @@ void QBertPlayer::Die() {
 }
 
 void QBertPlayer::Respawn() {
+    // Reset to starting position (top of pyramid)
     m_CurrentGridPos = { 0,0 };
     GetOwner()->SetLocalPosition(glm::vec3(GridToWorldCharacter(m_CurrentGridPos), 0.f));
 }
 
-void QBertPlayer::UpdateSpriteDirection(const glm::ivec2& direction) {
+// --- Animation System ---
+void QBertPlayer::UpdateSpriteDirection(const glm::ivec2& direction) const
+{
+    // Direction vectors relative to grid movement
+    const glm::ivec2 UP_LEFT{ -1, -1 };   // Northwest movement
+    const glm::ivec2 UP_RIGHT{ 0, -1 };   // Northeast movement
+    const glm::ivec2 DOWN_LEFT{ 0, 1 };   // Southwest movement
+    const glm::ivec2 DOWN_RIGHT{ 1, 1 };  // Southeast movement
 
-    const glm::ivec2 UP_LEFT{ -1, -1 };
-    const glm::ivec2 UP_RIGHT{ 0, -1 };
-    const glm::ivec2 DOWN_LEFT{ 0, 1 };
-    const glm::ivec2 DOWN_RIGHT{ 1, 1 };
-
-    // Map grid directions to animation frames (adjust according to sprite sheet layout)
+    // Mapping of grid directions to animation frames:
+    // 0 = Up-Right, 1 = Up-Left, 2 = Down-Right, 3 = Down-Left
     const static std::unordered_map<glm::ivec2, int, IVec2Hash> directionMap = {
         {UP_RIGHT,  0},
         {UP_LEFT,   1},
         {DOWN_RIGHT, 2},
         {DOWN_LEFT, 3}
     };
-
 
     if (const auto it = directionMap.find(direction); it != directionMap.end()) {
         m_pAnimation->SetFrame(it->second);

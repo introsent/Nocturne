@@ -17,8 +17,6 @@ void DeadState::Enter(dae::GameObject* player) {
     m_DialogueCloud = dialogueCloud;
     dae::SceneManager::GetInstance().GetActiveScene()->Add(m_DialogueCloud);
 
-    QBertPlayer* qbertPlayer = player->GetComponent<QBertPlayer>();
-    qbertPlayer->GetAnimation()->SetFrame(qbertPlayer->GetDeathFrame());
     m_DeathTimer = 0.f;
 }
 
