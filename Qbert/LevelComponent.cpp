@@ -3,27 +3,14 @@
 #include "TranslationComponent.h"
 #include "TextureComponent.h"
 #include "AnimationComponent.h"
+#include "InputManager.h"
+#include "MoveCommand.h"
+#include "QBertPlayer.h"
 #include "ResourceManager.h"
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Tile.h"
-
-namespace {
-    glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
-        constexpr glm::vec2 Origin{ 300.f, 100.f };
-        constexpr float TileWidth = 64.f;
-        constexpr float TileHeight = 48.f; // For regular triangle spacing
-
-        int row = gridPos.y;
-        int col = gridPos.x;
-
-        // Center each row horizontally
-        float x = Origin.x + (col - row / 2.f) * TileWidth;
-        float y = Origin.y + row * TileHeight;
-
-        return { x, y };
-    }
-}
+#include "utils.h"
 
 LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
     : Component(owner)
@@ -35,6 +22,7 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
 }
 
 void LevelComponent::Update(float) {}
+
 
 void LevelComponent::SpawnTiles() {
     auto texture = dae::ResourceManager::GetInstance().LoadTexture(TileAtlasFile);
@@ -76,7 +64,8 @@ void LevelComponent::SpawnTiles() {
         }
     }
 }
-void LevelComponent::OnTileColored(const Tile& tile) {
+void LevelComponent::OnTileColored(const Tile& tile) const
+{
     const int levelNumber = m_pLevel->GetLevelNumber();
     const int levelColumn = levelNumber - 1;
     const int stateRow = tile.GetColorIndex();
@@ -100,7 +89,7 @@ void LevelComponent::SpawnQBert() {
     auto qbertGO = std::make_shared<dae::GameObject>();
     auto startTile = m_pLevel->GetTileAt({ 0, 0 });
 
-    glm::vec2 worldPos = GridToWorld(startTile->GetGridPosition());
+    glm::vec2 worldPos = GridToWorldCharacter(startTile->GetGridPosition());
     auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
     translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
 
@@ -109,15 +98,41 @@ void LevelComponent::SpawnQBert() {
         qbertGO.get(),
         textureComp,
         QbertFrameSize, // Frame size
-        4,                        // Total frames
-        0.2f,                     // Time per frame
-        1,                        // Rows
-        4                         // Columns
+        4,              // Total frames
+        0.2f,           // Time per frame
+        1,              // Rows
+        4               // Columns
     );
     animationComp->SetFrame(3);
 
+    qbertGO->AddComponent<QBertPlayer>(qbertGO.get(), m_pLevel.get());
+
     m_pQBertGO = qbertGO;
     dae::SceneManager::GetInstance().GetActiveScene()->Add(qbertGO);
+
+    BindCommands();
+}
+
+void LevelComponent::BindCommands() const
+{
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_w, InputState::Up,
+		std::make_unique<MoveCommand>(m_pQBertGO.get(), UP_RIGHT));
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_s, InputState::Up,
+		std::make_unique<MoveCommand>(m_pQBertGO.get(), DOWN_LEFT));
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_a, InputState::Up,
+		std::make_unique<MoveCommand>(m_pQBertGO.get(),UP_LEFT));
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_d, InputState::Up,
+		std::make_unique<MoveCommand>(m_pQBertGO.get(),  DOWN_RIGHT));
+
+
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Pressed,
+                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), UP_RIGHT));   // Up
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Pressed,
+                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), DOWN_LEFT));    // Down
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadLeft), InputState::Pressed,
+                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), UP_LEFT));   // Left
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadRight), InputState::Pressed,
+                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), DOWN_RIGHT));    // Right
 }
 
 //void LevelComponent::SpawnDiscs() {

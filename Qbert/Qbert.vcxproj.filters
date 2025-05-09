@@ -25,6 +25,12 @@
     <Filter Include="Source Files\Sprites">
       <UniqueIdentifier>{a0a430f2-21ca-44ed-874c-64be31982c61}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Qbert">
+      <UniqueIdentifier>{b3a94186-9f29-4b92-970e-001f378d93ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Qbert">
+      <UniqueIdentifier>{87ddb145-219b-4e30-a78e-a958f67c0908}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -71,6 +77,9 @@
     </ClCompile>
     <ClCompile Include="LevelComponent.cpp">
       <Filter>Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="QBertPlayer.cpp">
+      <Filter>Source Files\Qbert</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +133,12 @@
     </ClInclude>
     <ClInclude Include="LevelComponent.h">
       <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="QBertPlayer.h">
+      <Filter>Header Files\Qbert</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

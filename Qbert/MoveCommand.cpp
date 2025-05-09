@@ -1,26 +1,14 @@
 #include "MoveCommand.h"
-#include "TranslationComponent.h" 
-#include <vec3.hpp>
+#include "QBertPlayer.h"
 
-namespace dae
+MoveCommand::MoveCommand(dae::GameObject* pObject, const glm::ivec2& direction) : m_pPlayer(pObject), m_Direction(direction)
 {
-    MoveCommand::MoveCommand(GameObject* pObject, float speed, const glm::vec2& direction)
-        : m_pObject(pObject)
-        , m_speed(speed)
-        , m_direction(direction)
-    {
-    }
+}
 
-    void MoveCommand::Execute()
-    {
-        if (m_pObject)
-        {
-            auto transform = m_pObject->GetComponent<TranslationComponent>();
-            if (transform)
-            {
-                glm::vec3 offset(m_direction, 0.f);
-                transform->Translate(offset * m_speed);
-            }
-        }
+void MoveCommand::Execute()
+{
+    if (m_pPlayer && !m_pPlayer->GetComponent<QBertPlayer>()->IsJumping()) {
+        m_pPlayer->GetComponent<QBertPlayer>()->TryMove(m_Direction);
     }
 }
+

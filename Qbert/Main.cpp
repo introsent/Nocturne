@@ -46,6 +46,19 @@ void load()
     level1Scene.Add(levelController);
 
 
+    //// Bind WASD for char1 (keyboard)
+    //dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_w, InputState::Pressed,
+    //    std::make_unique<dae::MoveCommand>(char1.get(), speed1, glm::vec2(0.f, -1.f))); // Up
+    //dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_s, InputState::Pressed,
+    //    std::make_unique<dae::MoveCommand>(char1.get(), speed1, glm::vec2(0.f, 1.f)));  // Down
+    //dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_a, InputState::Pressed,
+    //    std::make_unique<dae::MoveCommand>(char1.get(), speed1, glm::vec2(-1.f, 0.f))); // Left
+    //dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_d, InputState::Pressed,
+    //    std::make_unique<dae::MoveCommand>(char1.get(), speed1, glm::vec2(1.f, 0.f)));  // Right
+    
+
+
+
     // 3) Tell the engine to start on this scene
    
 
