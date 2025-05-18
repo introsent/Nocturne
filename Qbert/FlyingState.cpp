@@ -48,13 +48,14 @@ void FlyingState::Update(dae::GameObject* player, float deltaTime) {
     m_pDiscGO->SetLocalPosition(dpos);
 
     if (t >= 1.0f) {
-        dae::SceneManager::GetInstance().GetActiveScene()->Remove(m_pDiscGO);
+        m_pDiscGO->MarkForDestroy();
+        m_pDiscGO.reset();
 
         // Ensure QBert snaps to the exact target position
         player->SetLocalPosition(m_TargetPos);
 
-        m_pDiscGO.reset();
         auto q = player->GetComponent<QBertPlayer>();
+        q->SetCurrentGridPos(glm::ivec2{ 0, 0 });
         q->ChangeState(std::make_unique<IdleState>());
     }
 }

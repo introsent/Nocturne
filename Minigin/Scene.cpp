@@ -28,9 +28,15 @@ void Scene::RemoveAll()
 
 void Scene::Update(float deltaTime)
 {
-	for(auto& object : m_objects)
+	for (auto it = m_objects.begin(); it != m_objects.end(); )
 	{
-		object->Update(deltaTime);
+		if ((*it)->IsMarkedForDestroy())
+			it = m_objects.erase(it);
+		else
+		{
+			(*it)->Update(deltaTime);
+			++it;
+		}
 	}
 }
 

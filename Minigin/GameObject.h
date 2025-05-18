@@ -24,6 +24,10 @@ namespace dae {
         void UpdateWorldPosition();
         void SetPositionDirty();
 
+        // --- DESTRUCTION ---
+        void MarkForDestroy() { m_isDestroyed = true; }
+        bool IsMarkedForDestroy() const { return m_isDestroyed; }
+
         // --- COMPONENT SYSTEM ---
         template <typename ComponentType, typename... Args>
         ComponentType* AddComponent(Args&&... args) {
@@ -71,6 +75,8 @@ namespace dae {
         GameObject* m_parent;
         std::vector<GameObject*> m_children;
         std::vector<std::unique_ptr<Component>> m_components;
+
+        bool m_isDestroyed = false;
 
         // --- CHILDREN MANAGEMENT ---
         void AddChild(GameObject* child);
