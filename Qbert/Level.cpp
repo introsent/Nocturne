@@ -1,6 +1,8 @@
 #include "Level.h"
 #include "Tile.h"
 #include "ColorRule.h"
+#include <random>
+
 Level::Level(int levelNumber, int numRows)
     : m_levelNumber(levelNumber),
     m_rows(numRows)
@@ -30,6 +32,7 @@ void Level::CreateTiles() {
     }
 
     CreateDeathBorder();
+    CreateDiscTiles();
 }
 void Level::ConfigureTiles() const
 {
@@ -37,6 +40,32 @@ void Level::ConfigureTiles() const
         m_colorRule->ConfigureTile(*tilePtr);
     }
 }
+void Level::CreateDiscTiles()
+{
+    std::mt19937 gen{ std::random_device{}() };
+
+
+    std::uniform_int_distribution<> distRow(1, m_rows - 2);
+
+    int leftRow = distRow(gen);
+    int rightRow = distRow(gen);
+
+    if (rightRow == leftRow) {
+        rightRow = (rightRow + 1) % (m_rows - 1);
+        if (rightRow == 0) rightRow = 1;
+    }
+
+    auto centerCol = [&](int rawCol, int row) {
+        return rawCol - (row / m_rows);
+        };
+
+    glm::ivec2 leftPos = { centerCol(-1,        leftRow),  leftRow };
+    glm::ivec2 rightPos = { centerCol(rightRow + 1, rightRow), rightRow };
+
+    m_tiles.push_back(std::make_unique<Tile>(leftPos, TileType::DISC));
+    m_tiles.push_back(std::make_unique<Tile>(rightPos, TileType::DISC));
+}
+
 void Level::CreateDeathBorder() {
     // Create death tiles around the main pyramid
     for (int row = -1; row <= m_rows; ++row) {

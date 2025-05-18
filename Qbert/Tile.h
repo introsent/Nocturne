@@ -1,7 +1,7 @@
 #pragma once
 #include <vec2.hpp>
 
-enum class TileType { NORMAL, DEATH };
+enum class TileType { NORMAL, DEATH, DISC};
 
 class Tile {
 public:

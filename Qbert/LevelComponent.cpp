@@ -18,6 +18,7 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
 {
     SpawnTiles();
 	SpawnQBert();
+    SpawnDiscs();
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
 }
 
@@ -30,7 +31,7 @@ void LevelComponent::SpawnTiles() {
     const int levelColumn = levelNumber - 1; // Convert to 0-based column index
 
     for (auto const& tilePtr : m_pLevel->GetTiles()) {
-        if (tilePtr->GetType() == TileType::DEATH) continue;
+        if (tilePtr->GetType() == TileType::DEATH || tilePtr->GetType() == TileType::DISC) continue;
         const Tile& tile = *tilePtr;
 
         auto tileGO = std::make_shared<dae::GameObject>();
@@ -135,16 +136,47 @@ void LevelComponent::BindCommands() const
                                                            std::make_unique<MoveCommand>(m_pQBertGO.get(), DOWN_RIGHT));    // Right
 }
 
-//void LevelComponent::SpawnDiscs() {
-//    dae::ResourceManager::GetInstance().LoadTexture("Disc.png");
-//
-//    for (const auto& pos : { glm::vec2{200.f, 300.f}, glm::vec2{600.f, 300.f} }) {
-//        auto discGO = std::make_shared<dae::GameObject>();
-//        discGO->AddComponent<dae::TranslationComponent>(discGO.get())
-//            ->Translate(glm::vec3(pos.x, pos.y, 0.f));
-//
-//        discGO->AddComponent<dae::TextureComponent>(discGO.get(), "Disc.png");
-//        m_DiscGOs.push_back(discGO);
-//        dae::SceneManager::GetInstance().GetActiveScene()->Add(discGO);
-//    }
-//}
+void LevelComponent::SpawnDiscs()
+{
+    auto tex = dae::ResourceManager::GetInstance().LoadTexture(DiscFile);
+
+    const int maxActiveDiscs = 2;  // only two discs visible at once
+    int spawned = 0;
+
+    for (auto const& tilePtr : m_pLevel->GetTiles())
+    {
+        if (tilePtr->GetType() != TileType::DISC)
+            continue;
+
+        if (spawned >= maxActiveDiscs)
+            break;      // stop once we've spawned two
+
+        auto pos = GridToWorldDisc(tilePtr->GetGridPosition(), DiscFrameSize);
+        auto discGO = std::make_shared<dae::GameObject>();
+        discGO->AddComponent<dae::TranslationComponent>(discGO.get())
+            ->Translate({ pos.x, pos.y, 0.f });
+
+        // texture + animation setup as before…
+        auto texComp = discGO->AddComponent<dae::TextureComponent>(discGO.get(), DiscFile, 2.f);
+        auto animComp = discGO->AddComponent<AnimationComponent>(
+            discGO.get(),
+            texComp,
+            DiscFrameSize,
+            30,          // total frames in the atlas
+            0.1f,
+            1,
+            30
+        );
+        int levelIdx = m_pLevel->GetLevelNumber() - 1;
+        int startFrame = levelIdx * 5;
+        int endFrame = startFrame + 4;
+        animComp->SetFrame(startFrame);
+        animComp->SetLoopRange(startFrame, endFrame);
+        animComp->SetAutoAdvance(true);
+
+        m_DiscGOs.push_back(discGO);
+        dae::SceneManager::GetInstance().GetActiveScene()->Add(discGO);
+
+        ++spawned;
+    }
+}

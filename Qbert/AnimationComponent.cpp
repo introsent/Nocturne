@@ -5,7 +5,7 @@ using namespace dae;
 
 AnimationComponent::AnimationComponent(GameObject* pOwner,
     TextureComponent* texComp,
-    glm::vec2 frameSize,
+    glm::ivec2 frameSize,
     int numFrames,
     float frameDuration,
     int rows,
@@ -17,33 +17,57 @@ AnimationComponent::AnimationComponent(GameObject* pOwner,
     , m_frameDuration(frameDuration)
     , m_maxRows(rows)
     , m_maxCols(cols)
+    , m_loopStart(0)
+    , m_loopEnd(numFrames - 1)
 {
 }
 
-void AnimationComponent::Update(float) {
+void AnimationComponent::Update(float deltaTime) {
+    if (!m_autoAdvance) return;
 
-    //TODO: FOR ENEMIES FUTURE IMPLEMENTATION
-    //m_accTime += dt;
-    //if (m_accTime >= m_frameDuration) {
-    //    m_accTime -= m_frameDuration;
-    //    m_currentFrame = (m_currentFrame + 1) % m_numFrames;
-    //
-    //    m_pTex->SetSrcRect({
-    //      static_cast<float>(m_currentFrame)* m_frameSize.x, 0,
-    //      m_frameSize.x, m_frameSize.y
-    //        });
-    //}
+    m_accTime += deltaTime;
+    if (m_accTime >= m_frameDuration) {
+        m_accTime -= m_frameDuration;
+        // advance and wrap within loop range
+        m_currentFrame++;
+        if (m_currentFrame > m_loopEnd) {
+            m_currentFrame = m_loopStart;
+        }
+        // apply to texture
+        int col = m_currentFrame % m_maxCols;
+        int row = m_currentFrame / m_maxCols;
+        m_pTex->SetSrcRect({
+            static_cast<float>(col) * m_frameSize.x,
+            static_cast<float>(row) * m_frameSize.y,
+            static_cast<float>(m_frameSize.x),
+            static_cast<float>(m_frameSize.y)
+            });
+    }
 }
 
 void AnimationComponent::SetFrame(int frameIndex) {
-    // Calculate column and row in the atlas
-    m_currentCol = frameIndex % m_maxCols; // 6 columns per row
-    m_currentRow = frameIndex / m_maxCols;    // Color state (0=blue, 1=yellow, 2=red)
-
+    m_currentFrame = frameIndex;
+    // calculate column and row in atlas
+    int col = frameIndex % m_maxCols;
+    int row = frameIndex / m_maxCols;
     m_pTex->SetSrcRect({
-         static_cast<float>(m_currentCol) * m_frameSize.x,
-    	 static_cast<float>(m_currentRow)* m_frameSize.y,
-         m_frameSize.x,
-         m_frameSize.y
+         static_cast<float>(col) * m_frameSize.x,
+         static_cast<float>(row) * m_frameSize.y,
+         static_cast<float>(m_frameSize.x),
+         static_cast<float>(m_frameSize.y)
         });
+}
+
+void AnimationComponent::SetLoopRange(int startFrame, int endFrame) {
+    m_loopStart = glm::clamp(startFrame, 0, m_numFrames - 1);
+    m_loopEnd = glm::clamp(endFrame, m_loopStart, m_numFrames - 1);
+    // ensure current frame is within new loop
+    if (m_currentFrame < m_loopStart || m_currentFrame > m_loopEnd) {
+        m_currentFrame = m_loopStart;
+        SetFrame(m_currentFrame);
+    }
+}
+
+void AnimationComponent::SetAutoAdvance(bool enable) {
+    m_autoAdvance = enable;
 }

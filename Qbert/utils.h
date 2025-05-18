@@ -31,3 +31,20 @@ inline glm::vec2 GridToWorldCharacter(const glm::ivec2& gridPos) {
     return { x + CharacterOffset.x, y + CharacterOffset.y };
     
 }
+
+inline glm::vec2 GridToWorldDisc(const glm::ivec2& gridPos, const glm::vec2& spriteSize) {
+    constexpr glm::vec2 Origin{ 300.f, 100.f };
+    constexpr float TileWidth = 64.f;
+    constexpr float TileHeight = 48.f;
+
+    float x = Origin.x + (gridPos.x - gridPos.y / 2.f) * TileWidth;
+    float y = Origin.y + gridPos.y * TileHeight;
+
+
+    glm::vec2 cellCenterOffset{
+        (TileWidth - spriteSize.x) * 0.5f,
+        (TileHeight - spriteSize.y) * 0.5f  
+    };
+
+    return { x + cellCenterOffset.x, y + cellCenterOffset.y };
+}

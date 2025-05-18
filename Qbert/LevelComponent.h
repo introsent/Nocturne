@@ -32,7 +32,7 @@ private:
     void SpawnQBert();
     void BindCommands() const;
 
-    // void SpawnDiscs();
+    void SpawnDiscs();
  
 
     // Texture parameters
@@ -41,6 +41,9 @@ private:
 
     static constexpr char const* QbertFile = "../Data/Qbert P1 Spritesheet.png";
     static constexpr glm::vec2 QbertFrameSize = { 17.f, 16.f };
+
+    static constexpr char const* DiscFile = "../Data/Disk Spritesheet.png";
+    static constexpr glm::vec2 DiscFrameSize = { 16.f, 10.f };
 
     static constexpr int AtlasColumns = 6;
     static constexpr int AtlasRows = 3;

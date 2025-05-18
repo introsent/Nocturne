@@ -28,6 +28,7 @@ private:
     void CreateTiles();
     void ConfigureTiles() const;
 
+    void CreateDiscTiles();
     void CreateDeathBorder();
 
     int m_levelNumber; 
