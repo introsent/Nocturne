@@ -11,6 +11,8 @@ class IdleState : public QBertState
 
     bool ShouldDie(QBertPlayer* qbert) const;
 
+    bool ShouldFly(QBertPlayer* qbert) const;
+
     void Exit(dae::GameObject*) override {}
 
     bool CanAcceptInput() const override { return true; }

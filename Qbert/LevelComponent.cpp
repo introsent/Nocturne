@@ -11,6 +11,7 @@
 #include "SceneManager.h"
 #include "Tile.h"
 #include "utils.h"
+#include "DiscManager.h"
 
 LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
     : Component(owner)
@@ -176,6 +177,8 @@ void LevelComponent::SpawnDiscs()
 
         m_DiscGOs.push_back(discGO);
         dae::SceneManager::GetInstance().GetActiveScene()->Add(discGO);
+
+        DiscManager::GetInstance().RegisterDisc(tilePtr->GetGridPosition(), discGO);
 
         ++spawned;
     }

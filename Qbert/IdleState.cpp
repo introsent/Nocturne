@@ -7,12 +7,17 @@
 #include "utils.h"
 #include "Level.h"
 #include "DeadState.h"
+#include "FlyingState.h"
 
 void IdleState::Enter(dae::GameObject* player) {
 	QBertPlayer* qbertPlayer = player->GetComponent<QBertPlayer>();
     if (!qbertPlayer) return;
 
     qbertPlayer->UpdateSpriteDirection(qbertPlayer->GetCurrentDirection());
+    if (ShouldFly(qbertPlayer))
+    {
+        qbertPlayer->ChangeState(std::make_unique<FlyingState>());
+    }
 }
 
 void IdleState::HandleInput(dae::GameObject* player, const glm::ivec2& direction) {
@@ -42,4 +47,8 @@ void IdleState::Update(dae::GameObject* player, float) {
 
 bool IdleState::ShouldDie(QBertPlayer* qbert) const {
     return qbert->GetLevel()->GetTileAt(qbert->GetCurrentGridPos())->GetType() == TileType::DEATH;
+}
+
+bool IdleState::ShouldFly(QBertPlayer* qbert) const {
+    return qbert->GetLevel()->GetTileAt(qbert->GetCurrentGridPos())->GetType() == TileType::DISC;
 }

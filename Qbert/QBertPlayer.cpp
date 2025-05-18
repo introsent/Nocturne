@@ -7,15 +7,6 @@
 #include "Tile.h"
 #include "utils.h"
 
-namespace {
-    // Hash implementation for glm::ivec2 to use in unordered_map
-    struct IVec2Hash {
-        size_t operator()(const glm::ivec2& vec) const {
-            // Combine hashes of x and y components using bit shifting
-            return std::hash<int>()(vec.x) ^ (std::hash<int>()(vec.y) << 1);
-        }
-    };
-}
 
 QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level)
     : Component(owner)

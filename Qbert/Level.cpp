@@ -31,8 +31,9 @@ void Level::CreateTiles() {
         }
     }
 
-    CreateDeathBorder();
     CreateDiscTiles();
+    CreateDeathBorder();
+   
 }
 void Level::ConfigureTiles() const
 {

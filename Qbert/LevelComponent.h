@@ -3,6 +3,8 @@
 #include "Level.h"
 #include <vector>
 #include <memory>
+#include "utils.h"
+#include <unordered_map>
 
 class LevelComponent final : public dae::Component {
 public:
@@ -11,7 +13,6 @@ public:
 
     void Update(float deltaTime) override;
     void Render() const override {}
-
 
     const glm::ivec2 UP_LEFT{ -1, -1 };
     const glm::ivec2 UP_RIGHT{ 0, -1 };
@@ -23,6 +24,8 @@ private:
     std::vector<std::shared_ptr<dae::GameObject>> m_TileGOs;
     std::shared_ptr<dae::GameObject> m_pQBertGO;
     std::vector<std::shared_ptr<dae::GameObject>> m_DiscGOs;
+
+    std::vector<std::pair<glm::ivec2, std::shared_ptr<dae::GameObject>>> m_DiscList;
 
     //Atlas functions
     void SpawnTiles();

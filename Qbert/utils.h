@@ -48,3 +48,17 @@ inline glm::vec2 GridToWorldDisc(const glm::ivec2& gridPos, const glm::vec2& spr
 
     return { x + cellCenterOffset.x, y + cellCenterOffset.y };
 }
+
+// Hash implementation for glm::ivec2 to use in unordered_map
+struct IVec2Hash {
+    size_t operator()(const glm::ivec2& vec) const {
+        // Combine hashes of x and y components using bit shifting
+        return std::hash<int>()(vec.x) ^ (std::hash<int>()(vec.y) << 1);
+    }
+};
+
+struct IVec2Equal {
+    bool operator()(glm::ivec2 const& a, glm::ivec2 const& b) const noexcept {
+        return a.x == b.x && a.y == b.y;
+    }
+};

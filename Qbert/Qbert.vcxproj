@@ -166,6 +166,8 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="ColorRule.cpp" />
     <ClCompile Include="DeadState.cpp" />
+    <ClCompile Include="DiscManager.cpp" />
+    <ClCompile Include="FlyingState.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
     <ClCompile Include="IdleState.cpp" />
@@ -188,6 +190,8 @@
     <ClInclude Include="CharacterFactory.h" />
     <ClInclude Include="ColorRule.h" />
     <ClInclude Include="DeadState.h" />
+    <ClInclude Include="DiscManager.h" />
+    <ClInclude Include="FlyingState.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="HealthComponent.h" />
