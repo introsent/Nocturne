@@ -12,50 +12,102 @@
 
 void FlyingState::Enter(dae::GameObject* player)
 {
-    // 1) grab Q*bert data
-    QBertPlayer* q = player->GetComponent<QBertPlayer>();
-    auto gridPos = q->GetCurrentGridPos();
+    auto* qbert = player->GetComponent<QBertPlayer>();
+    const glm::ivec2 currentGridPos = qbert->GetCurrentGridPos();
 
-    m_pDiscGO = DiscManager::GetInstance().GetDiscAt(gridPos);
+    // Get the disc under Q*bert
+    m_pDiscObject = DiscManager::GetInstance().GetDiscAt(currentGridPos);
+    if (!m_pDiscObject)
+        return;
 
-    // 3) record start positions
-    m_QBertStart = player->GetWorldPosition();
-    m_DiscStart = m_pDiscGO->GetWorldPosition();
+    // Store starting positions
+    m_qbertStartPos = player->GetWorldPosition();
+    m_discStartPos = m_pDiscObject->GetWorldPosition();
 
-    // 4) compute target world pos
-    glm::ivec2 topGrid{ 0,0 };
-    glm::vec2 topWorld = GridToWorldCharacter(topGrid);
-    m_TargetPos = glm::vec3(topWorld.x, topWorld.y, 0.f);
+    // Define the target top-of-grid position (elevated position)
+    const glm::ivec2 topGridPos{ 0, 0 };
+    const glm::vec2 topWorldPos2D = GridToWorldCharacter(topGridPos);
+    m_targetWorldPos = glm::vec3(topWorldPos2D.x, topWorldPos2D.y - TileHeight, 0.f);
 
-    // 6) kick off disc animation (if not already)
-    if (auto anim = m_pDiscGO->GetComponent<AnimationComponent>()) {
+    // Store the actual grid position for the drop phase
+    m_actualTopPos = glm::vec3(topWorldPos2D.x, topWorldPos2D.y, 0.f);
+
+    // Start disc animation if available
+    if (auto* anim = m_pDiscObject->GetComponent<AnimationComponent>())
+    {
         anim->SetAutoAdvance(true);
     }
 
-    m_FlyTimer = 0.f;
+    m_flyTimer = 0.f;
+    m_currentPhase = FlyingPhase::Flying;
 }
 
-void FlyingState::Update(dae::GameObject* player, float deltaTime) {
-    m_FlyTimer += deltaTime;
-    float t = glm::clamp(m_FlyTimer / m_FlyDuration, 0.f, 1.f);
+void FlyingState::Update(dae::GameObject* player, float deltaTime)
+{
+    m_flyTimer += deltaTime;
 
-    // Interpolate positions
-    glm::vec3 qpos = glm::mix(m_QBertStart, m_TargetPos, t);
-    glm::vec3 dpos = glm::mix(m_DiscStart, m_TargetPos, t);
+    switch (m_currentPhase)
+    {
+    case FlyingPhase::Flying:
+    {
+        const float t = glm::clamp(m_flyTimer / m_flyDuration, 0.f, 1.f);
 
-    // Set positions directly (not via Translate)
-    player->SetLocalPosition(qpos);
-    m_pDiscGO->SetLocalPosition(dpos);
+        // Smoothly interpolate Q*bert and disc positions
+        const glm::vec3 qbertPos = glm::mix(m_qbertStartPos, m_targetWorldPos, t);
+        const glm::vec3 discPos = glm::mix(m_discStartPos, m_targetWorldPos, t);
 
-    if (t >= 1.0f) {
-        m_pDiscGO->MarkForDestroy();
-        m_pDiscGO.reset();
+        player->SetLocalPosition(qbertPos);
+        if (m_pDiscObject)
+            m_pDiscObject->SetLocalPosition(discPos);
 
-        // Ensure QBert snaps to the exact target position
-        player->SetLocalPosition(m_TargetPos);
+        // Once the flight is complete
+        if (t >= 1.0f)
+        {
+            // Remove the disc from the scene
+            if (m_pDiscObject)
+            {
+                m_pDiscObject->MarkForDestroy();
+                m_pDiscObject.reset();
+            }
 
-        auto q = player->GetComponent<QBertPlayer>();
-        q->SetCurrentGridPos(glm::ivec2{ 0, 0 });
-        q->ChangeState(std::make_unique<IdleState>());
+            // Reset timer for the dropping phase
+            m_flyTimer = 0.f;
+            m_currentPhase = FlyingPhase::Dropping;
+
+            // Set Q*bert to the elevated position
+            player->SetLocalPosition(m_targetWorldPos);
+        }
+    }
+    break;
+
+    case FlyingPhase::Dropping:
+    {
+        const float t = glm::clamp(m_flyTimer / m_dropDuration, 0.f, 1.f);
+
+        // Drop Q*bert from elevated position to actual grid position
+        const glm::vec3 qbertPos = glm::mix(m_targetWorldPos, m_actualTopPos, t);
+        player->SetLocalPosition(qbertPos);
+
+        // Once the drop is complete
+        if (t >= 1.0f)
+        {
+            // Snap Q*bert to the final position
+            player->SetLocalPosition(m_actualTopPos);
+
+            // Update Q*bert's logical position
+            auto* qbert = player->GetComponent<QBertPlayer>();
+            qbert->SetCurrentGridPos({ 0, 0 });
+
+            m_currentPhase = FlyingPhase::Complete;
+
+            // Switch to idle state
+            qbert->ChangeState(std::make_unique<IdleState>());
+        }
+    }
+    break;
+
+    case FlyingPhase::Complete:
+        // Already transitioning to IdleState, nothing to do here
+        break;
     }
 }

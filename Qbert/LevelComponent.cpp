@@ -173,7 +173,7 @@ void LevelComponent::SpawnDiscs()
         int endFrame = startFrame + 4;
         animComp->SetFrame(startFrame);
         animComp->SetLoopRange(startFrame, endFrame);
-        animComp->SetAutoAdvance(true);
+        animComp->SetAutoAdvance(false);
 
         m_DiscGOs.push_back(discGO);
         dae::SceneManager::GetInstance().GetActiveScene()->Add(discGO);

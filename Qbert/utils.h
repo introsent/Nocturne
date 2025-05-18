@@ -1,11 +1,13 @@
 #pragma once
 #include <vec2.hpp>
 
+constexpr float TileWidth = 64.f;
+constexpr float TileHeight = 48.f;
+
 inline glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
     constexpr glm::vec2 Origin{ 300.f, 100.f };
-    constexpr float TileWidth = 64.f;
-    constexpr float TileHeight = 48.f; // For regular triangle spacing
 
+// For regular triangle spacing
     int row = gridPos.y;
     int col = gridPos.x;
 
@@ -19,8 +21,6 @@ inline glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
 inline glm::vec2 GridToWorldCharacter(const glm::ivec2& gridPos) {
     
     constexpr glm::vec2 Origin{ 300.f, 100.f };
-    constexpr float TileWidth = 64.f;
-    constexpr float TileHeight = 48.f;
     constexpr glm::vec2 CharacterOffset{ TileWidth * 0.25f, -TileHeight * 0.25f };
 
     // Base position (same as tiles)
@@ -34,9 +34,6 @@ inline glm::vec2 GridToWorldCharacter(const glm::ivec2& gridPos) {
 
 inline glm::vec2 GridToWorldDisc(const glm::ivec2& gridPos, const glm::vec2& spriteSize) {
     constexpr glm::vec2 Origin{ 300.f, 100.f };
-    constexpr float TileWidth = 64.f;
-    constexpr float TileHeight = 48.f;
-
     float x = Origin.x + (gridPos.x - gridPos.y / 2.f) * TileWidth;
     float y = Origin.y + gridPos.y * TileHeight;
 
