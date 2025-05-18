@@ -12,7 +12,9 @@ public:
 
     void HandleInput(dae::GameObject*, const glm::ivec2&) override {}
 
-    void Exit(dae::GameObject* player) override;
+    void Exit(dae::GameObject*) override {}
+
+    bool CanAcceptInput() const override { return false;  }
 
     std::string GetName() const override { return "Jumping"; }
 

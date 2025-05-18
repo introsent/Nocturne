@@ -6,8 +6,11 @@ MoveCommand::MoveCommand(dae::GameObject* pObject, const glm::ivec2& direction) 
 }
 
 void MoveCommand::Execute() {
-    if (m_pPlayer && m_pPlayer->GetComponent<QBertPlayer>()->CanAcceptInput()) {
-        m_pPlayer->GetComponent<QBertPlayer>()->GetState()->HandleInput(m_pPlayer, m_Direction);
+    if (!m_pPlayer) return;
+
+    QBertPlayer* player = m_pPlayer->GetComponent<QBertPlayer>();
+    if (player && player->CanAcceptInput()) {
+        player->GetCurrentState()->HandleInput(m_pPlayer, m_Direction);
     }
 }
 

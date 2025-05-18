@@ -12,6 +12,7 @@ public:
     virtual void Enter(dae::GameObject* player) = 0;
     virtual void Update(dae::GameObject* player, float deltaTime) = 0;
     virtual void HandleInput(dae::GameObject* player, const glm::ivec2& direction) = 0;
+    virtual bool CanAcceptInput() const = 0;
     virtual void Exit(dae::GameObject* player) = 0;
     virtual std::string GetName() const = 0;
 };

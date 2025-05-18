@@ -12,6 +12,8 @@ public:
 
     void Exit(dae::GameObject* player) override;
 
+    bool CanAcceptInput() const override { return false; }
+
     std::string GetName() const override { return "Dead"; }
 
 private:

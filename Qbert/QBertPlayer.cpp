@@ -32,12 +32,6 @@ void QBertPlayer::Update(float deltaTime) {
     if (m_pCurrentState) {
         m_pCurrentState->Update(GetOwner(), deltaTime);
     }
-
-    // Check for fatal tile occupation if not already dead
-    if (m_pLevel->GetTileAt(m_CurrentGridPos)->GetType() == TileType::DEATH &&
-        m_pCurrentState->GetName() != "Dead") {
-        Die();
-    }
 }
 
 // --- State Management ---
@@ -51,32 +45,7 @@ void QBertPlayer::ChangeState(std::unique_ptr<QBertState> newState) {
     }
 }
 
-// --- Movement System ---
-bool QBertPlayer::TryStartJump(const glm::ivec2& direction) {
-    if (m_pCurrentState->GetName() == "Dead") return false;
 
-    const glm::ivec2 newPos = m_CurrentGridPos + direction;
-    Tile* targetTile = m_pLevel->GetTileAt(newPos);
-
-    if (targetTile) {
-        // Update movement parameters for state machine
-        m_CurrentDirection = direction;
-        m_CurrentGridPos = newPos;
-        // Convert grid position to world space
-        m_JumpTargetPos = glm::vec3(GridToWorldCharacter(newPos), 0.f);
-        return true;
-    }
-
-    // Movement blocked (edge of map)
-    return false;
-}
-
-void QBertPlayer::CompleteJump()
-{
-    // Snap to final position and notify level of completed jump
-    GetOwner()->SetLocalPosition(m_JumpTargetPos);
-    m_pLevel->HandleJump(m_CurrentGridPos);
-}
 
 // --- Lifecycle Management ---
 void QBertPlayer::Die() {
@@ -89,6 +58,11 @@ void QBertPlayer::Respawn() {
     // Reset to starting position (top of pyramid)
     m_CurrentGridPos = { 0,0 };
     GetOwner()->SetLocalPosition(glm::vec3(GridToWorldCharacter(m_CurrentGridPos), 0.f));
+}
+
+bool QBertPlayer::CanAcceptInput() const
+{
+    return m_pCurrentState ? m_pCurrentState->CanAcceptInput() : false;
 }
 
 // --- Animation System ---
