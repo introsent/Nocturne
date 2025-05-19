@@ -23,6 +23,7 @@ public:
     void SetColorIndex(int index);
 
     TileType GetType() const { return m_type; }
+    void SetType(TileType type) { m_type = type; }
     // Position
     glm::ivec2 GetGridPosition() const;
     bool IsOccupied() const;

@@ -17,6 +17,9 @@ void IdleState::Enter(dae::GameObject* player) {
     if (ShouldFly(qbertPlayer))
     {
         qbertPlayer->ChangeState(std::make_unique<FlyingState>());
+
+        qbertPlayer->GetLevel()->GetTileAt(qbertPlayer->GetCurrentGridPos())->SetType(TileType::DEATH);
+
     }
 }
 
@@ -52,3 +55,4 @@ bool IdleState::ShouldDie(QBertPlayer* qbert) const {
 bool IdleState::ShouldFly(QBertPlayer* qbert) const {
     return qbert->GetLevel()->GetTileAt(qbert->GetCurrentGridPos())->GetType() == TileType::DISC;
 }
+
