@@ -36,18 +36,51 @@ private:
     void BindCommands() const;
 
     void SpawnDiscs();
- 
 
     // Texture parameters
-    static constexpr char const* TileAtlasFile = "../Data/Qbert Cubes.png";
-    static constexpr glm::vec2 MapFrameSize = { 32.f, 32.f };
+    //static constexpr char const* TileAtlasFile = "../Data/Qbert Cubes.png";
+    //static constexpr glm::vec2 MapFrameSize = { 32.f, 32.f };
+    //
+    //static constexpr char const* QbertFile = "../Data/Qbert P1 Spritesheet.png";
+    //static constexpr glm::vec2 QbertFrameSize = { 17.f, 16.f };
+    //
+    //static constexpr char const* DiscFile = "../Data/Disk Spritesheet.png";
+    //static constexpr glm::vec2 DiscFrameSize = { 16.f, 10.f };
+    //
+    //static constexpr int AtlasColumns = 6;
+    //static constexpr int AtlasRows = 3;
 
-    static constexpr char const* QbertFile = "../Data/Qbert P1 Spritesheet.png";
-    static constexpr glm::vec2 QbertFrameSize = { 17.f, 16.f };
+    struct TextureConfig {
+        char const* file;
+        glm::vec2  frameSize;
+    };
 
-    static constexpr char const* DiscFile = "../Data/Disk Spritesheet.png";
-    static constexpr glm::vec2 DiscFrameSize = { 16.f, 10.f };
+    struct AtlasConfig {
+        TextureConfig tex;
+        int           columns;
+        int           rows;
+    };
 
-    static constexpr int AtlasColumns = 6;
-    static constexpr int AtlasRows = 3;
+    // Map atlas:
+    static constexpr AtlasConfig m_map{
+        { "../Data/Qbert Cubes.png", { 32.f, 32.f } },
+        /*columns=*/ 6,
+        /*rows=*/    3
+    };
+
+    // Q*bert:
+    static constexpr AtlasConfig m_qbert{
+        {"../Data/Qbert P1 Spritesheet.png",
+        { 17.f, 16.f }},
+		/*columns=*/ 4,
+		/*rows=*/    1
+    };
+
+    // Disc:
+    static constexpr AtlasConfig m_disc{
+        {"../Data/Disk Spritesheet.png",
+        { 16.f, 10.f }},
+		/*columns=*/ 30,
+		/*rows=*/    1
+    };
 };

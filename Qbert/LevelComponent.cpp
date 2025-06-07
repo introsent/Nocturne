@@ -27,7 +27,7 @@ void LevelComponent::Update(float) {}
 
 
 void LevelComponent::SpawnTiles() {
-    auto texture = dae::ResourceManager::GetInstance().LoadTexture(TileAtlasFile);
+    auto texture = dae::ResourceManager::GetInstance().LoadTexture(m_map.tex.file);
     const int levelNumber = m_pLevel->GetLevelNumber();
     const int levelColumn = levelNumber - 1; // Convert to 0-based column index
 
@@ -43,16 +43,16 @@ void LevelComponent::SpawnTiles() {
             ->Translate(glm::vec3(worldPos.x, worldPos.y, -tile.GetGridPosition().y));
 
         // Texture and animation setup
-        auto textureComp = tileGO->AddComponent<dae::TextureComponent>(tileGO.get(), TileAtlasFile, 2.f);
+        auto textureComp = tileGO->AddComponent<dae::TextureComponent>(tileGO.get(), m_map.tex.file, 2.f);
 
         auto animationComp = tileGO->AddComponent<AnimationComponent>(
             tileGO.get(),
             textureComp,
-            MapFrameSize,       // 32x32 per frame
-            18,              // Total frames (6 columns * 3 rows)
+            m_map.tex.frameSize,    // 32x32 per frame
+            m_map.rows * m_map.columns,              // Total frames (6 columns * 3 rows)
             0.f,             // No auto-advance
-            3,               // Rows (states)
-            6                // Columns (levels)
+            m_map.rows,               // Rows (states)
+            m_map.columns                // Columns (levels)
         );
 
         const int stateRow = tile.GetColorIndex();
@@ -95,15 +95,15 @@ void LevelComponent::SpawnQBert() {
     auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
     translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
 
-    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), QbertFile, 2.f);
+    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), m_qbert.tex.file, 2.f);
     auto animationComp = qbertGO->AddComponent<AnimationComponent>(
         qbertGO.get(),
         textureComp,
-        QbertFrameSize, // Frame size
-        4,              // Total frames
+        m_qbert.tex.frameSize,
+        m_qbert.columns * m_qbert.rows,           
         0.2f,           // Time per frame
-        1,              // Rows
-        4               // Columns
+        m_qbert.rows,            
+        m_qbert.columns         
     );
     animationComp->SetFrame(3);
 
@@ -139,7 +139,7 @@ void LevelComponent::BindCommands() const
 
 void LevelComponent::SpawnDiscs()
 {
-    auto tex = dae::ResourceManager::GetInstance().LoadTexture(DiscFile);
+    auto tex = dae::ResourceManager::GetInstance().LoadTexture(m_disc.tex.file);
 
     const int maxActiveDiscs = 2;  // only two discs visible at once
     int spawned = 0;
@@ -152,21 +152,21 @@ void LevelComponent::SpawnDiscs()
         if (spawned >= maxActiveDiscs)
             break;      // stop once we've spawned two
 
-        auto pos = GridToWorldDisc(tilePtr->GetGridPosition(), DiscFrameSize);
+        auto pos = GridToWorldDisc(tilePtr->GetGridPosition(), m_disc.tex.frameSize);
         auto discGO = std::make_shared<dae::GameObject>();
         discGO->AddComponent<dae::TranslationComponent>(discGO.get())
             ->Translate({ pos.x, pos.y, 0.f });
 
         // texture + animation setup as before…
-        auto texComp = discGO->AddComponent<dae::TextureComponent>(discGO.get(), DiscFile, 2.f);
+        auto texComp = discGO->AddComponent<dae::TextureComponent>(discGO.get(), m_disc.tex.file, 2.f);
         auto animComp = discGO->AddComponent<AnimationComponent>(
             discGO.get(),
             texComp,
-            DiscFrameSize,
-            30,          // total frames in the atlas
+            m_disc.tex.frameSize,
+            m_disc.columns * m_disc.rows,          // total frames in the atlas
             0.1f,
-            1,
-            30
+            m_disc.rows,
+            m_disc.columns
         );
         int levelIdx = m_pLevel->GetLevelNumber() - 1;
         int startFrame = levelIdx * 5;
