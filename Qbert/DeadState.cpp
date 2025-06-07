@@ -8,7 +8,7 @@
 
 void DeadState::Enter(QBertPlayer*) {
     auto dialogueCloud = std::make_shared<dae::GameObject>();
-    dialogueCloud->AddComponent<dae::TextureComponent>(dialogueCloud.get(), "../Data/Qbert Curses.png");
+    dialogueCloud->AddComponent<dae::TextureComponent>(dialogueCloud.get(), "Qbert Curses.png");
     dialogueCloud->SetParent(owner);
     dialogueCloud->SetLocalPosition(m_dialogueCloudLocalOffset);
 
