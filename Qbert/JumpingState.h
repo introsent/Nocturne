@@ -1,24 +1,27 @@
 #pragma once
 #include <vec3.hpp>
-
 #include "QBertState.h"
+#include "JumpData.h"
 
 class JumpingState : public QBertState
 {
 public:
-    void Enter(dae::GameObject* player) override;
-
-    void Update(dae::GameObject* player, float deltaTime) override;
-
-    void HandleInput(dae::GameObject*, const glm::ivec2&) override {}
-
-    void Exit(dae::GameObject*) override {}
-
+    JumpingState(dae::GameObject* owner, glm::ivec2 targetPosition)
+		: QBertState(owner), m_targetGridPosition(targetPosition) {}
+    void Enter(QBertPlayer* player) override;
+    std::unique_ptr<QBertState> Update(QBertPlayer* player, float deltaTime) override;
+    std::unique_ptr<QBertState> HandleInput(QBertPlayer*, const glm::ivec2&) override { return nullptr; }
+    void Exit(QBertPlayer*) override {}
     bool CanAcceptInput() const override { return false;  }
-
     std::string GetName() const override { return "Jumping"; }
 
 private:
-    float m_JumpProgress{ 0.f };
-    glm::vec3 m_JumpStartPos{};
+    // Position data
+    const glm::ivec2 m_targetGridPosition;
+    glm::vec3 m_startWorldPosition{};
+    glm::vec3 m_targetWorldPosition{};
+
+    float m_jumpProgress{ 0.f };
+
+    JumpData m_jumpData{ };
 };

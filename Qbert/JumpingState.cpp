@@ -3,36 +3,39 @@
 #include "QBertPlayer.h"
 #include "Level.h"
 #include "IdleState.h"
+#include "utils.h"
 
-void JumpingState::Enter(dae::GameObject* player) {
-    QBertPlayer* qbertPlayer = player->GetComponent<QBertPlayer>();
-    if (!qbertPlayer) return;
+void JumpingState::Enter(QBertPlayer* player) {
 
-    m_JumpProgress = 0.f;
-    m_JumpStartPos = player->GetWorldPosition();
-    qbertPlayer->UpdateSpriteDirection(qbertPlayer->GetCurrentDirection());
+    m_jumpProgress = 0.f;
+
+    // Cache positions
+    m_startWorldPosition = glm::vec3(GridToWorldCharacter(player->GetGridPosition()), 0);
+    m_targetWorldPosition = glm::vec3(GridToWorldCharacter(m_targetGridPosition), 0);
+    player->UpdateAnimation();
 }
 
-void JumpingState::Update(dae::GameObject* player, float deltaTime) {
-    QBertPlayer* qbertPlayer = player->GetComponent<QBertPlayer>();
-    if (!qbertPlayer) return;
-
-    m_JumpProgress += deltaTime / qbertPlayer->GetJumpDuration();
-    const float t = std::clamp(m_JumpProgress, 0.0f, 1.0f);
+std::unique_ptr<QBertState> JumpingState::Update(QBertPlayer* player, float deltaTime) {
+    m_jumpProgress += deltaTime / m_jumpData.duration;
+    const float t = std::clamp(m_jumpProgress, 0.0f, 1.0f);
 
     // Smooth jump curve calculation
-    const float yOffset = sinf(t * std::numbers::pi_v<float>) * qbertPlayer->GetJumpHeight();
+    const float yOffset = sinf(t * std::numbers::pi_v<float>) * m_jumpData.height;
     const glm::vec3 newPos = glm::mix(
-        m_JumpStartPos,
-        qbertPlayer->GetJumpTargetPos(),
+        m_startWorldPosition,
+        m_targetWorldPosition,
         t
     );
 
-    qbertPlayer->SetPosition({ newPos.x, newPos.y - yOffset, newPos.z });
+    owner->SetLocalPosition({ newPos.x, newPos.y - yOffset, newPos.z });
 
-    if (m_JumpProgress >= 1.0f) {
-        qbertPlayer->SetPosition(qbertPlayer->GetJumpTargetPos());
-        qbertPlayer->ChangeState(std::make_unique<IdleState>());
-        qbertPlayer->GetLevel()->HandleJump(qbertPlayer->GetCurrentGridPos());
+    if (m_jumpProgress >= 1.0f) {
+        owner->SetLocalPosition(m_targetWorldPosition);
+		player->MoveTo(m_targetGridPosition); 
+        player->GetLevel()->HandleJump(player->GetGridPosition());
+
+        return std::make_unique<IdleState>(owner);
     }
+
+    return nullptr;
 }

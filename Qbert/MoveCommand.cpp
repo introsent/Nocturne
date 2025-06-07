@@ -9,8 +9,8 @@ void MoveCommand::Execute() {
     if (!m_pPlayer) return;
 
     QBertPlayer* player = m_pPlayer->GetComponent<QBertPlayer>();
-    if (player && player->CanAcceptInput()) {
-        player->GetCurrentState()->HandleInput(m_pPlayer, m_Direction);
+    if (player && player->IsAcceptingInput()) {
+        player->HandleInput(m_Direction);
     }
 }
 

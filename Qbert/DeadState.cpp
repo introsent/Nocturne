@@ -1,36 +1,34 @@
 #include "DeadState.h"
 #include "QBertPlayer.h"
 #include <iostream>
-
 #include "AnimationComponent.h"
 #include "IdleState.h"
 #include "Scene.h"
 #include "SceneManager.h"
 
-// Dead State
-void DeadState::Enter(dae::GameObject* player) {
+void DeadState::Enter(QBertPlayer*) {
     auto dialogueCloud = std::make_shared<dae::GameObject>();
     dialogueCloud->AddComponent<dae::TextureComponent>(dialogueCloud.get(), "../Data/Qbert Curses.png");
-    dialogueCloud->SetParent(player);
-    dialogueCloud->SetLocalPosition(glm::vec3(10.f, -32.f, 0.f));
+    dialogueCloud->SetParent(owner);
+    dialogueCloud->SetLocalPosition(m_dialogueCloudLocalOffset);
 
-    m_DialogueCloud = dialogueCloud;
-    dae::SceneManager::GetInstance().GetActiveScene()->Add(m_DialogueCloud);
+    m_dialogueCloud = dialogueCloud;
+    dae::SceneManager::GetInstance().GetActiveScene()->Add(m_dialogueCloud);
 
-    m_DeathTimer = 0.f;
+    m_deathTimer = 0.f;
 }
 
-void DeadState::Update(dae::GameObject* player, float deltaTime) {
-    m_DeathTimer += deltaTime;
-    if (m_DeathTimer >= DEATH_DURATION) {
-        QBertPlayer* qbertPlayer = player->GetComponent<QBertPlayer>();
-        qbertPlayer->Respawn();
-        qbertPlayer->ChangeState(std::make_unique<IdleState>());
+std::unique_ptr<QBertState> DeadState::Update(QBertPlayer* player, float deltaTime) {
+    m_deathTimer += deltaTime;
+    if (m_deathTimer >= DEATH_DURATION) {
+        player->Respawn();
+        return std::make_unique<IdleState>(owner);
     }
+    return nullptr;
 }
 
-void DeadState::Exit(dae::GameObject*)
+void DeadState::Exit(QBertPlayer*)
 {
-    dae::SceneManager::GetInstance().GetActiveScene()->Remove(m_DialogueCloud);
-    m_DialogueCloud.reset();
+    dae::SceneManager::GetInstance().GetActiveScene()->Remove(m_dialogueCloud);
+    m_dialogueCloud.reset();
 }

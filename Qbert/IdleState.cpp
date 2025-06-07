@@ -9,50 +9,42 @@
 #include "DeadState.h"
 #include "FlyingState.h"
 
-void IdleState::Enter(dae::GameObject* player) {
-	QBertPlayer* qbertPlayer = player->GetComponent<QBertPlayer>();
-    if (!qbertPlayer) return;
-
-    qbertPlayer->UpdateSpriteDirection(qbertPlayer->GetCurrentDirection());
-    if (ShouldFly(qbertPlayer))
-    {
-        qbertPlayer->ChangeState(std::make_unique<FlyingState>());
-
-        qbertPlayer->GetLevel()->GetTileAt(qbertPlayer->GetCurrentGridPos())->SetType(TileType::DEATH);
-
-    }
+void IdleState::Enter(QBertPlayer* player) {
+    player->UpdateAnimation();
 }
 
-void IdleState::HandleInput(dae::GameObject* player, const glm::ivec2& direction) {
-    QBertPlayer* qbertPlayer = player->GetComponent<QBertPlayer>();
-    if (!qbertPlayer || direction == glm::ivec2(0)) return;
+std::unique_ptr<QBertState> IdleState::HandleInput(QBertPlayer* player, const glm::ivec2& direction) {
+    if (direction == glm::ivec2(0)) return nullptr;
+     
+    Level* level = player->GetLevel();
+	if (!level) return nullptr; 
 
-    Level* level = qbertPlayer->GetLevel();
-    const glm::ivec2 newPos = qbertPlayer->GetCurrentGridPos() + direction;
+    const glm::ivec2 newPos = player->GetGridPosition() + direction;
 
     if (Tile* targetTile = level->GetTileAt(newPos)) {
-        qbertPlayer->SetCurrentDirection(direction);
-        qbertPlayer->SetCurrentGridPos(newPos);
-        qbertPlayer->SetJumpTargetPos(glm::vec3(GridToWorldCharacter(newPos), 0.f));
-        qbertPlayer->ChangeState(std::make_unique<JumpingState>());
+		player->LookAt(direction);
+        return std::make_unique<JumpingState>(owner, newPos);
     }
+
+    return nullptr;
 }
 
-void IdleState::Update(dae::GameObject* player, float) {
-    QBertPlayer* qbert = player->GetComponent<QBertPlayer>();
-    if (!qbert) return;
-
-    // 2. State-managed transition
-    if (ShouldDie(qbert)) {
-        qbert->ChangeState(std::make_unique<DeadState>());
+std::unique_ptr<QBertState> IdleState::Update(QBertPlayer* player, float) {
+    if (ShouldDie(player)) {
+        return std::make_unique<DeadState>(owner);
     }
+    if (ShouldFly(player)) {
+        player->GetLevel()->GetTileAt(player->GetGridPosition())->SetType(TileType::DEATH);
+        return std::make_unique<FlyingState>(owner);
+    }
+    return nullptr;
 }
 
 bool IdleState::ShouldDie(QBertPlayer* qbert) const {
-    return qbert->GetLevel()->GetTileAt(qbert->GetCurrentGridPos())->GetType() == TileType::DEATH;
+    return qbert->GetLevel()->GetTileAt(qbert->GetGridPosition())->GetType() == TileType::DEATH;
 }
 
 bool IdleState::ShouldFly(QBertPlayer* qbert) const {
-    return qbert->GetLevel()->GetTileAt(qbert->GetCurrentGridPos())->GetType() == TileType::DISC;
+    return qbert->GetLevel()->GetTileAt(qbert->GetGridPosition())->GetType() == TileType::DISC;
 }
 

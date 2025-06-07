@@ -10,39 +10,24 @@ class QBertPlayer : public dae::Component {
 public:
     QBertPlayer(dae::GameObject* owner, Level* level);
 
-    void Update(float deltaTime);
+    void Update(float deltaTime) override;
+    void HandleInput(const glm::ivec2& direction);
 
-    // State management
-    void ChangeState(std::unique_ptr<QBertState> newState);
-    QBertState* GetCurrentState() const { return m_pCurrentState.get(); }
+    void TransitionTo(std::unique_ptr<QBertState> newState);
 
-    // Getters
-    Level* GetLevel() const { return m_pLevel; }
-    const glm::ivec2& GetCurrentGridPos() const { return m_CurrentGridPos; }
-    const glm::vec3& GetJumpTargetPos() const { return m_JumpTargetPos; }
-    float GetJumpDuration() const { return m_JumpDuration; }
-    float GetJumpHeight() const { return m_JumpHeight; }
-    glm::ivec2 GetCurrentDirection() const { return m_CurrentDirection; }
+    void MoveTo(const glm::ivec2& gridPos);
+    void LookAt(const glm::ivec2& direction);
 
-    // Setters
-    void SetPosition(const glm::vec3& pos) { GetOwner()->SetLocalPosition(pos); }
-    void SetCurrentGridPos(const glm::ivec2& pos) { m_CurrentGridPos = pos; }
-    void SetJumpTargetPos(const glm::vec3& pos) { m_JumpTargetPos = pos; }
-    void SetCurrentDirection(const glm::ivec2& dir) { m_CurrentDirection = dir; }
-
-    bool CanAcceptInput() const;
-
-    void UpdateSpriteDirection(const glm::ivec2& direction) const;
-    void Die();
+    void UpdateAnimation();
     void Respawn();
 
+    Level* GetLevel() const { return m_pLevel; }
+    glm::ivec2 GetGridPosition() const { return m_CurrentGridPos; }
+    bool IsAcceptingInput() const { return m_pCurrentState ? m_pCurrentState->CanAcceptInput() : false; }
 private:
     std::unique_ptr<QBertState> m_pCurrentState;
     Level* m_pLevel;
     glm::ivec2 m_CurrentGridPos{};
-    glm::vec3 m_JumpTargetPos{};
     glm::ivec2 m_CurrentDirection{};
-    float m_JumpDuration = 0.5f;
-    float m_JumpHeight = 32.f;
-    AnimationComponent* m_pAnimation;
+    AnimationComponent* m_pAnimation = nullptr;
 };

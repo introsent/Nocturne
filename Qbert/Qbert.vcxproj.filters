@@ -179,5 +179,8 @@
     <ClInclude Include="DiscManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JumpData.h">
+      <Filter>Header Files\Qbert</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

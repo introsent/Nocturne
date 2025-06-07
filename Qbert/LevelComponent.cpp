@@ -18,8 +18,8 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
     , m_pLevel(std::make_unique<Level>(levelIndex))
 {
     SpawnTiles();
-	SpawnQBert();
     SpawnDiscs();
+    SpawnQBert();
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
 }
 

@@ -196,6 +196,7 @@
     <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
+    <ClInclude Include="JumpData.h" />
     <ClInclude Include="JumpingState.h" />
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="Level.h" />
