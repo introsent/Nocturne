@@ -34,6 +34,9 @@
     <Filter Include="Header Files\Enemies\Coily\States">
       <UniqueIdentifier>{2659cfda-57b9-46af-a406-133debb37825}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Movement">
+      <UniqueIdentifier>{5fb84e98-4aa6-440a-8f63-673adb840be3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -107,6 +110,9 @@
     </ClCompile>
     <ClCompile Include="EnemyPrefabs.cpp">
       <Filter>Header Files\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpMovement.cpp">
+      <Filter>Header Files\Movement</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="EnemyPrefabs.h">
       <Filter>Header Files\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpMovement.h">
+      <Filter>Header Files\Movement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
