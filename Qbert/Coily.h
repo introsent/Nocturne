@@ -4,6 +4,7 @@
 #include "CoilyState.h"
 #include "SnakeState.h"
 #include "AnimationComponent.h"
+
 class Coily : public Enemy {
 public:
 	Coily(dae::GameObject* owner, Level* level)
@@ -15,11 +16,9 @@ public:
         if (state) state->Update(this, deltaTime);
     }
 
-    void TransformToSnake() {
-        state = std::make_unique<SnakeState>();
-    }
+    void UpdateAnimation(int frame);
 
 private:
-    std::unique_ptr<CoilyState> state = std::make_unique<EggState>();
+    std::unique_ptr<CoilyState> state = std::make_unique<EggState>(GetOwner());
     AnimationComponent* m_pAnimation = nullptr;
 };

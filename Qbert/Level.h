@@ -20,6 +20,8 @@ public:
     Tile* GetTileAt(const glm::ivec2& gridPos) const;
     const std::vector<std::unique_ptr<Tile>>& GetTiles() const;
 
+	int GetRows() const { return m_rows; }
+
     // Events
     Event<const Tile&> OnTileColored;
     Event<> OnLevelCompleted;

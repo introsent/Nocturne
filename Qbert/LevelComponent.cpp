@@ -56,7 +56,7 @@ void LevelComponent::SpawnTiles() {
         auto animationComp = tileGO->AddComponent<AnimationComponent>(
             tileGO.get(),
             textureComp,
-            m_map.tex.frameSize,    // 32x32 per frame
+            m_map.tex.frameSize,      // 32x32 per frame
             m_map.rows * m_map.columns,              // Total frames (6 columns * 3 rows)
             0.f,                      // No auto-advance
             m_map.rows,               // Rows (states)

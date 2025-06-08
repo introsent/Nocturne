@@ -114,6 +114,12 @@
     <ClCompile Include="JumpMovement.cpp">
       <Filter>Header Files\Movement</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Header Files\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Coily.cpp">
+      <Filter>Header Files\Enemies\Coily</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterFactory.h">
@@ -203,9 +209,6 @@
     <ClInclude Include="EggState.h">
       <Filter>Header Files\Enemies\Coily\States</Filter>
     </ClInclude>
-    <ClInclude Include="SnakeState.h">
-      <Filter>Header Files\Enemies\Coily\States</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Header Files\Enemies</Filter>
     </ClInclude>
@@ -217,6 +220,9 @@
     </ClInclude>
     <ClInclude Include="JumpMovement.h">
       <Filter>Header Files\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="SnakeState.h">
+      <Filter>Header Files\Enemies\Coily\States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
