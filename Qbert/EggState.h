@@ -15,8 +15,13 @@ public:
     std::unique_ptr<CoilyState> Update(Coily* coily, float deltaTime) override;
     void Exit(Coily* coily) override;
     std::string GetName() const override { return "Egg"; }
+
+    static constexpr float JUMP_DELAY = 0.2f;
 private: 
     void GenerateTargetGridPosition(Coily* coily);
     glm::ivec2 m_targetGridPosition{};
     JumpMovement m_jump;
+
+    bool m_isDelaying = false;
+    float m_delayTimer = 0.0f;
 };

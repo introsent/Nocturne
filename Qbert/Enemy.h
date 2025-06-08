@@ -14,6 +14,8 @@ public:
     void MoveTo(const glm::ivec2& gridPos);
     void LookAt(const glm::ivec2& direction);
 
+	glm::ivec2 GetCurrentLookAtDirection() const { return m_currentDirection; }
+
     glm::ivec2 GetGridPosition() const { return m_CurrentGridPos; }
     Level* GetLevel() const { return m_pLevel; }
 

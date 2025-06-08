@@ -194,8 +194,9 @@ void LevelComponent::SpawnDiscs()
 
 void LevelComponent::SpawnEnemies()
 {
+
     for (const auto& [enemyType, gridPos] : m_EnemySpawns) {
-        auto enemy = m_enemyPrefabs->CreateEnemy(enemyType, m_pLevel.get(), gridPos);
+        auto enemy = m_enemyPrefabs->CreateEnemy(enemyType, m_pLevel.get(), gridPos, m_pQBertGO->GetComponent<QBertPlayer>());
         if (enemy) {
             dae::SceneManager::GetInstance().GetActiveScene()->Add(enemy);
         }
