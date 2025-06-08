@@ -167,6 +167,8 @@
     <ClCompile Include="ColorRule.cpp" />
     <ClCompile Include="DeadState.cpp" />
     <ClCompile Include="DiscManager.cpp" />
+    <ClCompile Include="EggState.cpp" />
+    <ClCompile Include="EnemyPrefabs.cpp" />
     <ClCompile Include="FlyingState.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
@@ -182,21 +184,28 @@
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayObserver.cpp" />
+    <ClCompile Include="SnakeState.cpp" />
     <ClCompile Include="TestSoundCommand.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="CharacterFactory.h" />
+    <ClInclude Include="Coily.h" />
+    <ClInclude Include="CoilyState.h" />
     <ClInclude Include="ColorRule.h" />
     <ClInclude Include="DeadState.h" />
+    <ClInclude Include="Directions.h" />
     <ClInclude Include="DiscManager.h" />
+    <ClInclude Include="EggState.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyPrefabs.h" />
+    <ClInclude Include="EnemyType.h" />
     <ClInclude Include="FlyingState.h" />
     <ClInclude Include="FPSComponent.h" />
     <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="HealthComponent.h" />
     <ClInclude Include="IdleState.h" />
-    <ClInclude Include="JumpData.h" />
     <ClInclude Include="JumpingState.h" />
     <ClInclude Include="KillCommand.h" />
     <ClInclude Include="Level.h" />
@@ -208,6 +217,7 @@
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />
+    <ClInclude Include="SnakeState.h" />
     <ClInclude Include="TestSoundCommand.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="UIFactory.h" />

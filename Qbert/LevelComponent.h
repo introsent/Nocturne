@@ -5,6 +5,8 @@
 #include <memory>
 #include "utils.h"
 #include <unordered_map>
+#include <string>
+#include "EnemyPrefabs.h"
 
 class LevelComponent final : public dae::Component {
 public:
@@ -14,11 +16,6 @@ public:
     void Update(float deltaTime) override;
     void Render() const override {}
 
-    const glm::ivec2 UP_LEFT{ -1, -1 };
-    const glm::ivec2 UP_RIGHT{ 0, -1 };
-    const glm::ivec2 DOWN_LEFT{ 0, 1 };
-    const glm::ivec2 DOWN_RIGHT{ 1, 1 };
-
 private:
     std::unique_ptr<Level> m_pLevel;
     std::vector<std::shared_ptr<dae::GameObject>> m_TileGOs;
@@ -26,6 +23,9 @@ private:
     std::vector<std::shared_ptr<dae::GameObject>> m_DiscGOs;
 
     std::vector<std::pair<glm::ivec2, std::shared_ptr<dae::GameObject>>> m_DiscList;
+
+    std::vector<std::pair<std::string, glm::ivec2>> m_EnemySpawns;
+	std::unique_ptr<EnemyPrefabs> m_enemyPrefabs = std::make_unique<EnemyPrefabs>();
 
     //Atlas functions
     void SpawnTiles();
@@ -36,6 +36,8 @@ private:
     void BindCommands() const;
 
     void SpawnDiscs();
+
+    void SpawnEnemies();
 
     struct TextureConfig {
         char const* file;
@@ -69,5 +71,12 @@ private:
         { 16.f, 10.f }},
 		/*columns=*/ 30,
 		/*rows=*/    1
+    };
+
+    // Coily:
+    static constexpr AtlasConfig m_coily{
+        { "Coily Spritesheet.png", { 16.f, 32.f}},
+        /*columns=*/ 10,
+        /*rows=*/    1
     };
 };

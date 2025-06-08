@@ -4,46 +4,47 @@
 constexpr float TileWidth = 64.f;
 constexpr float TileHeight = 48.f;
 
-inline glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
+inline glm::vec2 GridToWorldEx(
+    const glm::ivec2& gridPos,
+    const glm::vec2& spriteSize = { 0, 0 },
+    const glm::vec2& entityOffset = { 0, 0 }
+) {
     constexpr glm::vec2 Origin{ 300.f, 100.f };
 
-// For regular triangle spacing
-    int row = gridPos.y;
-    int col = gridPos.x;
+    // Base grid position calculation
+    const float baseX = Origin.x + (gridPos.x - gridPos.y / 2.0f) * TileWidth;
+    const float baseY = Origin.y + gridPos.y * TileHeight;
 
-    // Center each row horizontally
-    float x = Origin.x + (col - row / 2.f) * TileWidth;
-    float y = Origin.y + row * TileHeight;
+    // Centering offset (if sprite size is provided)
+    glm::vec2 centerOffset = { 0, 0 };
+    if (spriteSize.x > 0 && spriteSize.y > 0) {
+        centerOffset = {
+            (TileWidth - spriteSize.x) * 0.5f,
+            (TileHeight - spriteSize.y) * 0.5f
+        };
+    }
 
-    return { x, y };
+    return { baseX + centerOffset.x + entityOffset.x,
+            baseY + centerOffset.y + entityOffset.y };
+}
+
+// Existing functions reimplemented using the generalized version
+inline glm::vec2 GridToWorld(const glm::ivec2& gridPos) {
+    return GridToWorldEx(gridPos, { 0, 0 }, { 0, 0 });
+}
+
+inline glm::vec2 GridToWorldCoily(const glm::ivec2& gridPos) {
+    constexpr glm::vec2 CoilyOffset{ TileWidth * 0.25f, -TileHeight * 0.8f };
+    return GridToWorldEx(gridPos, { 0, 0 }, CoilyOffset);
 }
 
 inline glm::vec2 GridToWorldCharacter(const glm::ivec2& gridPos) {
-    
-    constexpr glm::vec2 Origin{ 300.f, 100.f };
-    constexpr glm::vec2 CharacterOffset{ TileWidth * 0.25f, -TileHeight * 0.25f };
-
-    // Base position (same as tiles)
-    float x = Origin.x + (gridPos.x - gridPos.y / 2.f) * TileWidth;
-    float y = Origin.y + gridPos.y * TileHeight;
-
-    // Apply character-specific offset
-    return { x + CharacterOffset.x, y + CharacterOffset.y };
-    
+    constexpr glm::vec2 CharOffset{ TileWidth * 0.25f, -TileHeight * 0.25f };
+    return GridToWorldEx(gridPos, { 0, 0 }, CharOffset);
 }
 
 inline glm::vec2 GridToWorldDisc(const glm::ivec2& gridPos, const glm::vec2& spriteSize) {
-    constexpr glm::vec2 Origin{ 300.f, 100.f };
-    float x = Origin.x + (gridPos.x - gridPos.y / 2.f) * TileWidth;
-    float y = Origin.y + gridPos.y * TileHeight;
-
-
-    glm::vec2 cellCenterOffset{
-        (TileWidth - spriteSize.x) * 0.5f,
-        (TileHeight - spriteSize.y) * 0.5f  
-    };
-
-    return { x + cellCenterOffset.x, y + cellCenterOffset.y };
+    return GridToWorldEx(gridPos, spriteSize, { 0, 0 });
 }
 
 // Hash implementation for glm::ivec2 to use in unordered_map

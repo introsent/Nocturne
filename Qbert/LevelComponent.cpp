@@ -12,6 +12,9 @@
 #include "Tile.h"
 #include "utils.h"
 #include "DiscManager.h"
+#include "Directions.h"
+#include "Coily.h"
+#include "EnemyPrefabs.h"
 
 LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
     : Component(owner)
@@ -20,6 +23,11 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
     SpawnTiles();
     SpawnDiscs();
     SpawnQBert();
+
+
+    m_EnemySpawns = {
+               {"Coily", {0, 0}} };
+    SpawnEnemies();
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
 }
 
@@ -50,9 +58,9 @@ void LevelComponent::SpawnTiles() {
             textureComp,
             m_map.tex.frameSize,    // 32x32 per frame
             m_map.rows * m_map.columns,              // Total frames (6 columns * 3 rows)
-            0.f,             // No auto-advance
+            0.f,                      // No auto-advance
             m_map.rows,               // Rows (states)
-            m_map.columns                // Columns (levels)
+            m_map.columns             // Columns (levels)
         );
 
         const int stateRow = tile.GetColorIndex();
@@ -181,5 +189,15 @@ void LevelComponent::SpawnDiscs()
         DiscManager::GetInstance().RegisterDisc(tilePtr->GetGridPosition(), discGO);
 
         ++spawned;
+    }
+}
+
+void LevelComponent::SpawnEnemies()
+{
+    for (const auto& [enemyType, gridPos] : m_EnemySpawns) {
+        auto enemy = m_enemyPrefabs->CreateEnemy(enemyType, m_pLevel.get(), gridPos);
+        if (enemy) {
+            dae::SceneManager::GetInstance().GetActiveScene()->Add(enemy);
+        }
     }
 }

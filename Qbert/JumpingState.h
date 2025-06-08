@@ -1,7 +1,6 @@
 #pragma once
 #include <vec3.hpp>
 #include "QBertState.h"
-#include "JumpData.h"
 
 class JumpingState : public QBertState
 {
@@ -16,6 +15,12 @@ public:
     std::string GetName() const override { return "Jumping"; }
 
 private:
+    struct JumpData
+    {
+        float duration = 0.5f;
+        float height = 32.f;
+    };
+    
     // Position data
     const glm::ivec2 m_targetGridPosition;
     glm::vec3 m_startWorldPosition{};

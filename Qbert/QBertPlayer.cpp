@@ -6,6 +6,7 @@
 #include "Tile.h"
 #include "utils.h"
 #include <stdexcept>
+#include "Directions.h"
 
 QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level)
     : Component(owner), m_pLevel(level)
@@ -55,17 +56,8 @@ void QBertPlayer::LookAt(const glm::ivec2& direction)
     m_CurrentDirection = direction;
 }
 
-// --- Animation System ---
 void QBertPlayer::UpdateAnimation() 
 {
-    // Direction vectors relative to grid movement
-    const glm::ivec2 UP_LEFT{ -1, -1 };   // North-west movement
-    const glm::ivec2 UP_RIGHT{ 0, -1 };   // North-east movement
-    const glm::ivec2 DOWN_LEFT{ 0, 1 };   // South-west movement
-    const glm::ivec2 DOWN_RIGHT{ 1, 1 };  // South-east movement
-
-    // Mapping of grid directions to animation frames:
-    // 0 = Up-Right, 1 = Up-Left, 2 = Down-Right, 3 = Down-Left
     const static std::unordered_map<glm::ivec2, int, IVec2Hash> directionMap = {
         {UP_RIGHT,  0},
         {UP_LEFT,   1},
