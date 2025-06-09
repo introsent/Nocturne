@@ -43,7 +43,7 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
             }
         }
         else {
-            owner->SetLocalPosition(m_jump.GetCurrentPosition());
+            m_owner->SetLocalPosition(m_jump.GetCurrentPosition());
         }
     }
 
@@ -51,23 +51,23 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
 }
 
 glm::ivec2 SnakeState::CalculateChaseDirection(Coily* coily) {
-    glm::ivec2 qbertPos = coily->GetQBertGridPosition();
-    glm::ivec2 coilyPos = coily->GetGridPosition();
-    glm::ivec2 bestMove = coilyPos;
-    float minDistance = FLT_MAX;
+    glm::ivec2 qbertGridPosition = coily->GetQBertGridPosition();
+    glm::ivec2 coilyGridPosition = coily->GetGridPosition();
+
+    glm::ivec2 bestMoveGridPosition = coilyGridPosition;
+    float minDistanceToQbert = FLT_MAX;
 
     // Check all possible moves
     for (const auto& dir : { UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT }) {
-        glm::ivec2 testPos = coilyPos + dir;
+        glm::ivec2 testPos = coilyGridPosition + dir;
 
-        float dist = glm::distance(glm::vec2(testPos), glm::vec2(qbertPos));
-        if (dist < minDistance) {
-            minDistance = dist;
-            bestMove = testPos;
+        float distance = glm::distance(glm::vec2(testPos), glm::vec2(qbertGridPosition));
+        if (distance < minDistanceToQbert) {
+            minDistanceToQbert = distance;
+            bestMoveGridPosition = testPos;
         }
-       
     }
-    return bestMove;
+    return bestMoveGridPosition;
 }
 
 int SnakeState::DirectionToFrame(const glm::ivec2& dir) {

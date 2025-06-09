@@ -6,7 +6,7 @@
 class Coily;
 class CoilyState {
 public:
-    CoilyState(dae::GameObject* owner) : owner(owner) {}
+    CoilyState(dae::GameObject* owner) : m_owner(owner) {}
     virtual ~CoilyState() = default;
     virtual void Enter(Coily* coily) = 0;
     virtual std::unique_ptr<CoilyState> Update(Coily* coily, float deltaTime) = 0;
@@ -14,5 +14,5 @@ public:
     virtual std::string GetName() const = 0;
 
 protected:
-	dae::GameObject* owner = nullptr;
+	dae::GameObject* m_owner = nullptr;
 };

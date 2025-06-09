@@ -18,11 +18,6 @@ std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
         if (m_delayTimer <= 0.0f) {
             m_isDelaying = false;
 
-            // Generate new jump after delay
-            static std::random_device rd;
-            static std::mt19937 gen(rd());
-            std::uniform_int_distribution<> dist(0, 1);
-
             GenerateTargetGridPosition(coily);
             m_jump.StartJump(coily->GetGridPosition(), m_targetGridPosition);
         }
@@ -31,10 +26,10 @@ std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
 
     if (m_jump.Update(deltaTime)) {
         coily->MoveTo(m_jump.GetTargetGrid());
-        owner->SetLocalPosition(m_jump.GetCurrentPosition());
+        m_owner->SetLocalPosition(m_jump.GetCurrentPosition());
 
         if (coily->GetGridPosition().y == coily->GetLevel()->GetRows() - 1) {
-            return std::make_unique<SnakeState>(owner);
+            return std::make_unique<SnakeState>(m_owner);
         }
         else {
             // Start delay after landing
@@ -45,7 +40,7 @@ std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
     }
     else {
         // During jump
-        owner->SetLocalPosition(m_jump.GetCurrentPosition());
+        m_owner->SetLocalPosition(m_jump.GetCurrentPosition());
         coily->UpdateAnimation(1);  // Jump frame
     }
 
