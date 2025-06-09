@@ -7,7 +7,7 @@
 
 void JumpingState::Enter(QBertPlayer* player) 
 {
-    m_jump.StartJump(player->GetGridPosition(), m_targetGridPosition);
+    m_jump.Start(player->GetGridPosition(), m_targetGridPosition);
     player->UpdateAnimation();
 }
 

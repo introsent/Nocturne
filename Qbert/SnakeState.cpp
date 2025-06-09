@@ -2,6 +2,9 @@
 #include "Enemy.h" 
 #include "Coily.h"
 #include "Directions.h"
+#include "utils.h"
+#include "Tile.h"
+#include "DyingCoilyState.h"
 
 void SnakeState::Enter(Coily*) {
     m_isDelaying = true;
@@ -15,7 +18,8 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
             m_isDelaying = false;
             // Start new jump after delay
             m_targetGridPosition = CalculateChaseDirection(coily);
-            m_jump.StartJump(coily->GetGridPosition(), m_targetGridPosition);
+            m_jump.Start(coily->GetGridPosition(),
+                         m_targetGridPosition);
             m_isJumping = true;
 
             // Update animation
@@ -40,6 +44,10 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
             // Check for QBert collision
             if (coily->GetGridPosition() == coily->GetQBertGridPosition()) {
                 // coily->m_pQBert->Die();
+            }
+            if (ShouldDie(coily))
+            {
+				return std::make_unique<DyingCoilyState>(m_owner);
             }
         }
         else {
@@ -79,4 +87,9 @@ int SnakeState::DirectionToFrame(const glm::ivec2& dir) {
         return mapping.at(dir) + 1;
     }
     return mapping.at(dir);
+}
+
+bool SnakeState::ShouldDie(Coily* coily) const
+{
+    return coily->GetLevel()->GetTileAt(coily->GetGridPosition())->GetType() == TileType::DEATH;
 }

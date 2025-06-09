@@ -1,0 +1,46 @@
+#include "SpawningState.h"
+#include "Level.h"
+#include "Enemy.h" 
+#include "Coily.h"
+#include "Directions.h"
+
+SpawningState::SpawningState(dae::GameObject* owner)
+    : CoilyState(owner),
+    m_fallMovement(std::make_unique<FallMovement>(
+        FallMovement::FallType::SPAWNING,  // Use spawning fall type
+        1.2f,
+        0.0f))  // No acceleration for spawning
+{
+}
+
+void SpawningState::Enter(Coily* coily) {
+    // Calculate positions - use the actual spawn grid position
+    const auto gridPos = coily->GetDesiredSpawnGridPosition();
+    m_spawnTarget = glm::vec3(GridToWorldCoily(gridPos), 0.f);
+
+    // Start above the target (same X, higher Y)
+    m_spawnStart = m_spawnTarget;
+    m_spawnStart.y -= 300.f;  // Start 300 units above
+
+    // Initialize movement
+    m_owner->SetLocalPosition(m_spawnStart);
+    m_fallMovement->Start(m_spawnStart, m_spawnTarget);
+    coily->UpdateAnimation(0); // Egg frame
+
+    coily->MoveTo(gridPos);
+}
+
+std::unique_ptr<CoilyState> SpawningState::Update(Coily*, float deltaTime) {
+    if (m_fallMovement->Update(deltaTime)) {
+        // Snap to final position
+        m_owner->SetLocalPosition(m_spawnTarget);
+        return std::make_unique<EggState>(m_owner); // Transition to egg state
+    }
+
+    m_owner->SetLocalPosition(m_fallMovement->GetCurrentPosition());
+    return nullptr;
+}
+
+void SpawningState::Exit(Coily*) {
+    m_fallMovement->Reset();
+}

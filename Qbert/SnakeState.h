@@ -18,6 +18,8 @@ private:
 	glm::ivec2 CalculateChaseDirection(Coily* coily);
 	int DirectionToFrame(const glm::ivec2& dir);
 
+	bool ShouldDie(Coily* coily) const;
+
 	glm::ivec2 m_targetGridPosition{};
 	JumpMovement m_jump;
 	bool m_isJumping = false;

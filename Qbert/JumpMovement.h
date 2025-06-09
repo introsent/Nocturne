@@ -1,36 +1,31 @@
 #pragma once
-#include <vec3.hpp>
+#include "GridBasedMovement.h"
 #include <numbers>
-#include <functional>
-#include "glm.hpp"
 
-class JumpMovement
-{
+class JumpMovement : public GridBasedMovement {
 public:
-    using PositionConverter = std::function<glm::vec2(const glm::ivec2&)>;
+    JumpMovement(PositionConverter converter,
+        float duration = 0.5f,
+        float height = 32.f);
 
-    JumpMovement(PositionConverter gridToWorld);
+    void Start(const glm::ivec2& startGrid,
+        const glm::ivec2& targetGrid);
 
-    void StartJump(const glm::ivec2& startGrid, const glm::ivec2& targetGrid);
+    // Implement IMovementBehavior
+    void Start(const glm::vec3& startWorld,
+               const glm::vec3& targetWorld) override;
+    bool Update(float deltaTime) override;
+    glm::vec3 GetCurrentPosition() const override;
+    void Reset() override;
+    void SetParameters(float duration, float height);
 
-    bool Update(float deltaTime);
-
-    glm::vec3 GetCurrentPosition() const;
-
-    void SetJumpParameters(float duration, float height);
-
-    bool IsJumping() const { return m_isJumping; }
     const glm::ivec2& GetTargetGrid() const { return m_targetGrid; }
 
 private:
-    PositionConverter m_gridToWorld;
-    glm::ivec2 m_startGrid;
-    glm::ivec2 m_targetGrid;
-    glm::vec3 m_startWorld;
-    glm::vec3 m_targetWorld;
+    glm::vec3 m_startWorld  {};
+    glm::vec3 m_targetWorld {};
     float m_progress = 0.f;
     float m_duration;
     float m_height;
-    bool m_isJumping = false;
+    bool m_isMoving = false;
 };
-

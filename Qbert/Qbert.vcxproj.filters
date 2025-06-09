@@ -120,6 +120,15 @@
     <ClCompile Include="Coily.cpp">
       <Filter>Header Files\Enemies\Coily</Filter>
     </ClCompile>
+    <ClCompile Include="FallMovement.cpp">
+      <Filter>Header Files\Movement</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawningState.cpp">
+      <Filter>Header Files\Enemies\Coily\States</Filter>
+    </ClCompile>
+    <ClCompile Include="DyingCoilyState.cpp">
+      <Filter>Header Files\Enemies\Coily\States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterFactory.h">
@@ -222,6 +231,21 @@
       <Filter>Header Files\Movement</Filter>
     </ClInclude>
     <ClInclude Include="SnakeState.h">
+      <Filter>Header Files\Enemies\Coily\States</Filter>
+    </ClInclude>
+    <ClInclude Include="IMovementBehaviour.h">
+      <Filter>Header Files\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="FallMovement.h">
+      <Filter>Header Files\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawningState.h">
+      <Filter>Header Files\Enemies\Coily\States</Filter>
+    </ClInclude>
+    <ClInclude Include="GridBasedMovement.h">
+      <Filter>Header Files\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="DyingCoilyState.h">
       <Filter>Header Files\Enemies\Coily\States</Filter>
     </ClInclude>
   </ItemGroup>

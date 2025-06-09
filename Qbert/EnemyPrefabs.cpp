@@ -18,8 +18,7 @@ std::shared_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const g
     auto coily = std::make_shared<dae::GameObject>();
 
     glm::vec2 worldPos = GridToWorldCoily(gridPos);
-    coily->AddComponent<dae::TranslationComponent>(coily.get())
-        ->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
+    coily->AddComponent<dae::TranslationComponent>(coily.get());
 
     // Configure Coily-specific components
     auto textureComp = coily->AddComponent<dae::TextureComponent>(coily.get(), "Coily Spritesheet.png", 2.f);
@@ -27,14 +26,14 @@ std::shared_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const g
         coily.get(),
         textureComp,
         glm::vec2(16.f, 32.f), // Frame size
-        10,                 // Total frames
-        0.2f,              // Time per frame
-        1,                 // Rows
-        10                  // Columns
+        10,                    // Total frames
+        0.2f,                  // Time per frame
+        1,                     // Rows
+        10                     // Columns
     );
     animationComp->SetFrame(0);
 
-    coily->AddComponent<Coily>(coily.get(), level, qbertPlayer);
+    coily->AddComponent<Coily>(coily.get(), gridPos, level, qbertPlayer);
 
     return coily;
 }

@@ -7,7 +7,8 @@
 void EggState::Enter(Coily* coily)
 {
     GenerateTargetGridPosition(coily);
-	m_jump.StartJump(coily->GetGridPosition(), m_targetGridPosition);
+    m_jump.Start(coily->GetGridPosition(),
+                 m_targetGridPosition);
 	coily->UpdateAnimation(0);
 }
 
@@ -19,7 +20,8 @@ std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
             m_isDelaying = false;
 
             GenerateTargetGridPosition(coily);
-            m_jump.StartJump(coily->GetGridPosition(), m_targetGridPosition);
+            m_jump.Start(coily->GetGridPosition(),
+                         m_targetGridPosition);
         }
         return nullptr;
     }
