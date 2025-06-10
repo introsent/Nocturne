@@ -18,7 +18,7 @@ void FlyingState::InitializeFlight(QBertPlayer* player) {
     m_currentPhase = FlyingPhase::Flying;
 
     // Get disc reference (non-owning)
-    m_pDisc = DiscManager::GetInstance().GetDiscAt(player->GetGridPosition()).get();
+    m_pDisc = DiscManager::GetInstance().GetDiscAt(player->GetGridPosition());
     if (!m_pDisc) return;
 
     // Cache positions

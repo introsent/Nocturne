@@ -38,12 +38,12 @@ void load()
         .WithTexture("../Data/background.png", -2.f, 1.f)
         .SetPosition(glm::vec3(0.f, 0.f, 0.f))
         .Build();
-    level1Scene.Add(bg);
+    level1Scene.Add(std::move(bg));
 
     // 2) Add a LevelController GameObject which will spawn everything
-    auto levelController = std::make_shared<dae::GameObject>();
+    auto levelController = std::make_unique<dae::GameObject>();
     levelController->AddComponent<LevelComponent>(levelController.get(), 1);
-    level1Scene.Add(levelController);
+    level1Scene.Add(std::move(levelController));
 
 
     //// Bind WASD for char1 (keyboard)

@@ -18,11 +18,11 @@ public:
 
 private:
     std::unique_ptr<Level> m_pLevel;
-    std::vector<std::shared_ptr<dae::GameObject>> m_TileGOs;
-    std::shared_ptr<dae::GameObject> m_pQBertGO;
-    std::vector<std::shared_ptr<dae::GameObject>> m_DiscGOs;
+    std::vector<dae::GameObject*> m_TileGOs;
+    dae::GameObject* m_pQBertGO;
+    std::vector<dae::GameObject*> m_DiscGOs;
 
-    std::vector<std::pair<glm::ivec2, std::shared_ptr<dae::GameObject>>> m_DiscList;
+    std::vector<std::pair<glm::ivec2, dae::GameObject*>> m_DiscList;
 
     std::vector<std::pair<std::string, glm::ivec2>> m_EnemySpawns;
 	std::unique_ptr<EnemyPrefabs> m_enemyPrefabs = std::make_unique<EnemyPrefabs>();
@@ -30,6 +30,7 @@ private:
     //Atlas functions
     void SpawnTiles();
     void OnTileColored(const Tile& tile) const;
+    void OnLevelCompleted();
 
 	//Qbert functions
     void SpawnQBert();

@@ -12,11 +12,11 @@ public:
         return instance;
     }
 
-    void RegisterDisc(const glm::ivec2& gridPos, std::shared_ptr<dae::GameObject> pDisc) {
-        m_DiscMap[gridPos] = std::move(pDisc);
+    void RegisterDisc(const glm::ivec2& gridPos, dae::GameObject* pDisc) {
+        m_DiscMap[gridPos] = pDisc;
     }
 
-    std::shared_ptr<dae::GameObject> GetDiscAt(const glm::ivec2& gridPos) const {
+    dae::GameObject* GetDiscAt(const glm::ivec2& gridPos) const {
         auto it = m_DiscMap.find(gridPos);
         if (it != m_DiscMap.end()) {
             return it->second;
@@ -35,6 +35,6 @@ private:
     DiscManager(const DiscManager&) = delete;
     DiscManager& operator=(const DiscManager&) = delete;
 
-    std::unordered_map<glm::ivec2, std::shared_ptr<dae::GameObject>, IVec2Hash, IVec2Equal> m_DiscMap;
+    std::unordered_map<glm::ivec2, dae::GameObject*, IVec2Hash, IVec2Equal> m_DiscMap;
 };
 

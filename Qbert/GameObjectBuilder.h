@@ -13,7 +13,7 @@
 
 class GameObjectBuilder {
 public:
-    GameObjectBuilder() : object(std::make_shared<dae::GameObject>()) {}
+    GameObjectBuilder() : object(std::make_unique<dae::GameObject>()) {}
 
     // Add a texture component and store it for animation
     GameObjectBuilder& WithTexture(const std::string& textureFile, float depth, float scale) {
@@ -77,11 +77,11 @@ public:
     }
 
     // Return the fully built GameObject
-    std::shared_ptr<dae::GameObject> Build() {
-        return object;
+    std::unique_ptr<dae::GameObject> Build() {
+        return std::move(object);
     }
 
 private:
-    std::shared_ptr<dae::GameObject> object;
+    std::unique_ptr<dae::GameObject> object;
     dae::TextureComponent* textureComp = nullptr; // Store texture component for animation
 };

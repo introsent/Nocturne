@@ -7,13 +7,13 @@
 #include "SceneManager.h"
 
 void DeadState::Enter(QBertPlayer*) {
-    auto dialogueCloud = std::make_shared<dae::GameObject>();
+    auto dialogueCloud = std::make_unique<dae::GameObject>();
     dialogueCloud->AddComponent<dae::TextureComponent>(dialogueCloud.get(), "Qbert Curses.png");
     dialogueCloud->SetParent(owner);
     dialogueCloud->SetLocalPosition(m_dialogueCloudLocalOffset);
 
-    m_dialogueCloud = dialogueCloud;
-    dae::SceneManager::GetInstance().GetActiveScene()->Add(m_dialogueCloud);
+    m_dialogueCloud = dialogueCloud.get();
+    dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(dialogueCloud));
 
     m_deathTimer = 0.f;
 }
@@ -29,6 +29,6 @@ std::unique_ptr<QBertState> DeadState::Update(QBertPlayer* player, float deltaTi
 
 void DeadState::Exit(QBertPlayer*)
 {
-    dae::SceneManager::GetInstance().GetActiveScene()->Remove(m_dialogueCloud);
-    m_dialogueCloud.reset();
+    m_dialogueCloud->MarkForDestroy();
+
 }

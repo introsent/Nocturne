@@ -16,6 +16,7 @@
 #include "Coily.h"
 #include "EnemyPrefabs.h"
 #include "GameObjectBuilder.h"
+#include <ranges> 
 
 LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
     : Component(owner)
@@ -30,6 +31,7 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
                {"Coily", {0, 1}} };
     SpawnEnemies();
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
+    m_pLevel->OnLevelCompleted.Subscribe([this]() { OnLevelCompleted(); });
 }
 
 void LevelComponent::Update(float) {}
@@ -57,9 +59,10 @@ void LevelComponent::SpawnTiles() {
             animationComp->SetFrame(frame);
         }
 
-        m_TileGOs.push_back(tileGO);
+
+        m_TileGOs.emplace_back(tileGO.get());
         if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
-            scene->Add(tileGO);
+            scene->Add(std::move(tileGO));
         }
     }
 }
@@ -85,6 +88,11 @@ void LevelComponent::OnTileColored(const Tile& tile) const
         }
     }
 }
+void LevelComponent::OnLevelCompleted()
+{
+    dae::SceneManager::GetInstance().GetActiveScene()->RemoveAll();
+}
+
 void LevelComponent::SpawnQBert() {
     auto startTile = m_pLevel->GetTileAt({ 0, 0 });
     glm::vec2 worldPos = GridToWorldCharacter(startTile->GetGridPosition());
@@ -101,9 +109,9 @@ void LevelComponent::SpawnQBert() {
         animationComp->SetFrame(3);
     }
 
-    m_pQBertGO = qbertGO;
+    m_pQBertGO = qbertGO.get();
     if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
-        scene->Add(qbertGO);
+        scene->Add(std::move(qbertGO));
     }
 
     BindCommands();
@@ -112,23 +120,23 @@ void LevelComponent::SpawnQBert() {
 void LevelComponent::BindCommands() const
 {
 	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_w, InputState::Up,
-		std::make_unique<MoveCommand>(m_pQBertGO.get(), UP_RIGHT));
+		std::make_unique<MoveCommand>(m_pQBertGO, UP_RIGHT));
 	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_s, InputState::Up,
-		std::make_unique<MoveCommand>(m_pQBertGO.get(), DOWN_LEFT));
+		std::make_unique<MoveCommand>(m_pQBertGO, DOWN_LEFT));
 	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_a, InputState::Up,
-		std::make_unique<MoveCommand>(m_pQBertGO.get(),UP_LEFT));
+		std::make_unique<MoveCommand>(m_pQBertGO,UP_LEFT));
 	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_d, InputState::Up,
-		std::make_unique<MoveCommand>(m_pQBertGO.get(),  DOWN_RIGHT));
+		std::make_unique<MoveCommand>(m_pQBertGO,  DOWN_RIGHT));
 
 
     dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Pressed,
-                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), UP_RIGHT));   // Up
+                                                           std::make_unique<MoveCommand>(m_pQBertGO, UP_RIGHT));   // Up
     dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Pressed,
-                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), DOWN_LEFT));    // Down
+                                                           std::make_unique<MoveCommand>(m_pQBertGO, DOWN_LEFT));    // Down
     dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadLeft), InputState::Pressed,
-                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), UP_LEFT));   // Left
+                                                           std::make_unique<MoveCommand>(m_pQBertGO, UP_LEFT));   // Left
     dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadRight), InputState::Pressed,
-                                                           std::make_unique<MoveCommand>(m_pQBertGO.get(), DOWN_RIGHT));    // Right
+                                                           std::make_unique<MoveCommand>(m_pQBertGO, DOWN_RIGHT));    // Right
 }
 
 void LevelComponent::SpawnDiscs()
@@ -159,12 +167,12 @@ void LevelComponent::SpawnDiscs()
             animComp->SetAutoAdvance(false);
         }
 
-        m_DiscGOs.push_back(discGO);
+        auto pDisc = m_DiscGOs.emplace_back(discGO.get());
         if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
-            scene->Add(discGO);
+            scene->Add(std::move(discGO));
         }
 
-        DiscManager::GetInstance().RegisterDisc(tilePtr->GetGridPosition(), discGO);
+        DiscManager::GetInstance().RegisterDisc(tilePtr->GetGridPosition(), pDisc);
         ++spawned;
     }
 }
@@ -176,7 +184,7 @@ void LevelComponent::SpawnEnemies()
         auto enemy = m_enemyPrefabs->CreateEnemy(enemyType, m_pLevel.get(), gridPos, m_pQBertGO->GetComponent<QBertPlayer>());
         if (enemy) {
             if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
-                scene->Add(enemy);
+                scene->Add(std::move(enemy));
             }
         }
     }

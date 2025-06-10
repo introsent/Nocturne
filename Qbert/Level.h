@@ -16,6 +16,7 @@ public:
     int GetLevelNumber() const { return m_levelNumber; }
 
     void HandleJump(const glm::ivec2& gridPos);
+    void CheckForComplition();
     bool IsCompleted() const;
     Tile* GetTileAt(const glm::ivec2& gridPos) const;
     const std::vector<std::unique_ptr<Tile>>& GetTiles() const;

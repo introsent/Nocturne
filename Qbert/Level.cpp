@@ -2,6 +2,7 @@
 #include "Tile.h"
 #include "ColorRule.h"
 #include <random>
+#include <ranges>
 
 Level::Level(int levelNumber, int numRows)
     : m_levelNumber(levelNumber),
@@ -101,11 +102,20 @@ void Level::HandleJump(const glm::ivec2& gridPos)
         {
             OnTileColored.Invoke(*tile);
         }
-        if (m_colorRule->IsCompleted(m_tiles))
-        {
-            m_hasCompleted = true;
-            OnLevelCompleted.Invoke();
-        }
+        CheckForComplition();
+    }
+}
+
+void Level::CheckForComplition()
+{
+    auto normalTilesView = m_tiles
+        | std::views::filter([](const std::unique_ptr<Tile>& tile) {
+        return tile->GetType() == TileType::NORMAL;
+            });
+
+    if (std::all_of(normalTilesView.begin(), normalTilesView.end(), [](const std::unique_ptr<Tile>& tile) { return tile.get()->HasReachedTarget(); }))
+    {
+        OnLevelCompleted.Invoke();
     }
 }
 

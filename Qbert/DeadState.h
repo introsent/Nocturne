@@ -20,7 +20,7 @@ public:
 
     static constexpr float DEATH_DURATION = 2.f;
 private:
-    std::shared_ptr<dae::GameObject> m_dialogueCloud;
+    dae::GameObject* m_dialogueCloud;
 	const glm::vec3 m_dialogueCloudLocalOffset{ 10.f, -32.f, 0.f };
 
     float m_deathTimer{ 0.f };

@@ -15,7 +15,7 @@ EnemyPrefabs::EnemyPrefabs()
     //m_Prefabs["Sam"] = &CreateSam;
 }
 
-std::shared_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const glm::ivec2& gridPos, QBertPlayer* qbertPlayer) {
+std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const glm::ivec2& gridPos, QBertPlayer* qbertPlayer) {
     glm::vec2 worldPos = GridToWorldCoily(gridPos);
 
     auto coily = GameObjectBuilder()
@@ -33,7 +33,7 @@ std::shared_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const g
     return coily;
 }
 
-std::shared_ptr<dae::GameObject> EnemyPrefabs::CreateEnemy(
+std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateEnemy(
     const std::string& type,
     Level* level,
     const glm::ivec2& gridPos, QBertPlayer* qbertPlayer)

@@ -12,33 +12,39 @@ Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
 
-void Scene::Add(std::shared_ptr<GameObject> object)
+void Scene::Add(std::unique_ptr<GameObject> object)
 {
 	m_objects.emplace_back(std::move(object));
 }
 
-void Scene::Remove(std::shared_ptr<GameObject> object)
+void Scene::Remove(std::unique_ptr<GameObject> object)
 {
 	m_objects.erase(std::remove(m_objects.begin(), m_objects.end(), object), m_objects.end());
 }
 
 void Scene::RemoveAll()
 {
-	m_objects.clear();
+	m_clearRequested = true;
 }
 
-void Scene::Update(float deltaTime)
-{
-	for (auto it = m_objects.begin(); it != m_objects.end(); )
-	{
-		if ((*it)->IsMarkedForDestroy())
-			it = m_objects.erase(it);
-		else
-		{
-			(*it)->Update(deltaTime);
-			++it;
-		}
-	}
+void Scene::Update(float deltaTime) {
+    // Handle deferred clear first
+    if (m_clearRequested) {
+        m_objects.clear();
+        m_clearRequested = false;
+        return; // Skip updating this frame
+    }
+
+    // Existing update loop
+    for (auto it = m_objects.begin(); it != m_objects.end(); ) {
+        if ((*it)->IsMarkedForDestroy()) {
+            it = m_objects.erase(it);
+        }
+        else {
+            (*it)->Update(deltaTime);
+            ++it;
+        }
+    }
 }
 
 void Scene::Render() const {
