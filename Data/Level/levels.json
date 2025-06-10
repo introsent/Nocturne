@@ -1,0 +1,109 @@
+{
+  "levels": [
+    {
+      "index": 1,
+      "color_rule": "OneHitRule",
+      "stages": [
+        {
+          "stage": 1,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 5.0 }
+          ]
+        },
+        {
+          "stage": 2,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 5.0 },
+            { "type": "Slick", "start_position": [3, 3], "spawn_time": 10.0 }
+          ]
+        },
+        {
+          "stage": 3,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 5.0 },
+            { "type": "Ugg", "start_position": [4, 4], "spawn_time": 15.0 }
+          ]
+        },
+        {
+          "stage": 4,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 5.0 },
+            { "type": "Sam", "start_position": [2, 2], "spawn_time": 20.0 }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "color_rule": "TwoHitRule",
+      "stages": [
+        {
+          "stage": 1,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 3.0 },
+            { "type": "Wrongway", "start_position": [3, 3], "spawn_time": 8.0 }
+          ]
+        },
+        {
+          "stage": 2,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 3.0 },
+            { "type": "Ugg", "start_position": [4, 4], "spawn_time": 10.0 }
+          ]
+        },
+        {
+          "stage": 3,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 3.0 },
+            { "type": "Slick", "start_position": [2, 2], "spawn_time": 15.0 }
+          ]
+        },
+        {
+          "stage": 4,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 3.0 },
+            { "type": "Sam", "start_position": [1, 1], "spawn_time": 20.0 }
+          ]
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "color_rule": "ToggleRule",
+      "stages": [
+        {
+          "stage": 1,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 2.0 },
+            { "type": "Ugg", "start_position": [4, 4], "spawn_time": 5.0 },
+            { "type": "Wrongway", "start_position": [3, 3], "spawn_time": 8.0 }
+          ]
+        },
+        {
+          "stage": 2,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 2.0 },
+            { "type": "Slick", "start_position": [2, 2], "spawn_time": 7.0 },
+            { "type": "Sam", "start_position": [1, 1], "spawn_time": 12.0 }
+          ]
+        },
+        {
+          "stage": 3,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 2.0 },
+            { "type": "Ugg", "start_position": [4, 4], "spawn_time": 6.0 },
+            { "type": "Slick", "start_position": [3, 3], "spawn_time": 10.0 }
+          ]
+        },
+        {
+          "stage": 4,
+          "enemies": [
+            { "type": "Coily", "start_position": [0, 1], "spawn_time": 2.0 },
+            { "type": "Wrongway", "start_position": [3, 3], "spawn_time": 5.0 },
+            { "type": "Sam", "start_position": [2, 2], "spawn_time": 10.0 }
+          ]
+        }
+      ]
+    }
+  ]
+}

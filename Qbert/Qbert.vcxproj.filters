@@ -129,6 +129,9 @@
     <ClCompile Include="DyingCoilyState.cpp">
       <Filter>Header Files\Enemies\Coily\States</Filter>
     </ClCompile>
+    <ClCompile Include="LevelData.cpp">
+      <Filter>Header Files\Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterFactory.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="DyingCoilyState.h">
       <Filter>Header Files\Enemies\Coily\States</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelData.h">
+      <Filter>Header Files\Level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -42,7 +42,7 @@ void load()
 
     // 2) Add a LevelController GameObject which will spawn everything
     auto levelController = std::make_unique<dae::GameObject>();
-    levelController->AddComponent<LevelComponent>(levelController.get(), 1);
+    levelController->AddComponent<LevelComponent>(levelController.get(), 1, 1);
     level1Scene.Add(std::move(levelController));
 
 

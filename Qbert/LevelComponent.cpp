@@ -18,23 +18,60 @@
 #include "GameObjectBuilder.h"
 #include <ranges> 
 
-LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
+LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stageIndex)
     : Component(owner)
     , m_pLevel(std::make_unique<Level>(levelIndex))
+    , m_LevelIndex(levelIndex)
+    , m_StageIndex(stageIndex)
 {
+
+    auto levels = LevelDataLoader::LoadLevels("../Data/Level/levels.json");
+    for (const auto& level : levels) {
+        if (level.index == levelIndex) {
+            for (const auto& stage : level.stages) {
+                if (stage.stage == stageIndex) {
+                    m_StageEnemies = stage.enemies;
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
     SpawnTiles();
     SpawnDiscs();
     SpawnQBert();
 
-
-    m_EnemySpawns = {
-               {"Coily", {0, 1}} };
-    SpawnEnemies();
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
     m_pLevel->OnLevelCompleted.Subscribe([this]() { OnLevelCompleted(); });
 }
 
-void LevelComponent::Update(float) {}
+void LevelComponent::Update(float deltaTime) {
+    if (m_LevelCompleted) return;
+
+    m_AccumulatedTime += deltaTime;
+
+    // Spawn enemies based on timing
+    for (auto it = m_StageEnemies.begin(); it != m_StageEnemies.end(); ) {
+        if (m_AccumulatedTime >= it->spawn_time) {
+            auto enemy = m_enemyPrefabs->CreateEnemy(
+                it->type,
+                m_pLevel.get(),
+                it->start_position,
+                m_pQBertGO->GetComponent<QBertPlayer>()
+            );
+
+            if (enemy && dae::SceneManager::GetInstance().GetActiveScene()) {
+                dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemy));
+            }
+            it = m_StageEnemies.erase(it);
+        }
+        else {
+            ++it;
+        }
+    }
+}
+
 
 
 void LevelComponent::SpawnTiles() {
@@ -90,6 +127,7 @@ void LevelComponent::OnTileColored(const Tile& tile) const
 }
 void LevelComponent::OnLevelCompleted()
 {
+    m_LevelCompleted = true;
     dae::SceneManager::GetInstance().GetActiveScene()->RemoveAll();
 }
 

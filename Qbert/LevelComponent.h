@@ -7,25 +7,34 @@
 #include <unordered_map>
 #include <string>
 #include "EnemyPrefabs.h"
+#include "LevelData.h"
 
 class LevelComponent final : public dae::Component {
 public:
-    explicit LevelComponent(dae::GameObject* pOwner, int levelIndex);
+    explicit LevelComponent(dae::GameObject* pOwner, int levelIndex, int stageIndex);
     ~LevelComponent() override = default;
 
     void Update(float deltaTime) override;
     void Render() const override {}
 
 private:
+    std::vector<EnemySpawnData> m_StageEnemies;
+    float m_AccumulatedTime = 0.f;
+    bool m_LevelCompleted = false;
+
     std::unique_ptr<Level> m_pLevel;
     std::vector<dae::GameObject*> m_TileGOs;
     dae::GameObject* m_pQBertGO;
     std::vector<dae::GameObject*> m_DiscGOs;
 
+    int m_LevelIndex{ 0 };
+    int m_StageIndex{ 0 };
+
     std::vector<std::pair<glm::ivec2, dae::GameObject*>> m_DiscList;
 
     std::vector<std::pair<std::string, glm::ivec2>> m_EnemySpawns;
 	std::unique_ptr<EnemyPrefabs> m_enemyPrefabs = std::make_unique<EnemyPrefabs>();
+
 
     //Atlas functions
     void SpawnTiles();
