@@ -9,14 +9,15 @@
 #include "FPSComponent.h"
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
+#include "AnimationComponent.h"
 
 class GameObjectBuilder {
 public:
     GameObjectBuilder() : object(std::make_shared<dae::GameObject>()) {}
 
-    // Add a texture component
+    // Add a texture component and store it for animation
     GameObjectBuilder& WithTexture(const std::string& textureFile, float depth, float scale) {
-        object->AddComponent<dae::TextureComponent>(object.get(), textureFile, depth, scale);
+        textureComp = object->AddComponent<dae::TextureComponent>(object.get(), textureFile, depth, scale);
         return *this;
     }
 
@@ -54,6 +55,21 @@ public:
         return *this;
     }
 
+    // Add an animation component using the stored texture component
+    GameObjectBuilder& WithAnimation(const glm::vec2& frameSize, int totalFrames, float timePerFrame, int rows, int columns) {
+        if (textureComp) {
+            object->AddComponent<AnimationComponent>(object.get(), textureComp, frameSize, totalFrames, timePerFrame, rows, columns);
+        }
+        return *this;
+    }
+
+    // Generic method to add any component
+    template <typename T, typename... Args>
+    GameObjectBuilder& WithComponent(Args&&... args) {
+        object->AddComponent<T>(object.get(), std::forward<Args>(args)...);
+        return *this;
+    }
+
     // Set the local position of the GameObject
     GameObjectBuilder& SetPosition(const glm::vec3& pos) {
         object->SetLocalPosition(pos);
@@ -67,4 +83,5 @@ public:
 
 private:
     std::shared_ptr<dae::GameObject> object;
+    dae::TextureComponent* textureComp = nullptr; // Store texture component for animation
 };
