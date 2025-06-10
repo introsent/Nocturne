@@ -15,8 +15,8 @@ public:
     GameObjectBuilder() : object(std::make_shared<dae::GameObject>()) {}
 
     // Add a texture component
-    GameObjectBuilder& WithTexture(const std::string& textureFile) {
-        object->AddComponent<dae::TextureComponent>(object.get(), textureFile);
+    GameObjectBuilder& WithTexture(const std::string& textureFile, float depth, float scale) {
+        object->AddComponent<dae::TextureComponent>(object.get(), textureFile, depth, scale);
         return *this;
     }
 
@@ -68,4 +68,3 @@ public:
 private:
     std::shared_ptr<dae::GameObject> object;
 };
-#pragma once

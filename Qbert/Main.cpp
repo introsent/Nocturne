@@ -35,7 +35,7 @@ void load()
     dae::SceneManager::GetInstance().SetActiveScene("Level1");
     // Create background and logo objects.
     auto bg = GameObjectBuilder()
-        .WithTexture("../Data/background.png")
+        .WithTexture("../Data/background.png", -2.f, 1.f)
         .SetPosition(glm::vec3(0.f, 0.f, 0.f))
         .Build();
     level1Scene.Add(bg);

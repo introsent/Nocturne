@@ -21,7 +21,7 @@ std::shared_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const g
     coily->AddComponent<dae::TranslationComponent>(coily.get());
 
     // Configure Coily-specific components
-    auto textureComp = coily->AddComponent<dae::TextureComponent>(coily.get(), "Coily Spritesheet.png", 2.f);
+    auto textureComp = coily->AddComponent<dae::TextureComponent>(coily.get(), "Coily Spritesheet.png", 0.f, 2.f);
     auto animationComp = coily->AddComponent<AnimationComponent>(
         coily.get(),
         textureComp,

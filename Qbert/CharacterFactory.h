@@ -4,12 +4,12 @@
 #include "GameObjectBuilder.h"
 
 // Factory function to create a character with texture, translation, health, and score components.
-inline std::shared_ptr<dae::GameObject> CreateCharacter(const std::string& texture, const glm::vec3& pos,
+inline std::shared_ptr<dae::GameObject> CreateCharacter(const std::string& texture, float depth, float scale, const glm::vec3& pos,
     dae::HealthComponent** outHealth = nullptr,
     dae::ScoreComponent** outScore = nullptr)
 {
     return GameObjectBuilder()
-        .WithTexture(texture)
+        .WithTexture(texture, depth, scale)
         .WithTranslation()
         .WithHealth(outHealth)
         .WithScore(outScore)

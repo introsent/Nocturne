@@ -1,7 +1,5 @@
 #include "TextureComponent.h"
-
 #include <SDL_render.h>
-
 #include "GameObject.h"
 #include "Renderer.h"
 #include "ResourceManager.h"
@@ -9,41 +7,42 @@
 
 namespace dae
 {
-    TextureComponent::TextureComponent(GameObject* owner, const std::string& textureFile, float scale)
+    TextureComponent::TextureComponent(GameObject* owner, const std::string& textureFile, float depth, float scale)
         : Component(owner)
+        , m_depth(depth)
+        , m_scale(scale)
     {
-        m_scale = scale;
-        SetTexture(textureFile);  // Initialize texture when component is created
+        SetTexture(textureFile);
     }
 
     void TextureComponent::Render() const
     {
-        if (m_texture)
+        if (m_texture && GetOwner())
         {
-            if (auto owner = GetOwner())  // Get the owner directly from base class (GameObject*)
+            const auto pos = GetOwner()->GetWorldPosition();
+            if (m_srcRect.z == 0.f && m_srcRect.w == 0.f)
             {
-              
-                const auto pos = owner->GetWorldPosition();
-                if (m_srcRect.z == 0.f && m_srcRect.w == 0.f)
-                {
-                    Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
-                }
-                else
-                {
-                    Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_srcRect, m_scale);
-                }
-                
+                Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y);
+            }
+            else
+            {
+                Renderer::GetInstance().RenderTexture(*m_texture, pos.x, pos.y, m_srcRect, m_scale);
             }
         }
     }
 
     void TextureComponent::SetTexture(const std::string& filename)
     {
-        m_texture = ResourceManager::GetInstance().LoadTexture(filename);  // Load texture using ResourceManager
+        m_texture = ResourceManager::GetInstance().LoadTexture(filename);
     }
 
     void TextureComponent::SetSrcRect(const glm::vec4& srcRect)
     {
         m_srcRect = srcRect;
+    }
+
+    void TextureComponent::SetDepth(float depth)
+    {
+        m_depth = depth;
     }
 }

@@ -12,9 +12,11 @@ DyingCoilyState::DyingCoilyState(dae::GameObject* owner)
         15.0f  // Acceleration
     ))
 {
+
 }
 
 void DyingCoilyState::Enter(Coily* coily) {
+    m_owner->GetComponent<dae::TextureComponent>()->SetDepth(-1.f);
     // Determine fall direction based on current orientation
     const glm::ivec2 dir = coily->GetCurrentLookAtDirection();
 
@@ -49,20 +51,18 @@ void DyingCoilyState::Enter(Coily* coily) {
 
     // Start the fall movement
     m_fallMovement->Start(m_fallStart, fallTarget);
-
-    // Update to death animation frame
-    coily->UpdateAnimation(9); // Assuming frame 9 is death frame
 }
 
 std::unique_ptr<CoilyState> DyingCoilyState::Update(Coily*, float deltaTime) {
     if (m_fallMovement->Update(deltaTime)) {
         // Fall complete - destroy the object
-        //dae::SceneManager::GetInstance().GetActiveScene()->Remove(m_owner);
+        m_owner->MarkForDestroy();
         return nullptr;
     }
 
     // Update position during fall
-    m_owner->SetLocalPosition(m_fallMovement->GetCurrentPosition());
+    const glm::vec3 fallMovementPosition = m_fallMovement->GetCurrentPosition();
+    m_owner->SetLocalPosition(glm::vec3(fallMovementPosition.x, fallMovementPosition.y, -0.5f));
 
 
     return nullptr;

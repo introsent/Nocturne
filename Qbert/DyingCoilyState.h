@@ -13,5 +13,5 @@ public:
 
 private:
     std::unique_ptr<FallMovement> m_fallMovement;
-    glm::vec3 m_fallStart;
+    glm::vec3 m_fallStart {};
 };

@@ -26,7 +26,7 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex)
 
 
     m_EnemySpawns = {
-               {"Coily", {0, 0}} };
+               {"Coily", {0, 1}} };
     SpawnEnemies();
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
 }
@@ -51,7 +51,7 @@ void LevelComponent::SpawnTiles() {
             ->Translate(glm::vec3(worldPos.x, worldPos.y, -tile.GetGridPosition().y));
 
         // Texture and animation setup
-        auto textureComp = tileGO->AddComponent<dae::TextureComponent>(tileGO.get(), m_map.tex.file, 2.f);
+        auto textureComp = tileGO->AddComponent<dae::TextureComponent>(tileGO.get(), m_map.tex.file, -0.5f, 2.f);
 
         auto animationComp = tileGO->AddComponent<AnimationComponent>(
             tileGO.get(),
@@ -103,7 +103,7 @@ void LevelComponent::SpawnQBert() {
     auto translation = qbertGO->AddComponent<dae::TranslationComponent>(qbertGO.get());
     translation->Translate(glm::vec3(worldPos.x, worldPos.y, 0.f));
 
-    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), m_qbert.tex.file, 2.f);
+    auto textureComp = qbertGO->AddComponent<dae::TextureComponent>(qbertGO.get(), m_qbert.tex.file, 0.f, 2.f);
     auto animationComp = qbertGO->AddComponent<AnimationComponent>(
         qbertGO.get(),
         textureComp,
@@ -166,7 +166,7 @@ void LevelComponent::SpawnDiscs()
             ->Translate({ pos.x, pos.y, 0.f });
 
         // texture + animation setup as before…
-        auto texComp = discGO->AddComponent<dae::TextureComponent>(discGO.get(), m_disc.tex.file, 2.f);
+        auto texComp = discGO->AddComponent<dae::TextureComponent>(discGO.get(), m_disc.tex.file, 0.f, 2.f);
         auto animComp = discGO->AddComponent<AnimationComponent>(
             discGO.get(),
             texComp,

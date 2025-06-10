@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 #include <algorithm>
+#include "TextureComponent.h"
 
 using namespace dae;
 
@@ -40,12 +41,26 @@ void Scene::Update(float deltaTime)
 	}
 }
 
-void Scene::Render() const
-{
-	for (const auto& object : m_objects)
-	{
-		object->Render();
-	}
+void Scene::Render() const {
+    // Collect all renderable components with their game objects
+    std::vector<std::pair<float, const GameObject*>> renderables;
+
+    for (const auto& object : m_objects) {
+        if (auto textureComp = object->GetComponent<TextureComponent>()) {
+            renderables.emplace_back(textureComp->GetDepth(), object.get());
+        }
+    }
+
+    // Sort by depth (lowest depth first)
+    std::sort(renderables.begin(), renderables.end(),
+        [](const auto& a, const auto& b) {
+            return a.first < b.first;
+        });
+
+    // Render in sorted order
+    for (const auto& [depth, object] : renderables) {
+        object->Render();
+    }
 }
 
 void dae::Scene::RenderUI()
