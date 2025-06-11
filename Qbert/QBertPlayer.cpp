@@ -47,13 +47,16 @@ void QBertPlayer::TransitionTo(std::unique_ptr<QBertState> newState) {
 }
 
 void QBertPlayer::MoveTo(const glm::ivec2& gridPos) {
-    m_CurrentGridPos = gridPos;
-    GetOwner()->SetLocalPosition(glm::vec3(GridToWorldCharacter(gridPos), 0.f));
+    if (m_currentGridPos != gridPos) {
+        m_currentGridPos = gridPos;
+        OnPositionChanged.Invoke(m_currentGridPos); 
+        GetOwner()->SetLocalPosition(glm::vec3(GridToWorldCharacter(gridPos), 0.f));
+    }
 }
 
 void QBertPlayer::LookAt(const glm::ivec2& direction)
 {
-    m_CurrentDirection = direction;
+    m_currentDirection = direction;
 }
 
 void QBertPlayer::UpdateAnimation() 
@@ -65,7 +68,7 @@ void QBertPlayer::UpdateAnimation()
         {DOWN_LEFT, 3}
     };
 
-    if (const auto it = directionMap.find(m_CurrentDirection); it != directionMap.end()) {
+    if (const auto it = directionMap.find(m_currentDirection); it != directionMap.end()) {
         m_pAnimation->SetFrame(it->second);
     }
 }

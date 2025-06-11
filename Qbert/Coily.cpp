@@ -1,9 +1,8 @@
 #include "Coily.h"
 #include "Directions.h"
 
-Coily::Coily(dae::GameObject* owner, glm::ivec2 spawnGridPosition, Level* level, QBertPlayer* qbert) : 
-    Enemy(owner, level), 
-    m_pQBert(qbert), 
+Coily::Coily(dae::GameObject* owner, glm::ivec2 spawnGridPosition, Level* level, const IPositionProxy& qbertPositionProxy) :
+    Enemy(owner, level, qbertPositionProxy),
 	m_desiredSpawnGridPosition(spawnGridPosition)
 {
     m_pAnimation = owner->GetComponent<AnimationComponent>();
@@ -14,7 +13,6 @@ void Coily::UpdateAnimation(int frame)
 {  
     m_pAnimation->SetFrame(frame);  
 }
-
 
 void Coily::Update(float deltaTime)
 {

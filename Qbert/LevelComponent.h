@@ -8,6 +8,7 @@
 #include <string>
 #include "EnemyPrefabs.h"
 #include "LevelData.h"
+#include "QbertPositionProxy.h"
 
 class LevelComponent final : public dae::Component {
 public:
@@ -24,7 +25,10 @@ private:
 
     std::unique_ptr<Level> m_pLevel;
     std::vector<dae::GameObject*> m_TileGOs;
+
     dae::GameObject* m_pQBertGO;
+    std::unique_ptr<QbertPositionProxy> m_pQbertPositionProxy;
+
     std::vector<dae::GameObject*> m_DiscGOs;
 
     int m_LevelIndex{ 0 };
@@ -46,8 +50,6 @@ private:
     void BindCommands() const;
 
     void SpawnDiscs();
-
-    void SpawnEnemies();
 
     struct TextureConfig {
         char const* file;

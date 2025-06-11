@@ -58,7 +58,7 @@ void LevelComponent::Update(float deltaTime) {
                 it->type,
                 m_pLevel.get(),
                 it->start_position,
-                m_pQBertGO->GetComponent<QBertPlayer>()
+                *m_pQbertPositionProxy
             );
 
             if (enemy && dae::SceneManager::GetInstance().GetActiveScene()) {
@@ -153,6 +153,14 @@ void LevelComponent::SpawnQBert() {
     }
 
     BindCommands();
+
+    auto qbertPlayer = m_pQBertGO->GetComponent<QBertPlayer>();
+    m_pQbertPositionProxy = std::make_unique<QbertPositionProxy>(qbertPlayer);
+
+    qbertPlayer->OnPositionChanged.Subscribe([this](const glm::ivec2& newPos) {
+        m_pQbertPositionProxy->UpdatePosition(newPos);
+    });
+  
 }
 
 void LevelComponent::BindCommands() const
@@ -216,14 +224,4 @@ void LevelComponent::SpawnDiscs()
 }
 
 
-void LevelComponent::SpawnEnemies()
-{
-    for (const auto& [enemyType, gridPos] : m_EnemySpawns) {
-        auto enemy = m_enemyPrefabs->CreateEnemy(enemyType, m_pLevel.get(), gridPos, m_pQBertGO->GetComponent<QBertPlayer>());
-        if (enemy) {
-            if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
-                scene->Add(std::move(enemy));
-            }
-        }
-    }
-}
+

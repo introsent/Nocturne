@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "QBertState.h"
 #include <memory>
+#include "Event.h"
 
 class Level;
 class AnimationComponent;
@@ -22,12 +23,14 @@ public:
     void Respawn();
 
     Level* GetLevel() const { return m_pLevel; }
-    glm::ivec2 GetGridPosition() const { return m_CurrentGridPos; }
+    glm::ivec2 GetGridPosition() const { return m_currentGridPos; }
     bool IsAcceptingInput() const { return m_pCurrentState ? m_pCurrentState->CanAcceptInput() : false; }
+
+    Event<const glm::ivec2&> OnPositionChanged;
 private:
     std::unique_ptr<QBertState> m_pCurrentState;
     Level* m_pLevel;
-    glm::ivec2 m_CurrentGridPos{};
-    glm::ivec2 m_CurrentDirection{};
+    glm::ivec2 m_currentGridPos{};
+    glm::ivec2 m_currentDirection{};
     AnimationComponent* m_pAnimation = nullptr;
 };

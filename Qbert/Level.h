@@ -3,7 +3,7 @@
 #include <memory>
 #include <vec2.hpp>
 #include "Event.h"
-#include "ColorRule.h"  // Include ColorRule header
+#include "ColorRule.h" 
 
 class Tile;
 class Level

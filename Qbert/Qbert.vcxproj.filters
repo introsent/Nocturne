@@ -132,6 +132,9 @@
     <ClCompile Include="LevelData.cpp">
       <Filter>Header Files\Level</Filter>
     </ClCompile>
+    <ClCompile Include="QbertPositionProxy.cpp">
+      <Filter>Header Files\Qbert</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CharacterFactory.h">
@@ -253,6 +256,12 @@
     </ClInclude>
     <ClInclude Include="LevelData.h">
       <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionProxy.h">
+      <Filter>Header Files\Qbert</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertPositionProxy.h">
+      <Filter>Header Files\Qbert</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

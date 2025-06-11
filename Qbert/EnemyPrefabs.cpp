@@ -15,14 +15,14 @@ EnemyPrefabs::EnemyPrefabs()
     //m_Prefabs["Sam"] = &CreateSam;
 }
 
-std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const glm::ivec2& gridPos, QBertPlayer* qbertPlayer) {
+std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const glm::ivec2& gridPos, const IPositionProxy& qbertPositionProxy) {
     glm::vec2 worldPos = GridToWorldCoily(gridPos);
 
     auto coily = GameObjectBuilder()
         .WithTranslation()
         .WithTexture("Coily Spritesheet.png", 0.f, 2.f)
         .WithAnimation(glm::vec2(16.f, 32.f), 10, 0.2f, 1, 10)
-        .WithComponent<Coily>(gridPos, level, qbertPlayer)
+        .WithComponent<Coily>(gridPos, level, qbertPositionProxy)
         .SetPosition(glm::vec3(worldPos.x, worldPos.y, 0.f))
         .Build();
 
@@ -36,10 +36,10 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const g
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateEnemy(
     const std::string& type,
     Level* level,
-    const glm::ivec2& gridPos, QBertPlayer* qbertPlayer)
+    const glm::ivec2& gridPos, const IPositionProxy& qbertPositionProxy)
 {
     if (auto it = m_Prefabs.find(type); it != m_Prefabs.end()) {
-        return it->second(level, gridPos, qbertPlayer);
+        return it->second(level, gridPos, qbertPositionProxy);
     }
     return nullptr;
 }
