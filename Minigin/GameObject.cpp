@@ -29,6 +29,19 @@ namespace dae {
     {
     }
 
+    GameObject::~GameObject() {
+        // Remove self from parent's children list
+        if (m_parent) {
+            m_parent->RemoveChild(this);
+        }
+
+        // Clear children's parent pointers
+        for (auto child : m_children) {
+            child->m_parent = nullptr;
+        }
+        m_children.clear();
+    }
+
     // --- PARENTING SYSTEM ---
     void GameObject::SetParent(GameObject* parent, bool keepWorldPosition) {
         if (IsChild(parent) || parent == this || m_parent == parent)
@@ -100,5 +113,13 @@ namespace dae {
         m_positionIsDirty = true;
         for (auto child : m_children)
             child->SetPositionDirty();
+    }
+    void GameObject::MarkForDestroyWithChildren()
+    {
+        MarkForDestroy();
+        for (const auto& child : m_children)
+        {
+            child->MarkForDestroy();
+        }
     }
 } 

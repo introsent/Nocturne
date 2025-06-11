@@ -40,5 +40,7 @@ private:
     glm::vec3 m_landingWorldPos{};   
 
     const glm::vec3 m_qbertLocalOffset{ 0.f, -24.f, 0.f };
-    dae::GameObject* m_pDisc{nullptr};
+    dae::GameObject* m_pDisc = nullptr;
+
+    dae::GameObject* m_originalParent = nullptr;
 };

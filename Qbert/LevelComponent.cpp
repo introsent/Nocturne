@@ -20,7 +20,7 @@
 
 LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stageIndex)
     : Component(owner)
-    , m_pLevel(std::make_unique<Level>(levelIndex))
+    , m_pLevel(std::make_unique<Level>(levelIndex, stageIndex))
     , m_LevelIndex(levelIndex)
     , m_StageIndex(stageIndex)
 {
@@ -66,6 +66,7 @@ void LevelComponent::Update(float deltaTime) {
                 enemy->MarkForDestroy();
             });
 
+            enemyGO->SetParent(GetOwner());
             if (enemyGO && dae::SceneManager::GetInstance().GetActiveScene()) {
                 dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyGO));
             }
@@ -93,10 +94,11 @@ void LevelComponent::SpawnTiles() {
             .SetPosition(glm::vec3(worldPos.x, worldPos.y, -tile.GetGridPosition().y))
             .Build();
 
+        tileGO->SetParent(GetOwner());
         // Set the frame based on tile state
         if (auto animationComp = tileGO->GetComponent<AnimationComponent>()) {
             const int stateRow = tile.GetColorIndex();
-            const int levelColumn = m_pLevel->GetLevelNumber() - 1;
+            const int levelColumn = (m_pLevel->GetLevelNumber() - 1) + (m_pLevel->GetStageNumber() - 1);
             const int frame = stateRow * 6 + levelColumn;
             animationComp->SetFrame(frame);
         }
@@ -133,7 +135,7 @@ void LevelComponent::OnTileColored(const Tile& tile) const
 void LevelComponent::OnLevelCompleted()
 {
     m_LevelCompleted = true;
-    dae::SceneManager::GetInstance().GetActiveScene()->RemoveAll();
+    GetOwner()->MarkForDestroyWithChildren();
 }
 
 void LevelComponent::SpawnQBert() {
@@ -147,6 +149,9 @@ void LevelComponent::SpawnQBert() {
         .WithComponent<QBertPlayer>(m_pLevel.get())
         .SetPosition(glm::vec3(worldPos.x, worldPos.y, 0.f))
         .Build();
+
+
+    qbertGO->SetParent(GetOwner());
 
     if (auto animationComp = qbertGO->GetComponent<AnimationComponent>()) {
         animationComp->SetFrame(3);
@@ -218,7 +223,10 @@ void LevelComponent::SpawnDiscs()
             animComp->SetAutoAdvance(false);
         }
 
+        discGO->SetParent(GetOwner());
+
         auto pDisc = m_DiscGOs.emplace_back(discGO.get());
+        
         if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
             scene->Add(std::move(discGO));
         }
@@ -227,6 +235,3 @@ void LevelComponent::SpawnDiscs()
         ++spawned;
     }
 }
-
-
-

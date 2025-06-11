@@ -10,6 +10,7 @@ FlyingState::FlyingState(dae::GameObject* owner)
     : QBertState(owner) {}
 
 void FlyingState::Enter(QBertPlayer* player) {
+    m_originalParent = owner->GetParent(); // store original parent 
     InitializeFlight(player);
 }
 
@@ -76,7 +77,7 @@ void FlyingState::UpdateFlyingPhase(float deltaTime) {
         if (m_pDisc) {
             m_pDisc->MarkForDestroy();
             m_pDisc = nullptr;
-            owner->SetParent(nullptr);
+            owner->SetParent(m_originalParent);
         }
         m_phaseTimer = 0.f;
         m_currentPhase = FlyingPhase::Dropping;

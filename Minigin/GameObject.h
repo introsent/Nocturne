@@ -13,10 +13,11 @@ namespace dae {
         void RenderUI() const;
 
         GameObject();
-        ~GameObject() = default;
+        ~GameObject();
 
         // --- PARENTING SYSTEM ---
         void SetParent(GameObject* parent, bool keepWorldPosition = false);
+        GameObject* GetParent() const { return m_parent; }
 
         // --- TRANSFORM MANAGEMENT ---
         void SetLocalPosition(const glm::vec3& pos);
@@ -26,6 +27,7 @@ namespace dae {
 
         // --- DESTRUCTION ---
         void MarkForDestroy() { m_isDestroyed = true; }
+        void MarkForDestroyWithChildren();
         bool IsMarkedForDestroy() const { return m_isDestroyed; }
 
         // --- COMPONENT SYSTEM ---

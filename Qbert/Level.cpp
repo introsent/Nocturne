@@ -4,8 +4,8 @@
 #include <random>
 #include <ranges>
 
-Level::Level(int levelNumber, int numRows)
-    : m_levelNumber(levelNumber),
+Level::Level(int levelNumber, int stageNumber, int numRows)
+    : m_levelNumber(levelNumber), m_stageNumber(stageNumber),
     m_rows(numRows)
 {
     switch (m_levelNumber) {

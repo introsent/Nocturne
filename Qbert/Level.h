@@ -9,11 +9,12 @@ class Tile;
 class Level
 {
 public:
-    explicit Level(int levelNumber, int numRows = 7);
+    explicit Level(int levelNumber, int stageNumber, int numRows = 7);
     ~Level();
 
     // New method to get level number
     int GetLevelNumber() const { return m_levelNumber; }
+    int GetStageNumber() const { return m_stageNumber; }
 
     void HandleJump(const glm::ivec2& gridPos);
     void CheckForComplition();
@@ -35,6 +36,7 @@ private:
     void CreateDeathBorder();
 
     int m_levelNumber; 
+    int m_stageNumber;
     int m_rows;
     std::vector<std::unique_ptr<Tile>> m_tiles;
     std::unique_ptr<ColorRule> m_colorRule;
