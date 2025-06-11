@@ -22,6 +22,11 @@ bool Tile::IsInIntermediateState() const { return m_colorIndex == m_intermediate
 int Tile::GetColorIndex() const { return m_colorIndex; }
 void Tile::SetColorIndex(int index) { m_colorIndex = index; }
 
+void Tile::RevertColor()
+{
+    if (m_colorIndex > 0) m_colorIndex--;
+}
+
 // Position/Occupancy
 glm::ivec2 Tile::GetGridPosition() const { return m_gridPos; }
 bool Tile::IsOccupied() const { return m_isOccupied; }

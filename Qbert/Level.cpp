@@ -138,3 +138,8 @@ const std::vector<std::unique_ptr<Tile>>& Level::GetTiles() const
 {
     return m_tiles;
 }
+
+bool Level::IsOffGrid(const glm::ivec2& gridPos) const
+{
+    return !GetTileAt(gridPos) || GetTileAt(gridPos)->GetType() == TileType::DEATH;
+}
