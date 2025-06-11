@@ -16,6 +16,8 @@ public:
     virtual void Exit(QBertPlayer* player) = 0;
     virtual std::string GetName() const = 0;
 
+    virtual std::unique_ptr<QBertState> ProcessHit() { return nullptr; }
+
 protected:
     dae::GameObject* owner = nullptr;
 };

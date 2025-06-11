@@ -13,6 +13,8 @@ public:
     bool CanAcceptInput() const override { return true; }
     std::string GetName() const override { return "Idle"; }
 
+    std::unique_ptr<QBertState> ProcessHit() override;
+
 private:
     bool ShouldDie(QBertPlayer* qbert) const;
     bool ShouldFly(QBertPlayer* qbert) const;

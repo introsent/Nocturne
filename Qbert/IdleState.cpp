@@ -1,6 +1,5 @@
 #include "IdleState.h"
 #include "QBertPlayer.h"
-
 #include "AnimationComponent.h"
 #include "JumpingState.h"
 #include "Tile.h"
@@ -30,7 +29,7 @@ std::unique_ptr<QBertState> IdleState::HandleInput(QBertPlayer* player, const gl
 }
 
 std::unique_ptr<QBertState> IdleState::Update(QBertPlayer* player, float) {
-    if (ShouldDie(player) || player->IsHit()) {
+    if (ShouldDie(player)) {
         return std::make_unique<DeadState>(owner);
     }
     if (ShouldFly(player)) {
@@ -38,6 +37,11 @@ std::unique_ptr<QBertState> IdleState::Update(QBertPlayer* player, float) {
         return std::make_unique<FlyingState>(owner);
     }
     return nullptr;
+}
+
+std::unique_ptr<QBertState> IdleState::ProcessHit()
+{
+    return std::make_unique<DeadState>(owner);
 }
 
 bool IdleState::ShouldDie(QBertPlayer* qbert) const {

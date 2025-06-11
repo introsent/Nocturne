@@ -62,8 +62,10 @@ void LevelComponent::Update(float deltaTime) {
             );
 
             enemyGO->GetComponent<Enemy>()->OnCollisionWithQbert.Subscribe([this](dae::GameObject* enemy) {
-                m_pQBertGO->GetComponent<QBertPlayer>()->TakeHit();
-                enemy->MarkForDestroy();
+                if (m_pQBertGO->GetComponent<QBertPlayer>()->TakeHit())
+                {
+                    enemy->MarkForDestroy();
+                }
             });
 
             enemyGO->SetParent(GetOwner());

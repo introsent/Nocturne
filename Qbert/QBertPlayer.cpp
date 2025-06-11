@@ -73,15 +73,15 @@ void QBertPlayer::UpdateAnimation()
     }
 }
 
-
 void QBertPlayer::Respawn() {
-    m_isHit = false;
     MoveTo({ 0, 0 });
 }
 
-void QBertPlayer::TakeHit()
+bool QBertPlayer::TakeHit()
 {
-    if (!m_isHit) { 
-        m_isHit = true;
+    if (auto newState = m_pCurrentState->ProcessHit()) {
+        TransitionTo(std::move(newState));
+        return true; // did we actually hit?
     }
+    return false;
 }
