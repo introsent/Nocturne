@@ -26,8 +26,13 @@ public:
     glm::ivec2 GetGridPosition() const { return m_currentGridPos; }
     bool IsAcceptingInput() const { return m_pCurrentState ? m_pCurrentState->CanAcceptInput() : false; }
 
+    void TakeHit();
+    bool IsHit() const { return m_isHit; }
+
     Event<const glm::ivec2&> OnPositionChanged;
 private:
+    bool m_isHit = false;
+
     std::unique_ptr<QBertState> m_pCurrentState;
     Level* m_pLevel;
     glm::ivec2 m_currentGridPos{};

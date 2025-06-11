@@ -54,15 +54,20 @@ void LevelComponent::Update(float deltaTime) {
     // Spawn enemies based on timing
     for (auto it = m_StageEnemies.begin(); it != m_StageEnemies.end(); ) {
         if (m_AccumulatedTime >= it->spawn_time) {
-            auto enemy = m_enemyPrefabs->CreateEnemy(
+            auto enemyGO = m_enemyPrefabs->CreateEnemy(
                 it->type,
                 m_pLevel.get(),
                 it->start_position,
                 *m_pQbertPositionProxy
             );
 
-            if (enemy && dae::SceneManager::GetInstance().GetActiveScene()) {
-                dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemy));
+            enemyGO->GetComponent<Enemy>()->OnCollisionWithQbert.Subscribe([this](dae::GameObject* enemy) {
+                m_pQBertGO->GetComponent<QBertPlayer>()->TakeHit();
+                enemy->MarkForDestroy();
+            });
+
+            if (enemyGO && dae::SceneManager::GetInstance().GetActiveScene()) {
+                dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyGO));
             }
             it = m_StageEnemies.erase(it);
         }

@@ -30,7 +30,7 @@ std::unique_ptr<QBertState> IdleState::HandleInput(QBertPlayer* player, const gl
 }
 
 std::unique_ptr<QBertState> IdleState::Update(QBertPlayer* player, float) {
-    if (ShouldDie(player)) {
+    if (ShouldDie(player) || player->IsHit()) {
         return std::make_unique<DeadState>(owner);
     }
     if (ShouldFly(player)) {

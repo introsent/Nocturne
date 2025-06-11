@@ -75,5 +75,13 @@ void QBertPlayer::UpdateAnimation()
 
 
 void QBertPlayer::Respawn() {
+    m_isHit = false;
     MoveTo({ 0, 0 });
+}
+
+void QBertPlayer::TakeHit()
+{
+    if (!m_isHit) { 
+        m_isHit = true;
+    }
 }

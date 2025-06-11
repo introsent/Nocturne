@@ -22,10 +22,15 @@ public:
     glm::ivec2 GetGridPosition() const { return m_currentGridPos; }
     Level* GetLevel() const { return m_pLevel; }
 
+    Event<dae::GameObject*> OnCollisionWithQbert;
 
 protected:
     glm::ivec2 m_currentDirection{};
     glm::ivec2 m_currentGridPos{};
+
+    void CheckQBertCollision();
+
+
     
 private:
     bool m_isActive = true;
