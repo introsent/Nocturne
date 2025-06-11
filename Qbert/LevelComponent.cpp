@@ -51,36 +51,41 @@ void LevelComponent::Update(float deltaTime) {
 
     m_AccumulatedTime += deltaTime;
 
-    // Spawn enemies based on timing
+    // Create a temporary list of enemies to spawn
+    std::vector<EnemySpawnData> enemiesToSpawn;
     for (auto it = m_StageEnemies.begin(); it != m_StageEnemies.end(); ) {
         if (m_AccumulatedTime >= it->spawn_time) {
-            auto enemyGO = m_enemyPrefabs->CreateEnemy(
-                it->type,
-                m_pLevel.get(),
-                it->start_position,
-                *m_pQbertPositionProxy
-            );
-
-            enemyGO->GetComponent<Enemy>()->OnCollisionWithQbert.Subscribe([this](dae::GameObject* enemy) {
-                if (m_pQBertGO->GetComponent<QBertPlayer>()->TakeHit())
-                {
-                    enemy->MarkForDestroy();
-                }
-            });
-
-            enemyGO->SetParent(GetOwner());
-            if (enemyGO && dae::SceneManager::GetInstance().GetActiveScene()) {
-                dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyGO));
-            }
+            enemiesToSpawn.push_back(*it);
             it = m_StageEnemies.erase(it);
         }
         else {
             ++it;
         }
     }
+
+    // Spawn enemies from temporary list
+    for (auto& spawnInfo : enemiesToSpawn) {
+        if (m_LevelCompleted) break; // Exit if level completed during spawning
+
+        auto enemyGO = m_enemyPrefabs->CreateEnemy(
+            spawnInfo.type,
+            m_pLevel.get(),
+            spawnInfo.start_position,
+            *m_pQbertPositionProxy
+        );
+
+        enemyGO->GetComponent<Enemy>()->OnCollisionWithQbert.Subscribe([this](dae::GameObject* enemy) {
+            if (m_pQBertGO->GetComponent<QBertPlayer>()->TakeHit()) {
+                enemy->MarkForDestroy();
+            }
+            });
+
+        enemyGO->SetParent(GetOwner());
+        if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
+            dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyGO));
+        }
+    }
 }
-
-
 
 void LevelComponent::SpawnTiles() {
     for (auto const& tilePtr : m_pLevel->GetTiles()) {
@@ -137,7 +142,7 @@ void LevelComponent::OnTileColored(const Tile& tile) const
 void LevelComponent::OnLevelCompleted()
 {
     m_LevelCompleted = true;
-    GetOwner()->MarkForDestroyWithChildren();
+    OnLevelCompletedEvent.Invoke();
 }
 
 void LevelComponent::SpawnQBert() {
@@ -172,7 +177,6 @@ void LevelComponent::SpawnQBert() {
     qbertPlayer->OnPositionChanged.Subscribe([this](const glm::ivec2& newPos) {
         m_pQbertPositionProxy->UpdatePosition(newPos);
     });
-  
 }
 
 void LevelComponent::BindCommands() const

@@ -122,4 +122,20 @@ namespace dae {
             child->MarkForDestroy();
         }
     }
+
+    void GameObject::DestroyChildren()
+    {
+        auto childrenCopy = m_children;
+        m_children.clear();
+
+        for (auto child : childrenCopy)
+        {
+            if (child != nullptr)
+            {
+                child->m_parent = nullptr;           // Clear parent reference
+                child->DestroyChildren();            // Recursively destroy grandchildren
+                child->MarkForDestroy();             // Mark for destruction
+            }
+        }
+    }
 } 

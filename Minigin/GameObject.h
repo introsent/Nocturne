@@ -28,6 +28,7 @@ namespace dae {
         // --- DESTRUCTION ---
         void MarkForDestroy() { m_isDestroyed = true; }
         void MarkForDestroyWithChildren();
+        void DestroyChildren();
         bool IsMarkedForDestroy() const { return m_isDestroyed; }
 
         // --- COMPONENT SYSTEM ---

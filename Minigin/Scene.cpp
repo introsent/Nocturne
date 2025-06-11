@@ -14,7 +14,7 @@ Scene::~Scene() = default;
 
 void Scene::Add(std::unique_ptr<GameObject> object)
 {
-	m_objects.emplace_back(std::move(object));
+    m_pendingAdds.emplace_back(std::move(object));
 }
 
 void Scene::Remove(std::unique_ptr<GameObject> object)
@@ -44,6 +44,13 @@ void Scene::Update(float deltaTime) {
             (*it)->Update(deltaTime);
             ++it;
         }
+    }
+
+    if (!m_pendingAdds.empty()) {
+        for (auto& obj : m_pendingAdds) {
+            m_objects.emplace_back(std::move(obj));
+        }
+        m_pendingAdds.clear();
     }
 }
 

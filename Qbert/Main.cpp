@@ -24,26 +24,33 @@
 #include "SoundServiceLocator.h"
 #include "TestSoundCommand.h"
 #include "UIFactory.h"
+#include "LevelManagerComponent.h"
 
 
 void load()
 {
-	dae::SoundServiceLocator::Register(std::make_unique<dae::SoundService>());
+    dae::SoundServiceLocator::Register(std::make_unique<dae::SoundService>());
 
-    // 1) Create the Level1 scene
-    auto& level1Scene = dae::SceneManager::GetInstance().CreateScene("Level1");
-    dae::SceneManager::GetInstance().SetActiveScene("Level1");
-    // Create background and logo objects.
+    auto& scene = dae::SceneManager::GetInstance().CreateScene("Main");
+    dae::SceneManager::GetInstance().SetActiveScene("Main");
+
+    // Background
     auto bg = GameObjectBuilder()
         .WithTexture("../Data/background.png", -2.f, 1.f)
         .SetPosition(glm::vec3(0.f, 0.f, 0.f))
         .Build();
-    level1Scene.Add(std::move(bg));
+    scene.Add(std::move(bg));
 
-    // 2) Add a LevelController GameObject which will spawn everything
-    auto levelController = std::make_unique<dae::GameObject>();
-    levelController->AddComponent<LevelComponent>(levelController.get(), 1, 1);
-    level1Scene.Add(std::move(levelController));
+    // Create persistent Level Manager
+    auto manager = std::make_unique<dae::GameObject>();
+    auto levelManager = manager->AddComponent<LevelManagerComponent>(manager.get());
+
+    levelManager->OnAllLevelsCompleted.Subscribe([]() {
+        // Handle game completion
+        std::cout << "All levels completed! You win!\n";
+        });
+
+    scene.Add(std::move(manager));
 
 
     //// Bind WASD for char1 (keyboard)

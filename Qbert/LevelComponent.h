@@ -18,6 +18,7 @@ public:
     void Update(float deltaTime) override;
     void Render() const override {}
 
+    Event<> OnLevelCompletedEvent;
 private:
     std::vector<EnemySpawnData> m_StageEnemies;
     float m_AccumulatedTime = 0.f;

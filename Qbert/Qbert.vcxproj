@@ -183,6 +183,7 @@
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="LevelComponent.cpp" />
     <ClCompile Include="LevelData.cpp" />
+    <ClCompile Include="LevelManagerComponent.cpp" />
     <ClCompile Include="LivesDisplayObserver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="LevelComponent.h" />
     <ClInclude Include="LevelData.h" />
+    <ClInclude Include="LevelManagerComponent.h" />
     <ClInclude Include="LivesDisplayObserver.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="PositionProxy.h" />
