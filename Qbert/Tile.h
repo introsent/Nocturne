@@ -1,11 +1,11 @@
 #pragma once
 #include <vec2.hpp>
+#include "Event.h"
 
-enum class TileType { NORMAL, DEATH, DISC};
+enum class TileType { NORMAL, DEATH, DISC };
 
 class Tile {
 public:
-
     explicit Tile(const glm::ivec2& gridPos, TileType type = TileType::NORMAL);
 
     // Color state management
@@ -16,16 +16,22 @@ public:
     void SetToIntermediate();
     void SetToTarget();
 
+    // New methods
+    void ChangeColor(int change);
+    void RevertColor();
+
+    // Event for color changes
+    Event<Tile&> OnColorChanged;
+
     // State queries
     bool HasReachedTarget() const;
     bool IsInIntermediateState() const;
     int GetColorIndex() const;
-    void SetColorIndex(int index);
-
-    void RevertColor();
+    void SetColorIndex(int index); 
 
     TileType GetType() const { return m_type; }
     void SetType(TileType type) { m_type = type; }
+
     // Position
     glm::ivec2 GetGridPosition() const;
     bool IsOccupied() const;

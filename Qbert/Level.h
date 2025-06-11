@@ -33,6 +33,7 @@ public:
 private:
     void CreateTiles();
     void ConfigureTiles() const;
+    void InitializeTileListeners();
 
     void CreateDiscTiles();
     void CreateDeathBorder();

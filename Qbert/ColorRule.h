@@ -7,12 +7,11 @@ class Tile;
 class ColorRule {
 public:
     virtual ~ColorRule() = default;
-    virtual void ConfigureTile(Tile& tile) const = 0; // Sets start/intermediate/target colors
+    virtual void ConfigureTile(Tile& tile) const = 0;
     virtual void OnJump(Tile& tile) = 0;
     virtual bool IsCompleted(const std::vector<std::unique_ptr<Tile>>& tiles) const = 0;
     virtual bool IsTileCompleted(const Tile& tile) const = 0;
 };
-
 
 class OneHitRule final : public ColorRule {
 public:

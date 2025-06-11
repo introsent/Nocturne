@@ -94,4 +94,6 @@ private:
         /*columns=*/ 10,
         /*rows=*/    1
     };
+
+    static constexpr const char* levelDataPath = "../Data/Level/levels_test.json";
 };

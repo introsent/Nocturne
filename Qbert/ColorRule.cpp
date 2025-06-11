@@ -9,7 +9,9 @@ void OneHitRule::ConfigureTile(Tile& tile) const {
 }
 
 void OneHitRule::OnJump(Tile& tile) {
-    if (!tile.HasReachedTarget()) tile.SetToTarget();
+    if (!tile.HasReachedTarget()) {
+        tile.ChangeColor(1);  // Changed to use event-driven system
+    }
 }
 
 bool OneHitRule::IsTileCompleted(const Tile& tile) const { return tile.GetColorIndex() == 1; }
@@ -28,8 +30,7 @@ void TwoHitRule::ConfigureTile(Tile& tile) const {
 
 void TwoHitRule::OnJump(Tile& tile) {
     if (!tile.HasReachedTarget()) {
-        if (!tile.IsInIntermediateState()) tile.SetToIntermediate();
-        else tile.SetToTarget();
+        tile.ChangeColor(1);  // Always advance color
     }
 }
 
@@ -47,8 +48,8 @@ void ToggleRule::ConfigureTile(Tile& tile) const {
 }
 
 void ToggleRule::OnJump(Tile& tile) {
-    if (tile.HasReachedTarget()) tile.SetToStart();
-    else tile.SetToTarget();
+    // Toggle between start and target
+    tile.ChangeColor(tile.HasReachedTarget() ? -1 : 1);
 }
 
 bool ToggleRule::IsTileCompleted(const Tile& tile) const { return tile.GetColorIndex() == 1; }

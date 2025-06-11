@@ -25,7 +25,7 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stage
     , m_StageIndex(stageIndex)
 {
 
-    auto levels = LevelDataLoader::LoadLevels("../Data/Level/levels.json");
+    auto levels = LevelDataLoader::LoadLevels(levelDataPath);
     for (const auto& level : levels) {
         if (level.index == levelIndex) {
             for (const auto& stage : level.stages) {

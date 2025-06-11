@@ -16,6 +16,7 @@ Level::Level(int levelNumber, int stageNumber, int numRows)
     }
     CreateTiles();
     ConfigureTiles();
+    InitializeTileListeners();
 }
 
 Level::~Level() = default;
@@ -34,8 +35,19 @@ void Level::CreateTiles() {
 
     CreateDiscTiles();
     CreateDeathBorder();
-   
 }
+
+void Level::InitializeTileListeners() {
+    for (auto& tilePtr : m_tiles) {
+        tilePtr->OnColorChanged.Subscribe([this](Tile& tile) {
+            //if (m_colorRule->IsTileCompleted(tile)) {
+                OnTileColored.Invoke(tile);
+            //}
+            CheckForComplition();
+            });
+    }
+}
+
 void Level::ConfigureTiles() const
 {
     for (auto& tilePtr : m_tiles) {
@@ -88,21 +100,11 @@ void Level::CreateDeathBorder() {
     }
 }
 
-void Level::HandleJump(const glm::ivec2& gridPos)
-{
+void Level::HandleJump(const glm::ivec2& gridPos) {
     if (m_hasCompleted) return;
 
-    if (auto tile = GetTileAt(gridPos))
-    {
-        int before = tile->GetColorIndex();
+    if (auto tile = GetTileAt(gridPos)) {
         m_colorRule->OnJump(*tile);
-        int after = tile->GetColorIndex();
-
-        if (after != before && m_colorRule->IsTileCompleted(*tile))
-        {
-            OnTileColored.Invoke(*tile);
-        }
-        CheckForComplition();
     }
 }
 

@@ -16,6 +16,7 @@ public:
         if (m_movement->Update(deltaTime)) {
             if (m_onComplete) m_onComplete();
             GetOwner()->RemoveComponent(this);
+            return;
         }
         GetOwner()->SetLocalPosition(m_movement->GetCurrentPosition());
     }
