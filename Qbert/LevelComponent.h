@@ -44,6 +44,8 @@ private:
     //Atlas functions
     void SpawnTiles();
     void OnTileColored(const Tile& tile) const;
+    int CalculateTileFrame(const Tile& tile) const;
+
     void OnLevelCompleted();
 
 	//Qbert functions

@@ -104,10 +104,7 @@ void LevelComponent::SpawnTiles() {
         tileGO->SetParent(GetOwner());
         // Set the frame based on tile state
         if (auto animationComp = tileGO->GetComponent<AnimationComponent>()) {
-            const int stateRow = tile.GetColorIndex();
-            const int levelColumn = (m_pLevel->GetLevelNumber() - 1) + (m_pLevel->GetStageNumber() - 1);
-            const int frame = stateRow * 6 + levelColumn;
-            animationComp->SetFrame(frame);
+            animationComp->SetFrame(CalculateTileFrame(tile));
         }
 
 
@@ -120,11 +117,6 @@ void LevelComponent::SpawnTiles() {
 
 void LevelComponent::OnTileColored(const Tile& tile) const
 {
-    const int levelNumber = m_pLevel->GetLevelNumber();
-    const int levelColumn = levelNumber - 1;
-    const int stateRow = tile.GetColorIndex();
-    const int frame = stateRow * 6 + levelColumn;
-
     for (auto& tileGO : m_TileGOs) {
         const glm::vec2 currentPos = {
             tileGO->GetWorldPosition().x,
@@ -133,11 +125,17 @@ void LevelComponent::OnTileColored(const Tile& tile) const
 
         if (currentPos == GridToWorld(tile.GetGridPosition())) {
             if (auto animComp = tileGO->GetComponent<AnimationComponent>()) {
-                animComp->SetFrame(frame);
+                animComp->SetFrame(CalculateTileFrame(tile));
             }
             break;
         }
     }
+}
+int LevelComponent::CalculateTileFrame(const Tile& tile) const
+{
+    const int stateRow = tile.GetColorIndex();
+    const int levelColumn = (m_pLevel->GetLevelNumber() - 1) + (m_pLevel->GetStageNumber() - 1);
+    return (stateRow * 6) + levelColumn;
 }
 void LevelComponent::OnLevelCompleted()
 {
