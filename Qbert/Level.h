@@ -22,6 +22,8 @@ public:
     Tile* GetTileAt(const glm::ivec2& gridPos) const;
     const std::vector<std::unique_ptr<Tile>>& GetTiles() const;
 
+    bool IsOffGrid(const glm::ivec2& gridPos) const;
+
 	int GetRows() const { return m_rows; }
 
     // Events

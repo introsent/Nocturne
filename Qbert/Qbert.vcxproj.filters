@@ -37,6 +37,15 @@
     <Filter Include="Header Files\Qbert">
       <UniqueIdentifier>{87ddb145-219b-4e30-a78e-a958f67c0908}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Enemies\Simple">
+      <UniqueIdentifier>{bfab60ed-4568-4d1d-a8fc-38e52da1b3cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enemies\Simple\SlickSam">
+      <UniqueIdentifier>{b74bd263-5a47-4e07-aa07-6ebc0ff2d2c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Enemies\Simple\UggWrongway">
+      <UniqueIdentifier>{7062c4e8-1dd1-4d75-b540-d53718632b7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -137,6 +146,15 @@
     </ClCompile>
     <ClCompile Include="LevelManagerComponent.cpp">
       <Filter>Header Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleEnemy.cpp">
+      <Filter>Header Files\Enemies\Simple</Filter>
+    </ClCompile>
+    <ClCompile Include="SlickSam.cpp">
+      <Filter>Header Files\Enemies\Simple\SlickSam</Filter>
+    </ClCompile>
+    <ClCompile Include="UggWrongway.cpp">
+      <Filter>Header Files\Enemies\Simple\UggWrongway</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +286,18 @@
     </ClInclude>
     <ClInclude Include="LevelManagerComponent.h">
       <Filter>Header Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleEnemy.h">
+      <Filter>Header Files\Enemies\Simple</Filter>
+    </ClInclude>
+    <ClInclude Include="SlickSam.h">
+      <Filter>Header Files\Enemies\Simple\SlickSam</Filter>
+    </ClInclude>
+    <ClInclude Include="UggWrongway.h">
+      <Filter>Header Files\Enemies\Simple\UggWrongway</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementRunner.h">
+      <Filter>Header Files\Movement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

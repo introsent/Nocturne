@@ -14,7 +14,7 @@
           "stage": 2,
           "enemies": [
             { "type": "Coily", "start_position": [0, 1], "spawn_time": 5.0 },
-            { "type": "Slick", "start_position": [3, 3], "spawn_time": 10.0 }
+            { "type": "Slick", "start_position": [0, 0], "spawn_time": 10.0 }
           ]
         },
         {

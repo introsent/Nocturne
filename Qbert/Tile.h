@@ -22,6 +22,8 @@ public:
     int GetColorIndex() const;
     void SetColorIndex(int index);
 
+    void RevertColor();
+
     TileType GetType() const { return m_type; }
     void SetType(TileType type) { m_type = type; }
     // Position

@@ -192,10 +192,13 @@
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayObserver.cpp" />
+    <ClCompile Include="SimpleEnemy.cpp" />
+    <ClCompile Include="SlickSam.cpp" />
     <ClCompile Include="SnakeState.cpp" />
     <ClCompile Include="SpawningState.cpp" />
     <ClCompile Include="TestSoundCommand.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="UggWrongway.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationComponent.h" />
@@ -228,6 +231,7 @@
     <ClInclude Include="LevelManagerComponent.h" />
     <ClInclude Include="LivesDisplayObserver.h" />
     <ClInclude Include="MoveCommand.h" />
+    <ClInclude Include="MovementRunner.h" />
     <ClInclude Include="PositionProxy.h" />
     <ClInclude Include="QBertPlayer.h" />
     <ClInclude Include="QbertPositionProxy.h" />
@@ -235,10 +239,13 @@
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />
+    <ClInclude Include="SimpleEnemy.h" />
+    <ClInclude Include="SlickSam.h" />
     <ClInclude Include="SnakeState.h" />
     <ClInclude Include="SpawningState.h" />
     <ClInclude Include="TestSoundCommand.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="UggWrongway.h" />
     <ClInclude Include="UIFactory.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

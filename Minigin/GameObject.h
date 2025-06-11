@@ -70,6 +70,22 @@ namespace dae {
             }
         }
 
+        template<typename ComponentType>
+        bool RemoveComponent(ComponentType* target)
+        {
+            auto it = std::find_if(
+                m_components.begin(), m_components.end(),
+                [target](const std::unique_ptr<Component>& uptr) {
+                    return uptr.get() == target;
+                });
+            if (it != m_components.end())
+            {
+                m_components.erase(it);
+                return true;
+            }
+            return false;
+        }
+
     private:
         glm::vec3 m_localPosition;
         glm::vec3 m_worldPosition;
