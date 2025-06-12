@@ -89,4 +89,16 @@ private:
     };
 
     static constexpr const char* levelDataPath = "../Data/Level/levels.json";
+
+
+    bool m_IsEndingAnimationPlaying = false;
+    float m_AnimationTimer = 0.0f;
+    int m_CurrentAnimationState = 0;
+    static constexpr int MAX_ANIMATION_STATES = 3;
+
+    float m_AnimationTotalTime{};
+    float m_AnimationStateTime{};
+
+    void PlayEndingAnimation(float deltaTime);
+    void UpdateAllTilesToAnimationState();
 };

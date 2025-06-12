@@ -20,6 +20,7 @@ void LevelManagerComponent::Update(float)
 
 void LevelManagerComponent::LoadNextLevel()
 {
+   // GetOwner()->GetComponent<LevelComponent>()->
     // Destroy existing level children
     GetOwner()->DestroyChildren();
 
@@ -59,6 +60,5 @@ void LevelManagerComponent::HandleLevelCompleted()
             return;
         }
     }
-
     LoadNextLevel();
 }

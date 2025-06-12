@@ -28,8 +28,8 @@ void Enemy::LookAt(const glm::ivec2& direction)
 
 void Enemy::CheckQBertCollision()
 {
-	glm::vec2 enemyPosition = GetOwner()->GetWorldPosition();
-	glm::vec2 qbertPosition = m_qbertPositionProxy.GetWorldPosition();
+	const glm::vec2 enemyPosition = GetOwner()->GetWorldPosition();
+	const glm::vec2 qbertPosition = m_qbertPositionProxy.GetWorldPosition();
 	if (AreEnemyAndQbertClose(enemyPosition, qbertPosition)) {
 		OnCollisionWithQbert.Invoke(GetOwner());
 	}

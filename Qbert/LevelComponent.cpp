@@ -47,6 +47,11 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stage
 }
 
 void LevelComponent::Update(float deltaTime) {
+    if (m_IsEndingAnimationPlaying) {
+        PlayEndingAnimation(deltaTime);
+        return;
+    }
+
     if (m_LevelCompleted) return;
 
     m_AccumulatedTime += deltaTime;
@@ -151,8 +156,15 @@ int LevelComponent::CalculateTileFrame(const Tile& tile) const
 }
 void LevelComponent::OnLevelCompleted()
 {
+    if (m_LevelCompleted) return;
     m_LevelCompleted = true;
-    OnLevelCompletedEvent.Invoke();
+    m_IsEndingAnimationPlaying = true;
+    m_AnimationTotalTime = 0.0f;
+    m_AnimationStateTime = 0.0f;
+    m_CurrentAnimationState = 0;
+
+    UpdateAllTilesToAnimationState();
+    //OnLevelCompletedEvent.Invoke();
 }
 
 void LevelComponent::SpawnQBert() {
@@ -249,5 +261,36 @@ void LevelComponent::SpawnDiscs()
 
         DiscManager::GetInstance().RegisterDisc(tilePtr->GetGridPosition(), pDisc);
         ++spawned;
+    }
+}
+
+void LevelComponent::PlayEndingAnimation(float deltaTime) {
+    m_AnimationTotalTime += deltaTime;
+    m_AnimationStateTime += deltaTime;
+
+    // Change animation state every 0.2 seconds
+    if (m_AnimationStateTime >= 0.2f) {
+        m_AnimationStateTime = 0.0f;
+        m_CurrentAnimationState = (m_CurrentAnimationState + 1) % MAX_ANIMATION_STATES;
+        UpdateAllTilesToAnimationState();
+    }
+
+    // After 3 seconds, finish animation and notify
+    if (m_AnimationTotalTime >= 3.0f) {
+        m_IsEndingAnimationPlaying = false;
+        OnLevelCompletedEvent.Invoke(); // Notify LevelManagerComponent
+    }
+}
+
+
+void LevelComponent::UpdateAllTilesToAnimationState() {
+    const int levelColumn = (m_LevelIndex - 1) + (m_StageIndex - 1);
+
+    for (auto& tileGO : m_TileGOs) {
+        if (auto animComp = tileGO->GetComponent<AnimationComponent>()) {
+            // Calculate frame using animation state instead of actual tile state
+            int frame = (m_CurrentAnimationState * 6) + levelColumn;
+            animComp->SetFrame(frame);
+        }
     }
 }
