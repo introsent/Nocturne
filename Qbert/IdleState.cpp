@@ -7,6 +7,7 @@
 #include "Level.h"
 #include "DeadState.h"
 #include "FlyingState.h"
+#include <SoundServiceLocator.h>
 
 void IdleState::Enter(QBertPlayer* player) {
     player->UpdateAnimation();
@@ -30,6 +31,7 @@ std::unique_ptr<QBertState> IdleState::HandleInput(QBertPlayer* player, const gl
 
 std::unique_ptr<QBertState> IdleState::Update(QBertPlayer* player, float) {
     if (ShouldDie(player)) {
+        dae::SoundServiceLocator::GetService()->PlaySound("qbert_fall");
         return std::make_unique<DeadState>(owner);
     }
     if (ShouldFly(player)) {

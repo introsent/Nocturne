@@ -108,9 +108,6 @@
     <ClCompile Include="Tile.cpp">
       <Filter>Header Files\Level</Filter>
     </ClCompile>
-    <ClCompile Include="QBertPlayer.cpp">
-      <Filter>Header Files\Qbert</Filter>
-    </ClCompile>
     <ClCompile Include="EggState.cpp">
       <Filter>Header Files\Enemies\Coily\States</Filter>
     </ClCompile>
@@ -155,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="UggWrongway.cpp">
       <Filter>Header Files\Enemies\Simple\UggWrongway</Filter>
+    </ClCompile>
+    <ClCompile Include="QBertPlayer.cpp">
+      <Filter>Header Files\States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

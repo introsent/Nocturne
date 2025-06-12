@@ -13,7 +13,7 @@ namespace dae
         SoundService(SoundService&&) = delete;
         SoundService& operator=(SoundService&&) = delete;
 
-        void LoadSound(const std::string& id, const std::string& path) override;
+        void RegisterSound(const std::string& id, const std::string& path) override;
         void PlaySound(const std::string& id) override;
 
     private:

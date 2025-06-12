@@ -343,6 +343,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_ttf\lib\$(PlatformTarget)\*.dll" "$(OutputPat
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SoundInfo.h" />
     <ClInclude Include="SoundService.h" />
     <ClInclude Include="SoundServiceLocator.h" />
     <ClInclude Include="TextComponent.h" />

@@ -3,6 +3,7 @@
 #include "Coily.h"
 #include "Directions.h"
 #include <random>
+#include <SoundServiceLocator.h>
 
 void EggState::Enter(Coily* coily)
 {
@@ -22,6 +23,8 @@ std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
             GenerateTargetGridPosition(coily);
             m_jump.Start(coily->GetGridPosition(),
                          m_targetGridPosition);
+
+            dae::SoundServiceLocator::GetService()->PlaySound("coily_egg_jump");
         }
         return nullptr;
     }

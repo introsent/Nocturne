@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "Tile.h"
 #include "DyingCoilyState.h"
+#include <SoundServiceLocator.h>
 
 void SnakeState::Enter(Coily*) {
     m_isDelaying = true;
@@ -21,7 +22,7 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
             m_jump.Start(coily->GetGridPosition(),
                          m_targetGridPosition);
             m_isJumping = true;
-
+            dae::SoundServiceLocator::GetService()->PlaySound("coily_snake_jump");
       
             const glm::ivec2 direction = m_targetGridPosition - coily->GetGridPosition();
             coily->LookAt(direction);

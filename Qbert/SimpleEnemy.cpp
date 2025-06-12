@@ -2,6 +2,7 @@
 #include "FallMovement.h"
 #include "utils.h"
 #include "MovementRunner.h"
+#include <SoundServiceLocator.h>
 
 SimpleEnemy::SimpleEnemy(dae::GameObject* owner, Level* level, glm::ivec2 spawnGridPosition,
     const IPositionProxy& qbertPositionProxy, PositionConverter converter)
@@ -19,6 +20,7 @@ void SimpleEnemy::Update(float deltaTime) {
         if (m_delayTimer <= 0) {
             GenerateNextMove();
             m_jumpMovement.Start(m_currentGridPos, m_targetGridPos);
+            dae::SoundServiceLocator::GetService()->PlaySound("others_jump");
             m_isWaiting = false;
             m_isJumping = true;
         }

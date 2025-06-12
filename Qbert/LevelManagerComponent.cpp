@@ -44,16 +44,15 @@ void LevelManagerComponent::LoadNextLevel()
 
 void LevelManagerComponent::HandleLevelCompleted()
 {
-    // Advance to next stage/level
     m_CurrentStageIndex++;
 
-    constexpr int MAX_STAGES = 4;  // 4 stages per level
+    constexpr int MAX_STAGES = 4; 
     if (m_CurrentStageIndex > MAX_STAGES)
     {
         m_CurrentStageIndex = 1;
         m_CurrentLevelIndex++;
 
-        const int MAX_LEVELS = 3;  //: 3 levels total
+        const int MAX_LEVELS = 3; 
         if (m_CurrentLevelIndex > MAX_LEVELS)
         {
             OnAllLevelsCompleted.Invoke();

@@ -7,6 +7,7 @@
 #include "utils.h"
 #include <stdexcept>
 #include "Directions.h"
+#include "SoundServiceLocator.h"
 
 QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level)
     : Component(owner), m_pLevel(level)
@@ -52,6 +53,7 @@ void QBertPlayer::MoveTo(const glm::ivec2& gridPos) {
         OnPositionChanged.Invoke(m_currentGridPos); 
         GetOwner()->SetLocalPosition(glm::vec3(GridToWorldCharacter(gridPos), 0.f));
     }
+    dae::SoundServiceLocator::GetService()->PlaySound("qbert_jump");
 }
 
 void QBertPlayer::LookAt(const glm::ivec2& direction)
@@ -81,6 +83,7 @@ bool QBertPlayer::TakeHit()
 {
     if (auto newState = m_pCurrentState->ProcessHit()) {
         TransitionTo(std::move(newState));
+        dae::SoundServiceLocator::GetService()->PlaySound("qbert_hit");
         return true; // did we actually hit?
     }
     return false;

@@ -132,6 +132,9 @@
     <ClInclude Include="NullSoundService.h">
       <Filter>Header Files\Sound Headers</Filter>
     </ClInclude>
+    <ClInclude Include="SoundInfo.h">
+      <Filter>Header Files\Sound Headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ResourceManager.cpp">

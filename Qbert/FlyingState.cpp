@@ -5,6 +5,7 @@
 #include "AnimationComponent.h"
 #include "IdleState.h"
 #include "utils.h"
+#include <SoundServiceLocator.h>
 
 FlyingState::FlyingState(dae::GameObject* owner)
     : QBertState(owner) {}
@@ -32,6 +33,7 @@ void FlyingState::InitializeFlight(QBertPlayer* player) {
     if (auto* anim = m_pDisc->GetComponent<AnimationComponent>()) {
         anim->SetAutoAdvance(true);
     }
+    dae::SoundServiceLocator::GetService()->PlaySound("disk_lift");
 }
 
 const glm::vec3 FlyingState::CalculateTopPosition() const {
@@ -79,6 +81,7 @@ void FlyingState::UpdateFlyingPhase(float deltaTime) {
             m_pDisc = nullptr;
             owner->SetParent(m_originalParent);
         }
+        dae::SoundServiceLocator::GetService()->PlaySound("disk_land");
         m_phaseTimer = 0.f;
         m_currentPhase = FlyingPhase::Dropping;
         owner->SetLocalPosition(m_targetWorldPos);

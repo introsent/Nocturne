@@ -5,15 +5,19 @@
 #include "IdleState.h"
 #include "Scene.h"
 #include "SceneManager.h"
+#include <SoundServiceLocator.h>
 
 void DeadState::Enter(QBertPlayer*) {
     auto dialogueCloud = std::make_unique<dae::GameObject>();
+
     dialogueCloud->AddComponent<dae::TextureComponent>(dialogueCloud.get(), "Qbert Curses.png");
     dialogueCloud->SetParent(owner);
     dialogueCloud->SetLocalPosition(m_dialogueCloudLocalOffset);
 
     m_dialogueCloud = dialogueCloud.get();
     dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(dialogueCloud));
+
+    dae::SoundServiceLocator::GetService()->PlaySound("swearing");
 
     m_deathTimer = 0.f;
 }

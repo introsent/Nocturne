@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include <SoundServiceLocator.h>
 
 DyingCoilyState::DyingCoilyState(dae::GameObject* owner)
     : CoilyState(owner),
@@ -51,6 +52,7 @@ void DyingCoilyState::Enter(Coily* coily) {
 
     // Start the fall movement
     m_fallMovement->Start(m_fallStart, fallTarget);
+    dae::SoundServiceLocator::GetService()->PlaySound("coily_fall");
 }
 
 std::unique_ptr<CoilyState> DyingCoilyState::Update(Coily*, float deltaTime) {

@@ -5,11 +5,11 @@
 #include <queue>
 #include <condition_variable>
 #include <ranges>
-#include <unordered_map>
 
 #include "Command.h"
 #include "LoadSoundCommand.h"
 #include "PlaySoundCommand.h"
+#include "SoundInfo.h"
 
 namespace dae
 {
@@ -18,7 +18,10 @@ namespace dae
         std::condition_variable m_queueCV;
         std::queue<std::unique_ptr<Command>> m_commandQueue;
         std::jthread m_workerThread;
-        std::unordered_map<std::string, Mix_Chunk*> m_sounds;
+
+        std::mutex m_soundMutex;
+        std::unordered_map<std::string, SoundInfo> m_soundInfo;
+
         bool m_running = true;
 
         void WorkerLoop() {
@@ -32,7 +35,6 @@ namespace dae
                         });
 
                     if (!m_running) break;
-
                     std::swap(localQueue, m_commandQueue);
                 }
 
@@ -58,40 +60,33 @@ namespace dae
             m_queueCV.notify_all();
             m_workerThread.join();
 
-            for (auto& chunk : m_sounds | std::views::values)
-                Mix_FreeChunk(chunk);
+            std::lock_guard soundLock(m_soundMutex);
+            for (auto& [id, info] : m_soundInfo) {
+                if (info.chunk) Mix_FreeChunk(info.chunk);
+            }
             Mix_CloseAudio();
         }
-        MixerImpl(const MixerImpl&) = delete;
-        MixerImpl& operator=(const MixerImpl&) = delete;
-        MixerImpl(MixerImpl&&) = delete;
-        MixerImpl& operator=(MixerImpl&&) = delete;
 
-        void LoadSound(const std::string& id, const std::string& path) {
-            std::lock_guard lock(m_queueMutex);
-            m_commandQueue.push(std::make_unique<LoadSoundCommand>(id, path, m_sounds));
+        void RegisterSound(const std::string& id, const std::string& path) {
+            std::lock_guard lock(m_soundMutex);
+            if (m_soundInfo.contains(id)) return; // Already registered
+
+            m_soundInfo[id] = SoundInfo{ path, nullptr };
+
+            std::lock_guard queueLock(m_queueMutex);
+            m_commandQueue.push(std::make_unique<LoadSoundCommand>(id, m_soundInfo, m_soundMutex));
             m_queueCV.notify_one();
         }
 
         void PlaySound(const std::string& id) {
-            std::lock_guard lock(m_queueMutex);
-            m_commandQueue.push(std::make_unique<PlaySoundCommand>(id, m_sounds));
+            std::lock_guard queueLock(m_queueMutex);
+            m_commandQueue.push(std::make_unique<PlaySoundCommand>(id, m_soundInfo, m_soundMutex));
             m_queueCV.notify_one();
         }
     };
-}
 
-
-dae::SoundService::SoundService()
-    : m_mixerPimpl(std::make_unique<MixerImpl>()) {
-}
-
-dae::SoundService::~SoundService() = default;
-
-void dae::SoundService::LoadSound(const std::string& id, const std::string& path) {
-    m_mixerPimpl->LoadSound(id, path);
-}
-
-void dae::SoundService::PlaySound(const std::string& id) {
-    m_mixerPimpl->PlaySound(id);
+    SoundService::SoundService() : m_mixerPimpl(std::make_unique<MixerImpl>()) {}
+    SoundService::~SoundService() = default;
+    void SoundService::RegisterSound(const std::string& id, const std::string& path) { m_mixerPimpl->RegisterSound(id, path); }
+    void SoundService::PlaySound(const std::string& id) { m_mixerPimpl->PlaySound(id); }
 }

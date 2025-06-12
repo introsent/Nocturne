@@ -17,6 +17,7 @@
 #include "EnemyPrefabs.h"
 #include "GameObjectBuilder.h"
 #include <ranges> 
+#include <SoundServiceLocator.h>
 
 LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stageIndex)
     : Component(owner)
@@ -86,17 +87,14 @@ void LevelComponent::Update(float deltaTime) {
                 {
                     enemy->MarkForDestroy();
                 }
-
             }
             else
             {
+                dae::SoundServiceLocator::GetService()->PlaySound("slick_sam_caught");
                 enemy->MarkForDestroy();
             }
             });
            
-
-        
-
         enemyGO->SetParent(GetOwner());
         if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
             dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyGO));
@@ -163,8 +161,9 @@ void LevelComponent::OnLevelCompleted()
     m_AnimationStateTime = 0.0f;
     m_CurrentAnimationState = 0;
 
+    dae::SoundServiceLocator::GetService()->PlaySound("round_complete");
+
     UpdateAllTilesToAnimationState();
-    //OnLevelCompletedEvent.Invoke();
 }
 
 void LevelComponent::SpawnQBert() {
