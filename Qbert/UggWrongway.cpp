@@ -1,9 +1,10 @@
 #include "UggWrongway.h"
 #include "Directions.h"
+#include "utils.h"
 
 UggWrongway::UggWrongway(dae::GameObject* owner, Level* level,
     const IPositionProxy& qbertPositionProxy, bool isUgg)
-    : SimpleEnemy(owner, level, qbertPositionProxy), m_isUgg(isUgg)
+    : SimpleEnemy(owner, level, qbertPositionProxy, [this](const glm::ivec2& grid) { return GridToWorldSamSlick(grid); }), m_isUgg(isUgg)
 {
     m_directionSequence = isUgg ?
         std::vector{ UP_RIGHT, UP_LEFT } :

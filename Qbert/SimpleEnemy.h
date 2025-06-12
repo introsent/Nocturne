@@ -5,7 +5,7 @@
 class SimpleEnemy : public Enemy {
 public:
     SimpleEnemy(dae::GameObject* owner, Level* level,
-        const IPositionProxy& qbertPositionProxy);
+        const IPositionProxy& qbertPositionProxy, PositionConverter converter);
 
     void Update(float deltaTime) override;
 

@@ -88,12 +88,5 @@ private:
 		/*rows=*/    1
     };
 
-    // Coily:
-    static constexpr AtlasConfig m_coily{
-        { "Coily Spritesheet.png", { 16.f, 32.f}},
-        /*columns=*/ 10,
-        /*rows=*/    1
-    };
-
     static constexpr const char* levelDataPath = "../Data/Level/levels_test.json";
 };

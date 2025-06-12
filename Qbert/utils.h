@@ -34,6 +34,11 @@ inline glm::vec2 GridToWorldCoily(const glm::ivec2& gridPos) {
     return GridToWorldEx(gridPos, { 0, 0 }, CoilyOffset);
 }
 
+inline glm::vec2 GridToWorldSamSlick(const glm::ivec2& gridPos) {
+    constexpr glm::vec2 SamSlickOffset{ TileWidth * 0.25f, -TileHeight * 0.25f };
+    return GridToWorldEx(gridPos, { 0, 0 }, SamSlickOffset);
+}
+
 inline glm::vec2 GridToWorldCharacter(const glm::ivec2& gridPos) {
     constexpr glm::vec2 CharOffset{ TileWidth * 0.25f, -TileHeight * 0.25f };
     return GridToWorldEx(gridPos, { 0, 0 }, CharOffset);

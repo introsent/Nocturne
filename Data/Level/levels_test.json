@@ -7,7 +7,7 @@
         {
           "stage": 1,
           "enemies": [
-            { "type": "Slick", "start_position": [0, 1], "spawn_time": 5.0 }
+            { "type": "Ugg", "start_position": [2, 4], "spawn_time": 5.0 }
           ]
         },
         {

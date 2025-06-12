@@ -2,12 +2,12 @@
 #include "Tile.h"
 #include <random>
 #include "Directions.h"
+#include "utils.h"
 
 SlickSam::SlickSam(dae::GameObject* owner, Level* level,
     const IPositionProxy& qbertPositionProxy, bool isSlick)
-    : SimpleEnemy(owner, level, qbertPositionProxy), m_isSlick(isSlick)
+    : SimpleEnemy(owner, level, qbertPositionProxy, [this](const glm::ivec2& grid) { return GridToWorldSamSlick(grid); }), m_isSlick(isSlick)
 {
-
 }
 
 void SlickSam::GenerateNextMove() {
@@ -15,7 +15,9 @@ void SlickSam::GenerateNextMove() {
     static std::mt19937 gen(rd());
     std::uniform_int_distribution dist(0, 1);
 
-    m_targetGridPos = m_currentGridPos + (dist(gen) ? DOWN_LEFT : DOWN_RIGHT);
+    int chosenDirection = dist(gen);
+    UpdateAnimation(chosenDirection);
+    m_targetGridPos = m_currentGridPos + (chosenDirection ? DOWN_RIGHT : DOWN_LEFT);
 }
 
 void SlickSam::OnLand() {

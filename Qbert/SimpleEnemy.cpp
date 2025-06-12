@@ -4,9 +4,9 @@
 #include "MovementRunner.h"
 
 SimpleEnemy::SimpleEnemy(dae::GameObject* owner, Level* level,
-    const IPositionProxy& qbertPositionProxy)
-    : Enemy(owner, level, qbertPositionProxy),
-    m_jumpMovement([this](const glm::ivec2& grid) { return GridToWorldCoily(grid); })
+    const IPositionProxy& qbertPositionProxy, PositionConverter converter)
+    : Enemy(owner, level, qbertPositionProxy, converter),
+    m_jumpMovement(converter)
 {
   
 }

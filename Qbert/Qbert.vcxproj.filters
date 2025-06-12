@@ -299,5 +299,8 @@
     <ClInclude Include="MovementRunner.h">
       <Filter>Header Files\Movement</Filter>
     </ClInclude>
+    <ClInclude Include="PositionConverters.h">
+      <Filter>Header Files\Movement</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

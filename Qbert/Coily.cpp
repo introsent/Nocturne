@@ -2,16 +2,10 @@
 #include "Directions.h"
 
 Coily::Coily(dae::GameObject* owner, glm::ivec2 spawnGridPosition, Level* level, const IPositionProxy& qbertPositionProxy) :
-    Enemy(owner, level, qbertPositionProxy),
+    Enemy(owner, level, qbertPositionProxy, [this](const glm::ivec2& grid) { return GridToWorldCoily(grid); }),
 	m_desiredSpawnGridPosition(spawnGridPosition)
 {
-    m_pAnimation = owner->GetComponent<AnimationComponent>();
     m_currentState.get()->Enter(this);
-}
-
-void Coily::UpdateAnimation(int frame)
-{  
-    m_pAnimation->SetFrame(frame);  
 }
 
 void Coily::Update(float deltaTime)
