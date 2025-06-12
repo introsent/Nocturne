@@ -29,14 +29,12 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateEnemy(
 }
 
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const glm::ivec2& gridPos, const IPositionProxy& qbertPositionProxy) {
-    glm::vec2 worldPos = GridToWorldCoily(gridPos);
 
     auto coily = GameObjectBuilder()
         .WithTranslation()
         .WithTexture("Coily Spritesheet.png", 0.f, 2.f)
         .WithAnimation(glm::vec2(16.f, 32.f), 10, 0.2f, 1, 10)
         .WithComponent<Coily>(gridPos, level, qbertPositionProxy)
-        .SetPosition(glm::vec3(worldPos.x, worldPos.y, 0.f))
         .Build();
 
     if (auto animationComp = coily->GetComponent<AnimationComponent>()) {
@@ -53,7 +51,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSlickSam(
     const IPositionProxy& qbertPositionProxy,
     bool isSlick)
 {
-    glm::vec2 worldPos = GridToWorld(gridPos);
+    glm::vec2 worldPos = GridToWorldSamSlick(gridPos);
 
     auto enemy = GameObjectBuilder()
         .WithTranslation()
@@ -63,7 +61,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSlickSam(
             0.0f,               // FPS (0 = manual control)
             isSlick ? 0 : 2,     // Start frame (Slick: top row, Sam: bottom row)
             2)                   // Frames per row (24px width / 12px = 2)
-        .WithComponent<SlickSam>(level, qbertPositionProxy, isSlick)
+        .WithComponent<SlickSam>(level, gridPos, qbertPositionProxy, isSlick)
         .SetPosition(glm::vec3(worldPos.x, worldPos.y, 0.f))
         .Build();
 
@@ -98,7 +96,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateUggWrongway(
     const IPositionProxy& qbertPositionProxy,
     bool isUgg)
 {
-    glm::vec2 worldPos = GridToWorld(gridPos);
+    glm::vec2 worldPos = GridToWorldSamSlick(gridPos);
 
     auto enemy = GameObjectBuilder()
         .WithTranslation()
@@ -108,7 +106,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateUggWrongway(
             0.0f,               // FPS (0 = manual control)
             isUgg ? 0 : 4,      // Start frame (Ugg: top row, Wrongway: bottom row)
             4)                  // Frames per row (64px width / 16px = 4)
-        .WithComponent<UggWrongway>(level, qbertPositionProxy, isUgg)
+        .WithComponent<UggWrongway>(level, gridPos, qbertPositionProxy, isUgg)
         .SetPosition(glm::vec3(worldPos.x, worldPos.y, 0.f))
         .Build();
 

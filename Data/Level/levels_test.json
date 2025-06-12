@@ -7,7 +7,8 @@
         {
           "stage": 1,
           "enemies": [
-            { "type": "Ugg", "start_position": [2, 4], "spawn_time": 5.0 }
+            { "type": "Ugg", "start_position": [6, 6], "spawn_time": 5.0 },
+            { "type": "Wrongway", "start_position": [0, 6], "spawn_time": 5.0 }
           ]
         },
         {

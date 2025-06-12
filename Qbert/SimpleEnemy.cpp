@@ -3,12 +3,12 @@
 #include "utils.h"
 #include "MovementRunner.h"
 
-SimpleEnemy::SimpleEnemy(dae::GameObject* owner, Level* level,
+SimpleEnemy::SimpleEnemy(dae::GameObject* owner, Level* level, glm::ivec2 spawnGridPosition,
     const IPositionProxy& qbertPositionProxy, PositionConverter converter)
     : Enemy(owner, level, qbertPositionProxy, converter),
     m_jumpMovement(converter)
 {
-  
+    m_currentGridPos = spawnGridPosition;
 }
 
 void SimpleEnemy::Update(float deltaTime) {

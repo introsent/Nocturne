@@ -3,7 +3,7 @@
 
 class SlickSam : public SimpleEnemy {
 public:
-    SlickSam(dae::GameObject* owner, Level* level,
+    SlickSam(dae::GameObject* owner, Level* level, glm::ivec2 spawnGridPosition,
         const IPositionProxy& qbertPositionProxy, bool isSlick);
 
     bool ShouldDamageQBert() const override { return false; }
