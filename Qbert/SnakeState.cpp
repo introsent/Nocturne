@@ -16,13 +16,13 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
         m_delayTimer -= deltaTime;
         if (m_delayTimer <= 0.0f) {
             m_isDelaying = false;
-            // Start new jump after delay
+
             m_targetGridPosition = CalculateChaseDirection(coily);
             m_jump.Start(coily->GetGridPosition(),
                          m_targetGridPosition);
             m_isJumping = true;
 
-            // Update animation
+      
             const glm::ivec2 direction = m_targetGridPosition - coily->GetGridPosition();
             coily->LookAt(direction);
             coily->UpdateAnimation(DirectionToFrame(direction));
@@ -35,16 +35,11 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
             coily->MoveTo(m_targetGridPosition);
             m_isJumping = false;
 
-            // Start delay after landing
             m_isDelaying = true;
             m_delayTimer = JUMP_DELAY;
 
             coily->UpdateAnimation(DirectionToFrame(coily->GetCurrentLookAtDirection()));
 
-            // Check for QBert collision
-            if (coily->GetGridPosition() == coily->GetQBertGridPosition()) {
-                // coily->m_pQBert->Die();
-            }
             if (ShouldDie(coily))
             {
 				return std::make_unique<DyingCoilyState>(m_owner);
@@ -65,7 +60,6 @@ glm::ivec2 SnakeState::CalculateChaseDirection(Coily* coily) {
     glm::ivec2 bestMoveGridPosition = coilyGridPosition;
     float minDistanceToQbert = FLT_MAX;
 
-    // Check all possible moves
     for (const auto& dir : { UP_LEFT, UP_RIGHT, DOWN_LEFT, DOWN_RIGHT }) {
         glm::ivec2 testPos = coilyGridPosition + dir;
 

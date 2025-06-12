@@ -14,27 +14,23 @@ SpawningState::SpawningState(dae::GameObject* owner)
 }
 
 void SpawningState::Enter(Coily* coily) {
-    // Calculate positions - use the actual spawn grid position
     const auto gridPos = coily->GetDesiredSpawnGridPosition();
     m_spawnTarget = glm::vec3(GridToWorldCoily(gridPos), 0.f);
 
-    // Start above the target (same X, higher Y)
     m_spawnStart = m_spawnTarget;
-    m_spawnStart.y -= 300.f;  // Start 300 units above
+    m_spawnStart.y -= 300.f; 
 
-    // Initialize movement
     m_owner->SetLocalPosition(m_spawnStart);
     m_fallMovement->Start(m_spawnStart, m_spawnTarget);
-    coily->UpdateAnimation(0); // Egg frame
+    coily->UpdateAnimation(0); 
 
     coily->MoveTo(gridPos);
 }
 
 std::unique_ptr<CoilyState> SpawningState::Update(Coily*, float deltaTime) {
     if (m_fallMovement->Update(deltaTime)) {
-        // Snap to final position
         m_owner->SetLocalPosition(m_spawnTarget);
-        return std::make_unique<EggState>(m_owner); // Transition to egg state
+        return std::make_unique<EggState>(m_owner); 
     }
 
     m_owner->SetLocalPosition(m_fallMovement->GetCurrentPosition());

@@ -14,7 +14,6 @@ void Enemy::Update(float)
 void Enemy::MoveTo(const glm::ivec2& gridPos)
 {
 	m_currentGridPos = gridPos;
-	//GetOwner()->SetLocalPosition(glm::vec3(m_converter(gridPos), 0.f));
 }
 
 void Enemy::UpdateAnimation(int frame)
