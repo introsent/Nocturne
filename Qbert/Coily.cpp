@@ -15,6 +15,7 @@ void Coily::Update(float deltaTime)
             TransitionTo(std::move(newState));
         }
     }
+    Enemy::Update(deltaTime);
 }
 
 void Coily::TransitionTo(std::unique_ptr<CoilyState> newState)

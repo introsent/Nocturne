@@ -22,5 +22,5 @@ protected:
     bool m_isWaiting = true;
     bool m_isJumping = false;
     float m_delayTimer = 0.0f;
-    const float JUMP_DELAY = 1.0f;
+    const float JUMP_DELAY = 0.2f;
 };

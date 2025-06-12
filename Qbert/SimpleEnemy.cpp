@@ -35,6 +35,8 @@ void SimpleEnemy::Update(float deltaTime) {
             GetOwner()->SetLocalPosition(m_jumpMovement.GetCurrentPosition());
         }
     }
+
+    Enemy::Update(deltaTime);
 }
 
 void SimpleEnemy::StartDying(bool byQbert)

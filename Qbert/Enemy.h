@@ -29,6 +29,11 @@ public:
 
     void UpdateAnimation(int frame);
 
+    bool AreEnemyAndQbertClose(const glm::vec2& a, const glm::vec2& b, float epsilon = 30.f)
+    {
+        return glm::distance(a, b) < epsilon;
+    }
+
 protected:
     PositionConverter m_converter;
     glm::ivec2 m_currentDirection{};

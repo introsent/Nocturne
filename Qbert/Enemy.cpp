@@ -8,13 +8,13 @@ Enemy::Enemy(dae::GameObject* owner, Level* level, const IPositionProxy& qbertPo
 
 void Enemy::Update(float)
 {
+ 	CheckQBertCollision();
 }
 
 void Enemy::MoveTo(const glm::ivec2& gridPos)
 {
 	m_currentGridPos = gridPos;
-	GetOwner()->SetLocalPosition(glm::vec3(m_converter(gridPos), 0.f));
-	CheckQBertCollision();
+	//GetOwner()->SetLocalPosition(glm::vec3(m_converter(gridPos), 0.f));
 }
 
 void Enemy::UpdateAnimation(int frame)
@@ -29,7 +29,9 @@ void Enemy::LookAt(const glm::ivec2& direction)
 
 void Enemy::CheckQBertCollision()
 {
-	if (m_currentGridPos == m_qbertPositionProxy.GetGridPosition()) {
+	glm::vec2 enemyPosition = GetOwner()->GetWorldPosition();
+	glm::vec2 qbertPosition = m_qbertPositionProxy.GetWorldPosition();
+	if (AreEnemyAndQbertClose(enemyPosition, qbertPosition)) {
 		OnCollisionWithQbert.Invoke(GetOwner());
 	}
 }

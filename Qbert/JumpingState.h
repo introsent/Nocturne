@@ -9,7 +9,7 @@ class JumpingState : public QBertState
 public:
     JumpingState(dae::GameObject* owner, glm::ivec2 targetPosition)
 		: QBertState(owner), m_targetGridPosition(targetPosition),
-        m_jump([this](const glm::ivec2& grid) { return GridToWorldCharacter(grid);})
+        m_jump([this](const glm::ivec2& grid) { return GridToWorldCharacter(grid);}, 0.3f)
     {}
     void Enter(QBertPlayer* player) override;
     std::unique_ptr<QBertState> Update(QBertPlayer* player, float deltaTime) override;
