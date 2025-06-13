@@ -20,7 +20,7 @@ EnemyPrefabs::EnemyPrefabs()
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateEnemy(
     const std::string& type,
     Level* level,
-    const glm::ivec2& gridPos, const IPositionProxy& qbertPositionProxy)
+    const glm::ivec2& gridPos, const MultiQbertPositionProxy& qbertPositionProxy)
 {
     if (auto it = m_Prefabs.find(type); it != m_Prefabs.end()) {
         return it->second(level, gridPos, qbertPositionProxy);
@@ -28,7 +28,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateEnemy(
     return nullptr;
 }
 
-std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const glm::ivec2& gridPos, const IPositionProxy& qbertPositionProxy) {
+std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const glm::ivec2& gridPos, const MultiQbertPositionProxy& qbertPositionProxy) {
 
     auto coily = GameObjectBuilder()
         .WithTranslation()
@@ -48,7 +48,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateCoily(Level* level, const g
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSlickSam(
     Level* level,
     const glm::ivec2& gridPos,
-    const IPositionProxy& qbertPositionProxy,
+    const MultiQbertPositionProxy& qbertPositionProxy,
     bool isSlick)
 {
     glm::vec2 worldPos = GridToWorldSamSlick(gridPos);
@@ -76,7 +76,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSlickSam(
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSlick(
     Level* level,
     const glm::ivec2& gridPos,
-    const IPositionProxy& qbertPositionProxy)
+    const MultiQbertPositionProxy& qbertPositionProxy)
 {
     return CreateSlickSam(level, gridPos, qbertPositionProxy, true);
 }
@@ -84,7 +84,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSlick(
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSam(
     Level* level,
     const glm::ivec2& gridPos,
-    const IPositionProxy& qbertPositionProxy)
+    const MultiQbertPositionProxy& qbertPositionProxy)
 {
     return CreateSlickSam(level, gridPos, qbertPositionProxy, false);
 }
@@ -93,7 +93,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateSam(
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateUggWrongway(
     Level* level,
     const glm::ivec2& gridPos,
-    const IPositionProxy& qbertPositionProxy,
+    const MultiQbertPositionProxy& qbertPositionProxy,
     bool isUgg)
 {
     glm::vec2 worldPos = GridToWorldSamSlick(gridPos);
@@ -121,7 +121,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateUggWrongway(
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateUgg(
     Level* level,
     const glm::ivec2& gridPos,
-    const IPositionProxy& qbertPositionProxy)
+    const MultiQbertPositionProxy& qbertPositionProxy)
 {
     return CreateUggWrongway(level, gridPos, qbertPositionProxy, true);
 }
@@ -129,7 +129,7 @@ std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateUgg(
 std::unique_ptr<dae::GameObject> EnemyPrefabs::CreateWrongway(
     Level* level,
     const glm::ivec2& gridPos,
-    const IPositionProxy& qbertPositionProxy)
+    const MultiQbertPositionProxy& qbertPositionProxy)
 {
     return CreateUggWrongway(level, gridPos, qbertPositionProxy, false);
 }

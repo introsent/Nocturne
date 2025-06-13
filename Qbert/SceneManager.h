@@ -11,6 +11,6 @@ namespace SceneManager
 
 	void CreateMenuScene();
 
-	void CreateHighscoreScene(int playerScore);
+	void CreateHighscoreScene(int playerScore, GameMode mode);
 };
 

@@ -1,11 +1,12 @@
 #pragma once
 #include <array>
 #include "SimpleEnemy.h"
+#include "MultiQbertPositionProxy.h"
 
 class UggWrongway : public SimpleEnemy {
 public:
     UggWrongway(dae::GameObject* owner, Level* level, glm::ivec2 spawnGridPosition,
-        const IPositionProxy& qbertPositionProxy, bool isUgg);
+        const MultiQbertPositionProxy& qbertPositionProxy, bool isUgg);
 
 private:
     void GenerateNextMove() override;

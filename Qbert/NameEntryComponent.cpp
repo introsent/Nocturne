@@ -51,7 +51,7 @@ void NameEntryComponent::HandleSelect() {
         if (name.empty()) name = "ANON";
 
         // Check for duplicate name
-        auto scores = HighscoreLoader::ReadHighScores();
+        auto scores = HighscoreLoader::ReadHighScores(m_savedGameMode);
         bool nameExists = std::any_of(scores.begin(), scores.end(), [&name](const auto& entry) {
             return entry.first == name;
             });

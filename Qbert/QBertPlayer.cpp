@@ -94,9 +94,6 @@ bool QBertPlayer::TakeHit()
     if (auto newState = m_pCurrentState->ProcessHit()) {
         TransitionTo(std::move(newState));
         dae::SoundServiceLocator::GetService()->PlaySound("qbert_hit");
-        m_isDead = true;
-        m_respawnTimer = 2.0f;
-        ReduceHealth();
         return true;
     }
     return false;

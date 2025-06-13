@@ -3,9 +3,10 @@
 #include "utils.h"
 #include "MovementRunner.h"
 #include <SoundServiceLocator.h>
+#include "MultiQbertPositionProxy.h"
 
 SimpleEnemy::SimpleEnemy(dae::GameObject* owner, Level* level, glm::ivec2 spawnGridPosition,
-    const IPositionProxy& qbertPositionProxy, PositionConverter converter)
+    const MultiQbertPositionProxy& qbertPositionProxy, PositionConverter converter)
     : Enemy(owner, level, qbertPositionProxy, converter),
     m_jumpMovement(converter)
 {

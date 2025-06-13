@@ -10,7 +10,7 @@ class CoilyState;
 class Coily : public Enemy
 {
 public:
-    Coily(dae::GameObject* owner, glm::ivec2 spawnGridPosition, Level* level, const IPositionProxy& qbertPositionProxy);
+    Coily(dae::GameObject* owner, glm::ivec2 spawnGridPosition, Level* level, const MultiQbertPositionProxy& qbertPositionProxy);
     void Update(float deltaTime) override;
 
     void TransitionTo(std::unique_ptr<CoilyState> newState);

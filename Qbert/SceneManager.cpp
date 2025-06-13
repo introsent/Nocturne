@@ -85,12 +85,12 @@ void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>
     scene.Add(std::move(nameText));
 
     auto health = playerData->GetHealth();
-    health->OnHealthChanged.Subscribe([health, playerData]() {
+    health->OnHealthChanged.Subscribe([mode, health, playerData]() {
         if (health->GetLives() <= 0) {
             std::string name = playerData->GetNickname();
             int score = playerData->GetScore()->GetScore();
-            HighscoreLoader::SaveHighScore(name, score);
-            CreateHighscoreScene(score);
+            HighscoreLoader::SaveHighScore(mode, name, score);
+            CreateHighscoreScene(score, mode);
             dae::SceneManager::GetInstance().SetActiveScene("HighScore");
         }
         });
@@ -215,7 +215,7 @@ void SceneManager::CreateMenuScene()
     dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<MenuActivateCommand>());
 }
 
-void SceneManager::CreateHighscoreScene(int playerScore)
+void SceneManager::CreateHighscoreScene(int playerScore, GameMode mode)
 {
     auto& scene = dae::SceneManager::GetInstance().CreateScene("HighScore");
     dae::SceneManager::GetInstance().SetActiveScene("HighScore");
@@ -230,7 +230,7 @@ void SceneManager::CreateHighscoreScene(int playerScore)
     auto gameOverText = CreateUIText("Game Over", font, glm::vec3(200, 100, 0));
     scene.Add(std::move(gameOverText));
 
-    auto highScores = HighscoreLoader::ReadHighScores();
+    auto highScores = HighscoreLoader::ReadHighScores(mode);
     std::sort(highScores.begin(), highScores.end(), [](const auto& a, const auto& b) { return a.second > b.second; });
     int numToShow = std::min(3, static_cast<int>(highScores.size()));
     for (int i = 0; i < numToShow; ++i) {

@@ -11,6 +11,7 @@
 #include "QbertPositionProxy.h"
 #include "PlayerDataComponent.h"
 #include "GameMode.h"
+#include "MultiQbertPositionProxy.h"
 
 enum class InputDevice { Keyboard, Controller0, Controller1 };
 
@@ -48,7 +49,7 @@ private:
     std::vector<dae::GameObject*> m_DiscGOs{};
     std::vector<dae::GameObject*> m_QbertGOs{};
     dae::GameObject* m_CoilyGO{ nullptr };
-    std::unique_ptr<QbertPositionProxy> m_pQbertPositionProxy{};
+    std::unique_ptr<MultiQbertPositionProxy> m_pQbertPositionProxy{};
     std::vector<EnemySpawnData> m_StageEnemies{};
     std::unique_ptr<EnemyPrefabs> m_enemyPrefabs{ std::make_unique<EnemyPrefabs>() };
 

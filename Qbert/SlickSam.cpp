@@ -5,7 +5,7 @@
 #include "utils.h"
 
 SlickSam::SlickSam(dae::GameObject* owner, Level* level, glm::ivec2 spawnGridPosition,
-    const IPositionProxy& qbertPositionProxy, bool isSlick)
+    const MultiQbertPositionProxy& qbertPositionProxy, bool isSlick)
     : SimpleEnemy(owner, level, spawnGridPosition, qbertPositionProxy, [this](const glm::ivec2& grid) { return GridToWorldSamSlick(grid); }), m_isSlick(isSlick)
 {
 }

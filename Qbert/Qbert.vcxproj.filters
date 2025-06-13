@@ -359,5 +359,8 @@
     <ClInclude Include="GameMode.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="MultiQbertPositionProxy.h">
+      <Filter>Header Files\Qbert</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

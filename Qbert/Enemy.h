@@ -7,10 +7,11 @@
 #include "AnimationComponent.h"
 #include "PositionConverters.h"
 #include "ScoreComponent.h"
+#include "MultiQbertPositionProxy.h"
 
 class Enemy : public dae::Component{
 public:
-    Enemy(dae::GameObject* owner, Level* level, const IPositionProxy& qbertPositionProxy, PositionConverter converter);
+    Enemy(dae::GameObject* owner, Level* level, const MultiQbertPositionProxy& qbertPositionProxy, PositionConverter converter);
     virtual ~Enemy() = default;
 
     virtual void Update(float deltaTime) override;
@@ -21,7 +22,8 @@ public:
 
 	glm::ivec2 GetCurrentLookAtDirection() const { return m_currentDirection; }
 
-    glm::ivec2 GetQBertGridPosition() const { return m_qbertPositionProxy.GetGridPosition(); }
+    const std::vector<std::shared_ptr<IPositionProxy>>& GetQbertProxies() const { return m_qbertPositionProxy.GetAllProxies(); }
+
 
     glm::ivec2 GetGridPosition() const { return m_currentGridPos; }
     Level* GetLevel() const { return m_pLevel; }
@@ -51,7 +53,7 @@ private:
     bool m_isActive = true;
 
     Level* m_pLevel = nullptr;
-    const IPositionProxy& m_qbertPositionProxy;
+    const MultiQbertPositionProxy& m_qbertPositionProxy;
 
     AnimationComponent* m_pAnimation = nullptr;
  };

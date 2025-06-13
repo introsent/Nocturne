@@ -78,8 +78,21 @@ void SnakeState::HandleInput(Coily* coily, const glm::ivec2& direction)
 }
 
 glm::ivec2 SnakeState::CalculateChaseDirection(Coily* coily) {
-    glm::ivec2 qbertGridPosition = coily->GetQBertGridPosition();
+    glm::ivec2 qbertGridPosition = {}; 
     glm::ivec2 coilyGridPosition = coily->GetGridPosition();
+
+
+    const auto& proxies = coily->GetQbertProxies();
+    float minDistance = FLT_MAX;
+    for (const auto& proxy : proxies) {
+        glm::ivec2 pos = proxy->GetGridPosition();
+        float distance = glm::distance(glm::vec2(pos), glm::vec2(coilyGridPosition));
+        if (distance < minDistance) {
+            minDistance = distance;
+            qbertGridPosition = pos;
+        }
+    }
+
 
     glm::ivec2 bestMoveGridPosition = coilyGridPosition;
     float minDistanceToQbert = FLT_MAX;

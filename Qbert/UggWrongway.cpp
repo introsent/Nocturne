@@ -5,7 +5,7 @@
 #include <random>
 
 UggWrongway::UggWrongway(dae::GameObject* owner, Level* level, glm::ivec2 spawnGridPosition,
-    const IPositionProxy& qbertPositionProxy, bool isUgg)
+    const MultiQbertPositionProxy& qbertPositionProxy, bool isUgg)
     : SimpleEnemy(owner, level, spawnGridPosition, qbertPositionProxy, [this](const glm::ivec2& grid) { return GridToWorldSamSlick(grid); }), m_isUgg(isUgg)
 {
     OnLand();

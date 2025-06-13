@@ -2,10 +2,19 @@
 #include <fstream>
 #include <algorithm>
 
-std::vector<std::pair<std::string, int>> HighscoreLoader::ReadHighScores()
+std::string GetFilename(GameMode mode) {
+    switch (mode) {
+    case GameMode::Solo: return "solo_highscores.txt";
+    case GameMode::Coop: return "coop_highscores.txt";
+    case GameMode::Versus: return "versus_highscores.txt";
+    default: return "highscores.txt";
+    }
+}
+
+std::vector<std::pair<std::string, int>> HighscoreLoader::ReadHighScores(GameMode mode)
 {
     std::vector<std::pair<std::string, int>> scores;
-    std::ifstream file("highscores.txt");
+    std::ifstream file(GetFilename(mode));
     if (file.is_open()) {
         std::string line;
         while (std::getline(file, line)) {
@@ -21,9 +30,9 @@ std::vector<std::pair<std::string, int>> HighscoreLoader::ReadHighScores()
     return scores;
 }
 
-void HighscoreLoader::SaveHighScores(const std::vector<std::pair<std::string, int>>& scores)
+void HighscoreLoader::SaveHighScores(GameMode mode, const std::vector<std::pair<std::string, int>>& scores)
 {
-    std::ofstream file("highscores.txt");
+    std::ofstream file(GetFilename(mode));
     if (file.is_open()) {
         for (const auto& entry : scores) {
             file << entry.first << "," << entry.second << "\n";
@@ -32,13 +41,13 @@ void HighscoreLoader::SaveHighScores(const std::vector<std::pair<std::string, in
     }
 }
 
-void HighscoreLoader::SaveHighScore(const std::string& name, int score)
+void HighscoreLoader::SaveHighScore(GameMode mode, const std::string& name, int score)
 {
-    auto scores = ReadHighScores();
+    auto scores = ReadHighScores(mode);
     scores.emplace_back(name, score);
     std::sort(scores.begin(), scores.end(), [](const auto& a, const auto& b) {
         return a.second > b.second;
         });
     if (scores.size() > 10) scores.resize(10);
-    SaveHighScores(scores);
+    SaveHighScores(mode, scores);
 }

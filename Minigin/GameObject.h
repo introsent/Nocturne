@@ -27,9 +27,9 @@ namespace dae {
 
         // --- DESTRUCTION ---
         void MarkForDestroy() { m_isDestroyed = true; }
+		bool IsMarkedForDestroy() const { return m_isDestroyed; }
         void MarkForDestroyWithChildren();
         void DestroyChildren();
-        bool IsMarkedForDestroy() const { return m_isDestroyed; }
 
         // --- COMPONENT SYSTEM ---
         template <typename ComponentType, typename... Args>

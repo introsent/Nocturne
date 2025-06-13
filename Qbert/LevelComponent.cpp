@@ -18,6 +18,7 @@
 #include "GameObjectBuilder.h"
 #include <ranges>
 #include <SoundServiceLocator.h>
+#include "MultiQbertPositionProxy.h"
 
 LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stageIndex, PlayerDataComponent* playerData, GameMode mode)
     : Component(owner), m_pLevel(std::make_unique<Level>(levelIndex, stageIndex)), m_LevelIndex(levelIndex), m_StageIndex(stageIndex), m_pPlayerData(playerData), m_Mode(mode)
@@ -87,8 +88,11 @@ void LevelComponent::Update(float deltaTime) {
             if (enemy->GetComponent<Enemy>()->ShouldDamageQBert())
             {
                 for (auto* qbertGO : m_QbertGOs) {
-                    if (qbertGO->GetComponent<QBertPlayer>()->TakeHit()) {
-                        enemy->MarkForDestroy();
+                    if (enemy->GetComponent<Enemy>()->AreEnemyAndQbertClose(enemy->GetWorldPosition(), qbertGO->GetWorldPosition()))
+                    {
+                        if (qbertGO->GetComponent<QBertPlayer>()->TakeHit()) {
+                            enemy->MarkForDestroy();
+                        }
                     }
                 }
             }
@@ -187,7 +191,7 @@ void LevelComponent::SpawnPlayers() {
     else if (m_Mode == GameMode::Coop) {
         int rows = m_pLevel->GetRows();
         auto qbert1 = SpawnQBertAt({ 0, rows - 1 }, InputDevice::Keyboard, false);
-        auto qbert2 = SpawnQBertAt({ rows - 1, rows - 1 }, InputDevice::Controller0, true);
+        auto qbert2 = SpawnQBertAt({ rows - 1, rows - 1 }, InputDevice::Controller1, true);
         m_QbertGOs.push_back(qbert1);
         m_QbertGOs.push_back(qbert2);
     }
@@ -200,11 +204,17 @@ void LevelComponent::SpawnPlayers() {
     BindCommands();
 
     if (!m_QbertGOs.empty()) {
-        auto qbertPlayer = m_QbertGOs[0]->GetComponent<QBertPlayer>();
-        m_pQbertPositionProxy = std::make_unique<QbertPositionProxy>(qbertPlayer);
-        qbertPlayer->OnPositionChanged.Subscribe([this](const glm::ivec2& newPos) {
-            m_pQbertPositionProxy->UpdatePosition(newPos);
-            });
+        auto multiProxy = std::make_unique<MultiQbertPositionProxy>();
+        for (auto* qbertGO : m_QbertGOs) {
+            auto player = qbertGO->GetComponent<QBertPlayer>();
+            auto proxy = std::make_shared<QbertPositionProxy>(player);
+            multiProxy->AddProxy(proxy);
+
+            player->OnPositionChanged.Subscribe([proxy](const glm::ivec2& newPos) {
+                proxy->UpdatePosition(newPos);
+                });
+        }
+        m_pQbertPositionProxy = std::move(multiProxy);
     }
 }
 
@@ -253,7 +263,8 @@ void LevelComponent::BindCommands() {
     }
     else if (m_Mode == GameMode::Coop) {
         BindQBertInputs(m_QbertGOs[0], InputDevice::Keyboard);
-        BindQBertInputs(m_QbertGOs[1], InputDevice::Controller0);
+        BindQBertInputs(m_QbertGOs[0], InputDevice::Controller0);
+        BindQBertInputs(m_QbertGOs[1], InputDevice::Controller1);
     }
     else if (m_Mode == GameMode::Versus) {
         BindQBertInputs(m_QbertGOs[0], InputDevice::Keyboard);
