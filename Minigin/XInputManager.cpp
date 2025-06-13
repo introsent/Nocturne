@@ -31,11 +31,22 @@ namespace dae
 
                 for (const auto& [commandState, command] : commands)
                 {
-                    if ((commandState == InputState::Down && isPressed) ||
-                        (commandState == InputState::Up && !isPressed && wasPressed) ||
-                        (commandState == InputState::Pressed && isPressed && wasPressed))
+                    switch (commandState)
                     {
-                        command->Execute();
+                    case InputState::Down:
+                        if (isPressed && !wasPressed)
+                            command->Execute();
+                        break;
+
+                    case InputState::Pressed:
+                        if (isPressed && wasPressed)
+                            command->Execute();
+                        break;
+
+                    case InputState::Up:
+                        if (!isPressed && wasPressed)
+                            command->Execute();
+                        break;
                     }
                 }
             }

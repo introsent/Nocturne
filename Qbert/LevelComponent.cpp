@@ -223,23 +223,23 @@ void LevelComponent::SpawnQBert() {
 
 void LevelComponent::BindCommands() const
 {
-	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_w, InputState::Up,
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_w, InputState::Down,
 		std::make_unique<MoveCommand>(m_pQBertGO, UP_RIGHT));
-	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_s, InputState::Up,
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_s, InputState::Down,
 		std::make_unique<MoveCommand>(m_pQBertGO, DOWN_LEFT));
-	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_a, InputState::Up,
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_a, InputState::Down,
 		std::make_unique<MoveCommand>(m_pQBertGO,UP_LEFT));
-	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_d, InputState::Up,
+	dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_d, InputState::Down,
 		std::make_unique<MoveCommand>(m_pQBertGO,  DOWN_RIGHT));
 
 
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Pressed,
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Down,
                                                            std::make_unique<MoveCommand>(m_pQBertGO, UP_RIGHT));   // Up
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Pressed,
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Down,
                                                            std::make_unique<MoveCommand>(m_pQBertGO, DOWN_LEFT));    // Down
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadLeft), InputState::Pressed,
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadLeft), InputState::Down,
                                                            std::make_unique<MoveCommand>(m_pQBertGO, UP_LEFT));   // Left
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadRight), InputState::Pressed,
+    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadRight), InputState::Down,
                                                            std::make_unique<MoveCommand>(m_pQBertGO, DOWN_RIGHT));    // Right
 }
 
