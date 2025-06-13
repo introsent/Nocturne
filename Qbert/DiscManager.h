@@ -12,21 +12,13 @@ public:
         return instance;
     }
 
-    void RegisterDisc(const glm::ivec2& gridPos, dae::GameObject* pDisc) {
-        m_DiscMap[gridPos] = pDisc;
-    }
+    void RegisterDisc(const glm::ivec2& gridPos, dae::GameObject* pDisc);
 
-    dae::GameObject* GetDiscAt(const glm::ivec2& gridPos) const {
-        auto it = m_DiscMap.find(gridPos);
-        if (it != m_DiscMap.end()) {
-            return it->second;
-        }
-        return nullptr;
-    }
+    dae::GameObject* GetDiscAt(const glm::ivec2& gridPos) const;
 
-    void Clear() {
-        m_DiscMap.clear();
-    }
+    int GetRemainingDiscs();
+
+    void Clear();
 
 private:
     DiscManager() = default;

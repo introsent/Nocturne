@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include "TextureComponent.h"
+#include "TextComponent.h"
 
 using namespace dae;
 
@@ -73,6 +74,14 @@ void Scene::Render() const {
     // Render in sorted order
     for (const auto& [depth, object] : renderables) {
         object->Render();
+    }
+
+    // Render UI on top
+    for (const auto& object : m_objects) {
+        if (auto textComp = object->GetComponent<TextComponent>())
+        {
+            textComp->Render();
+        }
     }
 }
 

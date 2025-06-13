@@ -6,6 +6,7 @@
 #include "PositionProxy.h"
 #include "AnimationComponent.h"
 #include "PositionConverters.h"
+#include "ScoreComponent.h"
 
 class Enemy : public dae::Component{
 public:
@@ -34,10 +35,16 @@ public:
         return glm::distance(a, b) < epsilon;
     }
 
+    void SetScoreComponent(ScoreComponent* scoreComponent) { m_pScore = scoreComponent; }
+
+    void ApplyScoreToScoreComponent(int score);
+
 protected:
     PositionConverter m_converter;
     glm::ivec2 m_currentDirection{};
     glm::ivec2 m_currentGridPos{};
+
+    ScoreComponent* m_pScore{ nullptr };
 
     void CheckQBertCollision();
 private:

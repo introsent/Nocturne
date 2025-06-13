@@ -19,6 +19,8 @@ void DeadState::Enter(QBertPlayer*) {
 
     dae::SoundServiceLocator::GetService()->PlaySound("swearing");
 
+    owner->GetComponent<QBertPlayer>()->ReduceHealth();
+
     m_deathTimer = 0.f;
 }
 

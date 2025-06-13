@@ -53,6 +53,10 @@ void DyingCoilyState::Enter(Coily* coily) {
     // Start the fall movement
     m_fallMovement->Start(m_fallStart, fallTarget);
     dae::SoundServiceLocator::GetService()->PlaySound("coily_fall");
+
+    if (auto enemy = m_owner->GetComponent<Enemy>()) {
+        enemy->ApplyScoreToScoreComponent(500);
+    }
 }
 
 std::unique_ptr<CoilyState> DyingCoilyState::Update(Coily*, float deltaTime) {

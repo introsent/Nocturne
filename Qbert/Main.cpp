@@ -57,9 +57,13 @@ void load()
         .Build();
     scene.Add(std::move(bg));
 
+    auto playerDataObj = std::make_unique<dae::GameObject>();
+    auto playerData = playerDataObj->AddComponent<PlayerDataComponent>(playerDataObj.get());
+    scene.Add(std::move(playerDataObj));
+
     // Create persistent Level Manager
     auto manager = std::make_unique<dae::GameObject>();
-    auto levelManager = manager->AddComponent<LevelManagerComponent>(manager.get());
+    auto levelManager = manager->AddComponent<LevelManagerComponent>(manager.get(), playerData);
 
     levelManager->OnAllLevelsCompleted.Subscribe([]() {
         // Handle game completion
@@ -67,6 +71,29 @@ void load()
         });
 
     scene.Add(std::move(manager));
+
+
+
+    // Create UI displays
+    auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
+    auto scoreText = CreateUIText("Score: 0", font, glm::vec3(10, 10, 0));
+    auto scoreObserver = scoreText->AddComponent<ScoreDisplayObserver>(
+        scoreText.get(),
+        scoreText->GetComponent<dae::TextComponent>()
+    );
+    scoreObserver->Register(playerData->GetScore());
+
+    scene.Add(std::move(scoreText));
+
+    auto livesText = CreateUIText("Lives: 3", font, glm::vec3(10, 50, 0));
+    auto livesObserver = livesText->AddComponent<LivesDisplayObserver>(
+        livesText.get(),
+        livesText->GetComponent<dae::TextComponent>()
+    );
+    livesObserver->Register(playerData->GetHealth());
+
+    scene.Add(std::move(livesText));
+
 
 
     //// Bind WASD for char1 (keyboard)

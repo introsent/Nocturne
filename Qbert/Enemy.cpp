@@ -21,6 +21,11 @@ void Enemy::UpdateAnimation(int frame)
 	m_pAnimation->SetFrame(frame);
 }
 
+void Enemy::ApplyScoreToScoreComponent(int score)
+{
+	m_pScore->AddScore(score);
+}
+
 void Enemy::LookAt(const glm::ivec2& direction)
 {
 	m_currentDirection = direction;

@@ -223,6 +223,7 @@
     <ClCompile Include="LivesDisplayObserver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="PlayerDataComponent.cpp" />
     <ClCompile Include="QBertPlayer.cpp" />
     <ClCompile Include="QbertPositionProxy.cpp" />
     <ClCompile Include="ScoreCommand.cpp" />
@@ -268,6 +269,7 @@
     <ClInclude Include="LivesDisplayObserver.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovementRunner.h" />
+    <ClInclude Include="PlayerDataComponent.h" />
     <ClInclude Include="PositionConverters.h" />
     <ClInclude Include="PositionProxy.h" />
     <ClInclude Include="QBertPlayer.h" />

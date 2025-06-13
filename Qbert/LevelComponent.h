@@ -9,17 +9,22 @@
 #include "EnemyPrefabs.h"
 #include "LevelData.h"
 #include "QbertPositionProxy.h"
+#include "PlayerDataComponent.h"
 
 class LevelComponent final : public dae::Component {
 public:
-    explicit LevelComponent(dae::GameObject* pOwner, int levelIndex, int stageIndex);
+    explicit LevelComponent(dae::GameObject* pOwner, int levelIndex, int stageIndex, PlayerDataComponent* playerData);
     ~LevelComponent() override = default;
 
     void Update(float deltaTime) override;
     void Render() const override {}
 
+    void SetPlayerData(PlayerDataComponent* playerData);
+
     Event<> OnLevelCompletedEvent;
 private:
+    PlayerDataComponent* m_pPlayerData;
+
     std::vector<EnemySpawnData> m_StageEnemies;
     float m_AccumulatedTime = 0.f;
     bool m_LevelCompleted = false;

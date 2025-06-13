@@ -3,9 +3,10 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-LevelManagerComponent::LevelManagerComponent(dae::GameObject* owner)
+LevelManagerComponent::LevelManagerComponent(dae::GameObject* owner, PlayerDataComponent* playerData)
     : Component(owner)
 {
+    m_pPlayerData = playerData;
     LoadNextLevel();
 }
 
@@ -18,9 +19,14 @@ void LevelManagerComponent::Update(float)
     }
 }
 
+void LevelManagerComponent::SetPlayerData(PlayerDataComponent* playerData)
+{
+    m_pPlayerData = playerData;
+}
+
 void LevelManagerComponent::LoadNextLevel()
 {
-   // GetOwner()->GetComponent<LevelComponent>()->
+    
     // Destroy existing level children
     GetOwner()->DestroyChildren();
 
@@ -29,13 +35,15 @@ void LevelManagerComponent::LoadNextLevel()
     auto levelComp = levelController->AddComponent<LevelComponent>(
         levelController.get(),
         m_CurrentLevelIndex,
-        m_CurrentStageIndex
+        m_CurrentStageIndex,
+        m_pPlayerData
     );
 
     // Subscribe to level completion
     levelComp->OnLevelCompletedEvent.Subscribe([this]() {
         m_LevelCompletedFlag = true;
         });
+
 
     levelController->SetParent(GetOwner());
   

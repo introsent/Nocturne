@@ -46,6 +46,9 @@
     <Filter Include="Header Files\Enemies\Simple\UggWrongway">
       <UniqueIdentifier>{7062c4e8-1dd1-4d75-b540-d53718632b7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{0fbd1f20-95f6-4a69-8d34-2460dfde6c5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -153,8 +156,11 @@
     <ClCompile Include="UggWrongway.cpp">
       <Filter>Header Files\Enemies\Simple\UggWrongway</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerDataComponent.cpp">
+      <Filter>Header Files\Player</Filter>
+    </ClCompile>
     <ClCompile Include="QBertPlayer.cpp">
-      <Filter>Header Files\States</Filter>
+      <Filter>Header Files\Qbert</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -301,6 +307,9 @@
     </ClInclude>
     <ClInclude Include="PositionConverters.h">
       <Filter>Header Files\Movement</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDataComponent.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

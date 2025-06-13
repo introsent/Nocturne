@@ -40,16 +40,16 @@ public:
     }
 
     // Add a health component and optionally output the pointer
-    GameObjectBuilder& WithHealth(dae::HealthComponent** outHealth = nullptr) {
-        auto comp = object->AddComponent<dae::HealthComponent>(object.get());
+    GameObjectBuilder& WithHealth(HealthComponent** outHealth = nullptr) {
+        auto comp = object->AddComponent<HealthComponent>(object.get());
         if (outHealth)
             *outHealth = comp;
         return *this;
     }
 
     // Add a score component and optionally output the pointer
-    GameObjectBuilder& WithScore(dae::ScoreComponent** outScore = nullptr) {
-        auto comp = object->AddComponent<dae::ScoreComponent>(object.get());
+    GameObjectBuilder& WithScore(ScoreComponent** outScore = nullptr) {
+        auto comp = object->AddComponent<ScoreComponent>(object.get());
         if (outScore)
             *outScore = comp;
         return *this;

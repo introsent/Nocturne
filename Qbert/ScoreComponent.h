@@ -2,21 +2,20 @@
 #include "Component.h"
 #include "Event.h"
 
-namespace dae
-{
-    class ScoreComponent : public Component {
-    public:
 
-        Event<int> OnScoreChanged;
-        ScoreComponent(GameObject* pOwner) : Component(pOwner) {}
+class ScoreComponent : public dae::Component {
+public:
 
-        void AddScore(int amount);
+    Event<int> OnScoreChanged;
+    ScoreComponent(dae::GameObject* pOwner) : Component(pOwner) {}
 
-        int GetScore() const;
+    void AddScore(int amount);
 
-    private:
-        int m_score = 0;
-    };
-}
+    int GetScore() const;
+
+private:
+    int m_score = 0;
+};
+
 
 

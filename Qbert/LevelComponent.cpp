@@ -19,11 +19,12 @@
 #include <ranges> 
 #include <SoundServiceLocator.h>
 
-LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stageIndex)
+LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stageIndex, PlayerDataComponent* playerData)
     : Component(owner)
     , m_pLevel(std::make_unique<Level>(levelIndex, stageIndex))
     , m_LevelIndex(levelIndex)
     , m_StageIndex(stageIndex)
+    , m_pPlayerData(playerData)
 {
 
     auto levels = LevelDataLoader::LoadLevels(levelDataPath);
@@ -45,6 +46,11 @@ LevelComponent::LevelComponent(dae::GameObject* owner, int levelIndex, int stage
 
     m_pLevel->OnTileColored.Subscribe([this](const Tile& tile) { OnTileColored(tile); });
     m_pLevel->OnLevelCompleted.Subscribe([this]() { OnLevelCompleted(); });
+}
+
+void LevelComponent::SetPlayerData(PlayerDataComponent* playerData)
+{
+    m_pPlayerData = playerData;
 }
 
 void LevelComponent::Update(float deltaTime) {
@@ -80,6 +86,10 @@ void LevelComponent::Update(float deltaTime) {
             *m_pQbertPositionProxy
         );
 
+        enemyGO->GetComponent<Enemy>()->SetScoreComponent(
+            m_pPlayerData ? m_pPlayerData->GetScore() : nullptr
+        );
+
         enemyGO->GetComponent<Enemy>()->OnCollisionWithQbert.Subscribe([this](dae::GameObject* enemy) {
             if (enemy->GetComponent<Enemy>()->ShouldDamageQBert())
             {
@@ -90,6 +100,8 @@ void LevelComponent::Update(float deltaTime) {
             }
             else
             {
+                // only happens when colliding with slick/sam
+                m_pPlayerData->GetScore()->AddScore(300);
                 dae::SoundServiceLocator::GetService()->PlaySound("slick_sam_caught");
                 enemy->MarkForDestroy();
             }
@@ -145,6 +157,9 @@ void LevelComponent::OnTileColored(const Tile& tile) const
             break;
         }
     }
+    if (m_pPlayerData && m_pPlayerData->GetScore()) {
+        m_pPlayerData->GetScore()->AddScore(25); 
+    }
 }
 int LevelComponent::CalculateTileFrame(const Tile& tile) const
 {
@@ -163,6 +178,12 @@ void LevelComponent::OnLevelCompleted()
 
     dae::SoundServiceLocator::GetService()->PlaySound("round_complete");
 
+    if (m_pPlayerData && m_pPlayerData->GetScore()) {
+        // 50 points per remaining disc
+        int remainingDiscs = DiscManager::GetInstance().GetRemainingDiscs();
+        m_pPlayerData->GetScore()->AddScore(remainingDiscs * 50);
+    }
+
     UpdateAllTilesToAnimationState();
 }
 
@@ -174,7 +195,7 @@ void LevelComponent::SpawnQBert() {
         .WithTranslation()
         .WithTexture(m_qbert.tex.file, 0.f, 2.f)
         .WithAnimation(m_qbert.tex.frameSize, m_qbert.columns * m_qbert.rows, 0.2f, m_qbert.rows, m_qbert.columns)
-        .WithComponent<QBertPlayer>(m_pLevel.get())
+        .WithComponent<QBertPlayer>(m_pLevel.get(), m_pPlayerData->GetHealth())
         .SetPosition(glm::vec3(worldPos.x, worldPos.y, 0.f))
         .Build();
 

@@ -9,8 +9,8 @@
 #include "Directions.h"
 #include "SoundServiceLocator.h"
 
-QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level)
-    : Component(owner), m_pLevel(level)
+QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level, HealthComponent* healthComponent)
+    : Component(owner), m_pLevel(level), m_pHealth(healthComponent)
 {
     m_pAnimation = GetOwner()->GetComponent<AnimationComponent>();
     if (!m_pAnimation) {
@@ -87,4 +87,9 @@ bool QBertPlayer::TakeHit()
         return true; // did we actually hit?
     }
     return false;
+}
+
+void QBertPlayer::ReduceHealth()
+{
+    m_pHealth->TakeDamage();
 }

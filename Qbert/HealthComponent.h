@@ -4,22 +4,21 @@
 #include "Component.h"
 #include "Event.h"
 
-namespace dae
-{
-    class HealthComponent : public Component {
-    public:
-        HealthComponent(GameObject* pOwner) : Component(pOwner) {}
 
-        // event triggered whenever health changes.
-        Event<> OnHealthChanged;
+class HealthComponent : public dae::Component {
+public:
+    HealthComponent(dae::GameObject * pOwner) : Component(pOwner) {}
 
-        void TakeDamage();
+    // event triggered whenever health changes.
+    Event<> OnHealthChanged;
 
-        int GetLives() const;
+    void TakeDamage();
 
-    private:
-        int m_lives = 3;
-    };
-}
+    int GetLives() const;
+
+private:
+    int m_lives = 3;
+};
+
 
 

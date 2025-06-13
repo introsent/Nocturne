@@ -1,7 +1,7 @@
 #include "HealthComponent.h"
 
 
-void dae::HealthComponent::TakeDamage()
+void HealthComponent::TakeDamage()
 {
     --m_lives;
     // notify all subscribers. at the same time
@@ -9,7 +9,7 @@ void dae::HealthComponent::TakeDamage()
 
 }
 
-int dae::HealthComponent::GetLives() const
+int HealthComponent::GetLives() const
 {
     return m_lives;
 }
