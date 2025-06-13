@@ -1,6 +1,6 @@
 #include "Scene.h"
 #include "GameObject.h"
-
+#include <ranges>
 #include <algorithm>
 #include "TextureComponent.h"
 #include "TextComponent.h"
@@ -12,6 +12,16 @@ unsigned int Scene::m_idCounter = 0;
 Scene::Scene(const std::string& name) : m_name(name) {}
 
 Scene::~Scene() = default;
+
+std::vector<GameObject*> dae::Scene::GetAllObjects() const  
+{  
+    std::vector<GameObject*> result;  
+    result.reserve(m_objects.size());  
+    for (const auto& up : m_objects) {  
+        result.push_back(up.get());  
+    }  
+    return result;  
+}
 
 void Scene::Add(std::unique_ptr<GameObject> object)
 {

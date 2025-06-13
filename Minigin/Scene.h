@@ -24,6 +24,8 @@ namespace dae
 
 		const std::string& GetName() const { return m_name; }
 
+		std::vector<GameObject*> GetAllObjects() const;
+
 	private: 
 		explicit Scene(const std::string& name);
 

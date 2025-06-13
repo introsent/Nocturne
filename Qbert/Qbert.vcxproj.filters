@@ -49,6 +49,9 @@
     <Filter Include="Header Files\Player">
       <UniqueIdentifier>{0fbd1f20-95f6-4a69-8d34-2460dfde6c5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Menu">
+      <UniqueIdentifier>{d0d514ce-57d8-43c6-b0ac-1e2f6554fc3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -161,6 +164,12 @@
     </ClCompile>
     <ClCompile Include="QBertPlayer.cpp">
       <Filter>Header Files\Qbert</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuComponent.cpp">
+      <Filter>Header Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuCommands.cpp">
+      <Filter>Header Files\Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -310,6 +319,12 @@
     </ClInclude>
     <ClInclude Include="PlayerDataComponent.h">
       <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuComponent.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuCommands.h">
+      <Filter>Header Files\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

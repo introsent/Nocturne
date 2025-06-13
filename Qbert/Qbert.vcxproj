@@ -222,6 +222,8 @@
     <ClCompile Include="LevelManagerComponent.cpp" />
     <ClCompile Include="LivesDisplayObserver.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MenuCommands.cpp" />
+    <ClCompile Include="MenuComponent.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
     <ClCompile Include="PlayerDataComponent.cpp" />
     <ClCompile Include="QBertPlayer.cpp" />
@@ -267,6 +269,8 @@
     <ClInclude Include="LevelData.h" />
     <ClInclude Include="LevelManagerComponent.h" />
     <ClInclude Include="LivesDisplayObserver.h" />
+    <ClInclude Include="MenuCommands.h" />
+    <ClInclude Include="MenuComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovementRunner.h" />
     <ClInclude Include="PlayerDataComponent.h" />
