@@ -10,10 +10,13 @@
 #include "LevelData.h"
 #include "QbertPositionProxy.h"
 #include "PlayerDataComponent.h"
+#include "GameMode.h"
+
+enum class InputDevice { Keyboard, Controller0, Controller1 };
 
 class LevelComponent final : public dae::Component {
 public:
-    explicit LevelComponent(dae::GameObject* pOwner, int levelIndex, int stageIndex, PlayerDataComponent* playerData);
+    explicit LevelComponent(dae::GameObject* pOwner, int levelIndex, int stageIndex, PlayerDataComponent* playerData, GameMode mode);
     ~LevelComponent() override = default;
 
     void Update(float deltaTime) override;
@@ -23,41 +26,41 @@ public:
 
     Event<> OnLevelCompletedEvent;
 private:
-    PlayerDataComponent* m_pPlayerData;
-
-    std::vector<EnemySpawnData> m_StageEnemies;
-    float m_AccumulatedTime = 0.f;
-    bool m_LevelCompleted = false;
-
-    std::unique_ptr<Level> m_pLevel;
-    std::vector<dae::GameObject*> m_TileGOs;
-
-    dae::GameObject* m_pQBertGO;
-    std::unique_ptr<QbertPositionProxy> m_pQbertPositionProxy;
-
-    std::vector<dae::GameObject*> m_DiscGOs;
-
-    int m_LevelIndex{ 0 };
-    int m_StageIndex{ 0 };
-
-    std::vector<std::pair<glm::ivec2, dae::GameObject*>> m_DiscList;
-
-    std::vector<std::pair<std::string, glm::ivec2>> m_EnemySpawns;
-	std::unique_ptr<EnemyPrefabs> m_enemyPrefabs = std::make_unique<EnemyPrefabs>();
-
-
-    //Atlas functions
     void SpawnTiles();
+    void SpawnDiscs();
+    void SpawnPlayers();
+    dae::GameObject* SpawnQBertAt(const glm::ivec2& gridPos, InputDevice device, bool isSecondPLayer);
+    dae::GameObject* SpawnPlayerCoily();
+    void BindCommands();
+    void BindQBertInputs(dae::GameObject* qbertGO, InputDevice device);
+    void BindCoilyInputs(dae::GameObject* coilyGO, InputDevice device);
     void OnTileColored(const Tile& tile) const;
     int CalculateTileFrame(const Tile& tile) const;
-
     void OnLevelCompleted();
+    void PlayEndingAnimation(float deltaTime);
+    void UpdateAllTilesToAnimationState();
 
-	//Qbert functions
-    void SpawnQBert();
-    void BindCommands() const;
+    std::unique_ptr<Level> m_pLevel{};
+    int m_LevelIndex{};
+    int m_StageIndex{};
+    PlayerDataComponent* m_pPlayerData{};
+    std::vector<dae::GameObject*> m_TileGOs{};
+    std::vector<dae::GameObject*> m_DiscGOs{};
+    std::vector<dae::GameObject*> m_QbertGOs{};
+    dae::GameObject* m_CoilyGO{ nullptr };
+    std::unique_ptr<QbertPositionProxy> m_pQbertPositionProxy{};
+    std::vector<EnemySpawnData> m_StageEnemies{};
+    std::unique_ptr<EnemyPrefabs> m_enemyPrefabs{ std::make_unique<EnemyPrefabs>() };
 
-    void SpawnDiscs();
+    float m_AccumulatedTime{ 0.f };
+    bool m_LevelCompleted{ false };
+    bool m_IsEndingAnimationPlaying{ false };
+    float m_AnimationTotalTime{};
+    float m_AnimationStateTime{};
+    int m_CurrentAnimationState{};
+    static constexpr int MAX_ANIMATION_STATES{ 3 };
+
+    GameMode m_Mode;
 
     struct TextureConfig {
         char const* file;
@@ -85,6 +88,13 @@ private:
 		/*rows=*/    1
     };
 
+    static constexpr AtlasConfig m_qbert2{
+       {"Qbert P2 Spritesheet.png",
+       { 17.f, 16.f }},
+       /*columns=*/ 4,
+       /*rows=*/    1
+    };
+
     // Disc:
     static constexpr AtlasConfig m_disc{
         {"Disk Spritesheet.png",
@@ -94,16 +104,4 @@ private:
     };
 
     static constexpr const char* levelDataPath = "../Data/Level/levels.json";
-
-
-    bool m_IsEndingAnimationPlaying = false;
-    float m_AnimationTimer = 0.0f;
-    int m_CurrentAnimationState = 0;
-    static constexpr int MAX_ANIMATION_STATES = 3;
-
-    float m_AnimationTotalTime{};
-    float m_AnimationStateTime{};
-
-    void PlayEndingAnimation(float deltaTime);
-    void UpdateAllTilesToAnimationState();
 };

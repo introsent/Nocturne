@@ -1,11 +1,13 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "GameMode.h"
 
 namespace SceneManager
 {
-	void CreateGameScene(const std::string& playerName);
+	void CreateGameScene(GameMode mode, const std::vector<std::string>& playerNames);
 
-	void CreateNameEntryScene();
+	void CreateNameEntryScene(GameMode mode);
 
 	void CreateMenuScene();
 

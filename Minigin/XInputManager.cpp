@@ -10,55 +10,59 @@ namespace dae
     {
     public:
         bool ProcessInput();
-        void BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command);
+        void BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command);
 
     private:
-        std::unordered_map<unsigned int, std::vector<std::pair<InputState, std::unique_ptr<Command>>>> m_ControllerCommands;
-        XINPUT_STATE m_PreviousState{};
+        std::unordered_map<int, std::unordered_map<unsigned int, std::vector<std::pair<InputState, std::unique_ptr<Command>>>>> m_ControllerCommands;
+        std::unordered_map<int, XINPUT_STATE> m_PreviousStates;
     };
 
     bool XInputManager::XInputImpl::ProcessInput()
     {
-        XINPUT_STATE state;
-        ZeroMemory(&state, sizeof(XINPUT_STATE));
-
-        if (XInputGetState(0, &state) == ERROR_SUCCESS)
+        for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i) 
         {
-            for (const auto& [button, commands] : m_ControllerCommands)
+            XINPUT_STATE state;
+            ZeroMemory(&state, sizeof(XINPUT_STATE));
+
+            if (XInputGetState(i, &state) == ERROR_SUCCESS) 
             {
-                bool isPressed = (state.Gamepad.wButtons & button) != 0;
-                bool wasPressed = (m_PreviousState.Gamepad.wButtons & button) != 0;
-
-                for (const auto& [commandState, command] : commands)
+                auto it = m_ControllerCommands.find(i);
+                if (it != m_ControllerCommands.end()) 
                 {
-                    switch (commandState)
+                    for (const auto& [button, commands] : it->second)
                     {
-                    case InputState::Down:
-                        if (isPressed && !wasPressed)
-                            command->Execute();
-                        break;
+                        bool isPressed = (state.Gamepad.wButtons & button) != 0;
+                        bool wasPressed = (m_PreviousStates[i].Gamepad.wButtons & button) != 0;
 
-                    case InputState::Pressed:
-                        if (isPressed && wasPressed)
-                            command->Execute();
-                        break;
-
-                    case InputState::Up:
-                        if (!isPressed && wasPressed)
-                            command->Execute();
-                        break;
+                        for (const auto& [commandState, command] : commands)
+                        {
+                            switch (commandState)
+                            {
+                            case InputState::Down:
+                                if (isPressed && !wasPressed)
+                                    command->Execute();
+                                break;
+                            case InputState::Pressed:
+                                if (isPressed && wasPressed)
+                                    command->Execute();
+                                break;
+                            case InputState::Up:
+                                if (!isPressed && wasPressed)
+                                    command->Execute();
+                                break;
+                            }
+                        }
                     }
+                    m_PreviousStates[i] = state; 
                 }
             }
-            m_PreviousState = state;
         }
-
         return true;
     }
 
-    void XInputManager::XInputImpl::BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command)
+    void XInputManager::XInputImpl::BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command)
     {
-        m_ControllerCommands[button].emplace_back(state, std::move(command));
+        m_ControllerCommands[controllerIndex][button].emplace_back(state, std::move(command));
     }
 
     XInputManager::XInputManager() : m_XInputManager(std::make_unique<XInputImpl>())
@@ -67,9 +71,9 @@ namespace dae
 
     XInputManager::~XInputManager() = default;
 
-    void XInputManager::BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command) const
+    void XInputManager::BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command) const
     {
-        m_XInputManager->BindControllerCommand(button, state, std::move(command));
+        m_XInputManager->BindControllerCommand(controllerIndex, button, state, std::move(command));
     }
 
    

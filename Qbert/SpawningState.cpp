@@ -3,6 +3,8 @@
 #include "Enemy.h" 
 #include "Coily.h"
 #include "Directions.h"
+#include "utils.h"
+#include "EggState.h"
 
 SpawningState::SpawningState(dae::GameObject* owner)
     : CoilyState(owner),

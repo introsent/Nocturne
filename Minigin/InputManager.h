@@ -28,7 +28,6 @@ namespace dae
         }
     };
 
-
     class XInputImpl;
     class InputManager final : public Singleton<InputManager>
     {
@@ -41,9 +40,9 @@ namespace dae
         InputManager(InputManager&& other) noexcept = delete;
         InputManager& operator=(InputManager&& other) noexcept = delete;
 
-        bool ProcessInput();  
+        bool ProcessInput();
         void BindKeyboardCommand(int key, InputState state, std::unique_ptr<Command> command);
-        void BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command) const;
+        void BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command);
 
     private:
         std::unordered_map<KeyBinding, std::unique_ptr<Command>, KeyBindingHash> m_KeyBindings;

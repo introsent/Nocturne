@@ -1,16 +1,16 @@
 #include "EggState.h"
-#include "Enemy.h" 
+#include "Enemy.h"
 #include "Coily.h"
 #include "Directions.h"
 #include <random>
 #include <SoundServiceLocator.h>
+#include "SnakeState.h"
 
 void EggState::Enter(Coily* coily)
 {
     GenerateTargetGridPosition(coily);
-    m_jump.Start(coily->GetGridPosition(),
-                 m_targetGridPosition);
-	coily->UpdateAnimation(0);
+    m_jump.Start(coily->GetGridPosition(), m_targetGridPosition);
+    coily->UpdateAnimation(0);
 }
 
 std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
@@ -21,8 +21,7 @@ std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
             m_isDelaying = false;
 
             GenerateTargetGridPosition(coily);
-            m_jump.Start(coily->GetGridPosition(),
-                         m_targetGridPosition);
+            m_jump.Start(coily->GetGridPosition(), m_targetGridPosition);
 
             dae::SoundServiceLocator::GetService()->PlaySound("coily_egg_jump");
         }
@@ -37,31 +36,26 @@ std::unique_ptr<CoilyState> EggState::Update(Coily* coily, float deltaTime)
             return std::make_unique<SnakeState>(m_owner);
         }
         else {
-            // Start delay after landing
             m_isDelaying = true;
             m_delayTimer = JUMP_DELAY;
-            coily->UpdateAnimation(0);  // Idle frame
+            coily->UpdateAnimation(0);
         }
     }
     else {
-        // During jump
         m_owner->SetLocalPosition(m_jump.GetCurrentPosition());
-        coily->UpdateAnimation(1);  // Jump frame
+        coily->UpdateAnimation(1);
     }
 
     return nullptr;
 }
 
-void EggState::Exit(Coily*)
-{
-   
-}
+void EggState::Exit(Coily*) {}
 
 void EggState::GenerateTargetGridPosition(Coily* coily)
 {
-	static std::random_device rd;
-	static std::mt19937 gen(rd());
-	std::uniform_int_distribution<> dist(0, 1);
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dist(0, 1);
 
-	m_targetGridPosition = coily->GetGridPosition() + (dist(gen) ? DOWN_RIGHT : DOWN_LEFT);
+    m_targetGridPosition = coily->GetGridPosition() + (dist(gen) ? DOWN_RIGHT : DOWN_LEFT);
 }

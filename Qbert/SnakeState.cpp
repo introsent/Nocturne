@@ -13,17 +13,31 @@ void SnakeState::Enter(Coily*) {
 }
 
 std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
+    if (coily->IsPlayerControlled()) {
+        if (m_isJumping) {
+            if (m_jump.Update(deltaTime)) {
+                coily->MoveTo(m_targetGridPosition);
+                m_isJumping = false;
+                if (ShouldDie(coily)) {
+                    return std::make_unique<DyingCoilyState>(m_owner);
+                }
+            }
+            else {
+                m_owner->SetLocalPosition(m_jump.GetCurrentPosition());
+            }
+        }
+        return nullptr;
+    }
+
     if (m_isDelaying) {
         m_delayTimer -= deltaTime;
         if (m_delayTimer <= 0.0f) {
             m_isDelaying = false;
-
             m_targetGridPosition = CalculateChaseDirection(coily);
-            m_jump.Start(coily->GetGridPosition(),
-                         m_targetGridPosition);
+            m_jump.Start(coily->GetGridPosition(), m_targetGridPosition);
             m_isJumping = true;
             dae::SoundServiceLocator::GetService()->PlaySound("coily_snake_jump");
-      
+
             const glm::ivec2 direction = m_targetGridPosition - coily->GetGridPosition();
             coily->LookAt(direction);
             coily->UpdateAnimation(DirectionToFrame(direction));
@@ -35,15 +49,13 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
         if (m_jump.Update(deltaTime)) {
             coily->MoveTo(m_targetGridPosition);
             m_isJumping = false;
-
             m_isDelaying = true;
             m_delayTimer = JUMP_DELAY;
 
             coily->UpdateAnimation(DirectionToFrame(coily->GetCurrentLookAtDirection()));
 
-            if (ShouldDie(coily))
-            {
-				return std::make_unique<DyingCoilyState>(m_owner);
+            if (ShouldDie(coily)) {
+                return std::make_unique<DyingCoilyState>(m_owner);
             }
         }
         else {
@@ -52,6 +64,17 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
     }
 
     return nullptr;
+}
+void SnakeState::HandleInput(Coily* coily, const glm::ivec2& direction)
+{
+    if (!m_isJumping) {
+        m_targetGridPosition = coily->GetGridPosition() + direction;
+        m_jump.Start(coily->GetGridPosition(), m_targetGridPosition);
+        m_isJumping = true;
+        dae::SoundServiceLocator::GetService()->PlaySound("coily_snake_jump");
+        coily->LookAt(direction);
+        coily->UpdateAnimation(DirectionToFrame(direction));
+    }
 }
 
 glm::ivec2 SnakeState::CalculateChaseDirection(Coily* coily) {

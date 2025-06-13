@@ -26,7 +26,7 @@
 #include "MenuCommands.h"
 #include "NameEntryCommands.h"
 
-void SceneManager::CreateGameScene(const std::string& playerName)
+void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>& playerNames)
 {
     std::cout << "Current working directory: " << std::filesystem::current_path() << std::endl;
     dae::SoundServiceLocator::Register(std::make_unique<dae::SoundService>());
@@ -54,11 +54,16 @@ void SceneManager::CreateGameScene(const std::string& playerName)
 
     auto playerDataObj = std::make_unique<dae::GameObject>();
     auto playerData = playerDataObj->AddComponent<PlayerDataComponent>(playerDataObj.get());
-    playerData->SetNickname(playerName);
+    if (mode == GameMode::Coop) {
+        playerData->SetNickname(playerNames[0] + " & " + playerNames[1]);
+    }
+    else {
+        playerData->SetNickname(playerNames[0]);
+    }
     scene.Add(std::move(playerDataObj));
 
     auto manager = std::make_unique<dae::GameObject>();
-    auto levelManager = manager->AddComponent<LevelManagerComponent>(manager.get(), playerData);
+    auto levelManager = manager->AddComponent<LevelManagerComponent>(manager.get(), playerData, mode);
     levelManager->OnAllLevelsCompleted.Subscribe([]() {
         std::cout << "All levels completed! You win!\n";
         });
@@ -75,10 +80,10 @@ void SceneManager::CreateGameScene(const std::string& playerName)
     livesObserver->Register(playerData->GetHealth());
     scene.Add(std::move(livesText));
 
-    auto nameText = CreateUIText("Player: " + playerName, font, glm::vec3(10, 90, 0));
+    std::string nameDisplay = mode == GameMode::Coop ? "Players: " + playerNames[0] + " & " + playerNames[1] : "Player: " + playerNames[0];
+    auto nameText = CreateUIText(nameDisplay, font, glm::vec3(10, 90, 0));
     scene.Add(std::move(nameText));
 
-    // Subscribe to health changes for game over
     auto health = playerData->GetHealth();
     health->OnHealthChanged.Subscribe([health, playerData]() {
         if (health->GetLives() <= 0) {
@@ -91,7 +96,7 @@ void SceneManager::CreateGameScene(const std::string& playerName)
         });
 }
 
-void SceneManager::CreateNameEntryScene()
+void SceneManager::CreateNameEntryScene(GameMode mode)
 {
     auto& scene = dae::SceneManager::GetInstance().CreateScene("NameEntry");
     dae::SceneManager::GetInstance().SetActiveScene("NameEntry");
@@ -118,7 +123,7 @@ void SceneManager::CreateNameEntryScene()
     scene.Add(std::move(doneText));
 
     auto warningText = CreateUIText(" ", font, glm::vec3(150, 300, 0));
-	auto* warningTextPtr = warningText.get();
+    auto* warningTextPtr = warningText.get();
     scene.Add(std::move(warningText));
 
     auto arrow = GameObjectBuilder()
@@ -130,7 +135,7 @@ void SceneManager::CreateNameEntryScene()
     scene.Add(std::move(arrow));
 
     auto nameEntryGO = std::make_unique<dae::GameObject>();
-    auto nameEntryComp = nameEntryGO->AddComponent<NameEntryComponent>(nameEntryGO.get());
+    auto nameEntryComp = nameEntryGO->AddComponent<NameEntryComponent>(nameEntryGO.get(), mode);
     nameEntryComp->SetSlotTexts(slotGOs);
     nameEntryComp->SetDoneText(doneTextPtr);
     nameEntryComp->SetArrow(arrowPtr);
@@ -143,11 +148,11 @@ void SceneManager::CreateNameEntryScene()
     dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_d, InputState::Down, std::make_unique<NameEntryRightCommand>(nameEntryComp));
     dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_RETURN, InputState::Down, std::make_unique<NameEntrySelectCommand>(nameEntryComp));
 
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Down, std::make_unique<NameEntryUpCommand>(nameEntryComp));
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Down, std::make_unique<NameEntryDownCommand>(nameEntryComp));
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadLeft), InputState::Down, std::make_unique<NameEntryLeftCommand>(nameEntryComp));
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadRight), InputState::Down, std::make_unique<NameEntryRightCommand>(nameEntryComp));
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<NameEntrySelectCommand>(nameEntryComp));
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Down, std::make_unique<NameEntryUpCommand>(nameEntryComp));
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Down, std::make_unique<NameEntryDownCommand>(nameEntryComp));
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::DpadLeft), InputState::Down, std::make_unique<NameEntryLeftCommand>(nameEntryComp));
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::DpadRight), InputState::Down, std::make_unique<NameEntryRightCommand>(nameEntryComp));
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<NameEntrySelectCommand>(nameEntryComp));
 }
 
 void SceneManager::CreateMenuScene()
@@ -186,10 +191,14 @@ void SceneManager::CreateMenuScene()
     menuComp->SetArrow(arrow.get());
 
     menuComp->AddMenuItem("Solo", []() {
-        CreateNameEntryScene();
+        CreateNameEntryScene(GameMode::Solo);
         });
-    menuComp->AddMenuItem("Co-op", []() { std::cout << "Co-op mode selected\n"; });
-    menuComp->AddMenuItem("Versus", []() { std::cout << "Versus mode selected\n"; });
+    menuComp->AddMenuItem("Co-op", []() {
+        CreateNameEntryScene(GameMode::Coop);
+        });
+    menuComp->AddMenuItem("Versus", []() {
+        CreateNameEntryScene(GameMode::Versus);
+        });
 
     scene.Add(std::move(soloText));
     scene.Add(std::move(coopText));
@@ -201,9 +210,9 @@ void SceneManager::CreateMenuScene()
     dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_s, InputState::Down, std::make_unique<MenuSelectCommand>(false));
     dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_RETURN, InputState::Down, std::make_unique<MenuActivateCommand>());
 
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Down, std::make_unique<MenuSelectCommand>(true));
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Down, std::make_unique<MenuSelectCommand>(false));
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<MenuActivateCommand>());
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::DpadUp), InputState::Down, std::make_unique<MenuSelectCommand>(true));
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::DpadDown), InputState::Down, std::make_unique<MenuSelectCommand>(false));
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<MenuActivateCommand>());
 }
 
 void SceneManager::CreateHighscoreScene(int playerScore)
@@ -235,5 +244,5 @@ void SceneManager::CreateHighscoreScene(int playerScore)
     scene.Add(std::move(yourScore));
 
     dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_RETURN, InputState::Down, std::make_unique<GoToMenuCommand>());
-    dae::InputManager::GetInstance().BindControllerCommand(dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<GoToMenuCommand>());
+    dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<GoToMenuCommand>());
 }

@@ -259,6 +259,7 @@
     <ClInclude Include="FallMovement.h" />
     <ClInclude Include="FlyingState.h" />
     <ClInclude Include="FPSComponent.h" />
+    <ClInclude Include="GameMode.h" />
     <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="GridBasedMovement.h" />
     <ClInclude Include="HealthComponent.h" />

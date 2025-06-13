@@ -1,11 +1,12 @@
 #include "Coily.h"
 #include "Directions.h"
+#include "utils.h"
 
 Coily::Coily(dae::GameObject* owner, glm::ivec2 spawnGridPosition, Level* level, const IPositionProxy& qbertPositionProxy) :
     Enemy(owner, level, qbertPositionProxy, [this](const glm::ivec2& grid) { return GridToWorldCoily(grid); }),
-	m_desiredSpawnGridPosition(spawnGridPosition)
+    m_desiredSpawnGridPosition(spawnGridPosition)
 {
-    m_currentState.get()->Enter(this);
+    m_currentState->Enter(this);
 }
 
 void Coily::Update(float deltaTime)
@@ -31,4 +32,9 @@ void Coily::TransitionTo(std::unique_ptr<CoilyState> newState)
     }
 }
 
-    
+void Coily::HandleInput(const glm::ivec2& direction)
+{
+    if (m_isPlayerControlled && m_currentState) {
+        m_currentState->HandleInput(this, direction);
+    }
+}

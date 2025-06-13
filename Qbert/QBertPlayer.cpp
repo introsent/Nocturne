@@ -9,17 +9,26 @@
 #include "Directions.h"
 #include "SoundServiceLocator.h"
 
-QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level, HealthComponent* healthComponent)
+QBertPlayer::QBertPlayer(dae::GameObject* owner, Level* level, HealthComponent* healthComponent, glm::ivec2 spawnGridPosition)
     : Component(owner), m_pLevel(level), m_pHealth(healthComponent)
 {
     m_pAnimation = GetOwner()->GetComponent<AnimationComponent>();
     if (!m_pAnimation) {
         throw std::runtime_error("QBertPlayer requires AnimationComponent");
     }
+	m_currentGridPos = spawnGridPosition;
     TransitionTo(std::make_unique<IdleState>(owner));
 }
 
 void QBertPlayer::Update(float deltaTime) {
+    if (m_isDead) {
+        m_respawnTimer -= deltaTime;
+        if (m_respawnTimer <= 0) {
+            Respawn();
+        }
+        return;
+    }
+
     if (m_pCurrentState) {
         if (auto newState = m_pCurrentState->Update(this, deltaTime)) {
             TransitionTo(std::move(newState));
@@ -50,7 +59,7 @@ void QBertPlayer::TransitionTo(std::unique_ptr<QBertState> newState) {
 void QBertPlayer::MoveTo(const glm::ivec2& gridPos) {
     if (m_currentGridPos != gridPos) {
         m_currentGridPos = gridPos;
-        OnPositionChanged.Invoke(m_currentGridPos); 
+        OnPositionChanged.Invoke(m_currentGridPos);
         GetOwner()->SetLocalPosition(glm::vec3(GridToWorldCharacter(gridPos), 0.f));
     }
     dae::SoundServiceLocator::GetService()->PlaySound("qbert_jump");
@@ -59,9 +68,10 @@ void QBertPlayer::MoveTo(const glm::ivec2& gridPos) {
 void QBertPlayer::LookAt(const glm::ivec2& direction)
 {
     m_currentDirection = direction;
+    UpdateAnimation();
 }
 
-void QBertPlayer::UpdateAnimation() 
+void QBertPlayer::UpdateAnimation()
 {
     const static std::unordered_map<glm::ivec2, int, IVec2Hash> directionMap = {
         {UP_RIGHT,  0},
@@ -84,7 +94,10 @@ bool QBertPlayer::TakeHit()
     if (auto newState = m_pCurrentState->ProcessHit()) {
         TransitionTo(std::move(newState));
         dae::SoundServiceLocator::GetService()->PlaySound("qbert_hit");
-        return true; // did we actually hit?
+        m_isDead = true;
+        m_respawnTimer = 2.0f;
+        ReduceHealth();
+        return true;
     }
     return false;
 }

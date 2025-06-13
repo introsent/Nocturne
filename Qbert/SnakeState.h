@@ -14,6 +14,7 @@ public:
 	void Enter(Coily*) override;
 	void Exit(Coily*) override {};
 	std::string GetName() const override { return "Snake"; }
+	void HandleInput(Coily* coily, const glm::ivec2& direction) override;
 private:
 	glm::ivec2 CalculateChaseDirection(Coily* coily);
 	int DirectionToFrame(const glm::ivec2& dir);

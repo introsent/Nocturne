@@ -55,8 +55,8 @@ namespace dae
         m_KeyBindings[binding] = std::move(command);
     }
 
-    void InputManager::BindControllerCommand(unsigned int button, InputState state, std::unique_ptr<Command> command) const
+    void InputManager::BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command)
     {
-        m_XInputManager.BindControllerCommand(button, state, std::move(command));
+        m_XInputManager.BindControllerCommand(controllerIndex, button, state, std::move(command));
     }
 }

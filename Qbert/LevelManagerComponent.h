@@ -2,11 +2,12 @@
 #include "Component.h"
 #include "Event.h"
 #include "PlayerDataComponent.h"
+#include "GameMode.h"
 
 class LevelManagerComponent final : public dae::Component
 {
 public:
-    LevelManagerComponent(dae::GameObject* owner, PlayerDataComponent* playerData);
+    LevelManagerComponent(dae::GameObject* owner, PlayerDataComponent* playerData, GameMode mode);
     void Update(float deltaTime) override;
 
     Event<> OnAllLevelsCompleted; 
@@ -23,4 +24,6 @@ private:
     bool m_LevelCompletedFlag{ false };
 
     PlayerDataComponent* m_pPlayerData;
+
+    GameMode m_Mode;
 };
