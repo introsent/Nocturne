@@ -183,9 +183,6 @@
     <ClCompile Include="NameEntryComponent.cpp">
       <Filter>Header Files\NameEntry</Filter>
     </ClCompile>
-    <ClCompile Include="NameEntryCommands.cpp">
-      <Filter>Header Files\NameEntry</Filter>
-    </ClCompile>
     <ClCompile Include="HighscoreLoader.cpp">
       <Filter>Header Files\Highscore</Filter>
     </ClCompile>

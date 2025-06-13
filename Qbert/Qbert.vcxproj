@@ -226,7 +226,6 @@
     <ClCompile Include="MenuCommands.cpp" />
     <ClCompile Include="MenuComponent.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
-    <ClCompile Include="NameEntryCommands.cpp" />
     <ClCompile Include="NameEntryComponent.cpp" />
     <ClCompile Include="PlayerDataComponent.cpp" />
     <ClCompile Include="QBertPlayer.cpp" />

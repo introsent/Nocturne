@@ -187,7 +187,6 @@ void SceneManager::CreateMenuScene()
 
     menuComp->AddMenuItem("Solo", []() {
         CreateNameEntryScene();
-        dae::SceneManager::GetInstance().SetActiveScene("NameEntry");
         });
     menuComp->AddMenuItem("Co-op", []() { std::cout << "Co-op mode selected\n"; });
     menuComp->AddMenuItem("Versus", []() { std::cout << "Versus mode selected\n"; });

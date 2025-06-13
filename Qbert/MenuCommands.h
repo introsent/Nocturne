@@ -22,5 +22,7 @@ public:
 
 class GoToMenuCommand : public dae::Command {
 public:
-    void Execute() override { dae::SceneManager::GetInstance().SetActiveScene("Menu"); }
+    void Execute() override { 
+        SceneManager::CreateMenuScene();
+    }
 };
