@@ -52,6 +52,15 @@
     <Filter Include="Header Files\Menu">
       <UniqueIdentifier>{d0d514ce-57d8-43c6-b0ac-1e2f6554fc3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\NameEntry">
+      <UniqueIdentifier>{140e9bc9-f167-415e-afcd-0f14a2747d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Highscore">
+      <UniqueIdentifier>{55d05639-0f2c-429c-9e73-3d4ebf8bf7d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenes">
+      <UniqueIdentifier>{17a1ac21-e182-4c6d-830d-bed9ca884425}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -170,6 +179,18 @@
     </ClCompile>
     <ClCompile Include="MenuCommands.cpp">
       <Filter>Header Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="NameEntryComponent.cpp">
+      <Filter>Header Files\NameEntry</Filter>
+    </ClCompile>
+    <ClCompile Include="NameEntryCommands.cpp">
+      <Filter>Header Files\NameEntry</Filter>
+    </ClCompile>
+    <ClCompile Include="HighscoreLoader.cpp">
+      <Filter>Header Files\Highscore</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Header Files\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +346,18 @@
     </ClInclude>
     <ClInclude Include="MenuCommands.h">
       <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="NameEntryComponent.h">
+      <Filter>Header Files\NameEntry</Filter>
+    </ClInclude>
+    <ClInclude Include="NameEntryCommands.h">
+      <Filter>Header Files\NameEntry</Filter>
+    </ClInclude>
+    <ClInclude Include="HighscoreLoader.h">
+      <Filter>Header Files\Highscore</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

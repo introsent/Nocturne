@@ -1,5 +1,7 @@
 #pragma once
 #include "Command.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 
 class MenuSelectCommand : public dae::Command
@@ -16,4 +18,9 @@ class MenuActivateCommand : public dae::Command
 public:
     MenuActivateCommand() = default;
     void Execute() override;
+};
+
+class GoToMenuCommand : public dae::Command {
+public:
+    void Execute() override { dae::SceneManager::GetInstance().SetActiveScene("Menu"); }
 };

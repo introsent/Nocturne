@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 #include "Component.h"
+#include <SDL_pixels.h>
 
 namespace dae
 {
@@ -21,6 +22,8 @@ namespace dae
         // Set the text, marks for update
         void SetText(const std::string& text);
 
+		void SetColor(const SDL_Color& color);
+
         // Deleted copy/move constructors and assignment operators
         TextComponent(const TextComponent& other) = delete;
         TextComponent(TextComponent&& other) = delete;
@@ -32,5 +35,7 @@ namespace dae
         std::string m_text;
         std::shared_ptr<Font> m_font;
         std::shared_ptr<Texture2D> m_textTexture;
+
+		SDL_Color m_color{ 255, 255, 255, 255 };
     };
 }

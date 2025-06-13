@@ -212,6 +212,7 @@
     <ClCompile Include="FlyingState.cpp" />
     <ClCompile Include="FPSComponent.cpp" />
     <ClCompile Include="HealthComponent.cpp" />
+    <ClCompile Include="HighscoreLoader.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="JumpingState.cpp" />
     <ClCompile Include="JumpMovement.cpp" />
@@ -225,9 +226,12 @@
     <ClCompile Include="MenuCommands.cpp" />
     <ClCompile Include="MenuComponent.cpp" />
     <ClCompile Include="MoveCommand.cpp" />
+    <ClCompile Include="NameEntryCommands.cpp" />
+    <ClCompile Include="NameEntryComponent.cpp" />
     <ClCompile Include="PlayerDataComponent.cpp" />
     <ClCompile Include="QBertPlayer.cpp" />
     <ClCompile Include="QbertPositionProxy.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="ScoreCommand.cpp" />
     <ClCompile Include="ScoreComponent.cpp" />
     <ClCompile Include="ScoreDisplayObserver.cpp" />
@@ -259,6 +263,7 @@
     <ClInclude Include="GameObjectBuilder.h" />
     <ClInclude Include="GridBasedMovement.h" />
     <ClInclude Include="HealthComponent.h" />
+    <ClInclude Include="HighscoreLoader.h" />
     <ClInclude Include="IdleState.h" />
     <ClInclude Include="IMovementBehaviour.h" />
     <ClInclude Include="JumpingState.h" />
@@ -273,12 +278,15 @@
     <ClInclude Include="MenuComponent.h" />
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovementRunner.h" />
+    <ClInclude Include="NameEntryCommands.h" />
+    <ClInclude Include="NameEntryComponent.h" />
     <ClInclude Include="PlayerDataComponent.h" />
     <ClInclude Include="PositionConverters.h" />
     <ClInclude Include="PositionProxy.h" />
     <ClInclude Include="QBertPlayer.h" />
     <ClInclude Include="QbertPositionProxy.h" />
     <ClInclude Include="QBertState.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScoreCommand.h" />
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />
