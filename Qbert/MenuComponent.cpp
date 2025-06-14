@@ -7,7 +7,7 @@ MenuComponent::MenuComponent(GameObject* owner) : Component(owner) {}
 
 void MenuComponent::Update(float)
 {
-    if (m_pArrow && !m_MenuItems.empty() && m_SelectedIndex < m_MenuItems.size())
+    if (m_pArrow && !m_MenuItems.empty() && static_cast<size_t>(m_SelectedIndex) < m_MenuItems.size())
     {
         glm::vec3 itemPos = m_MenuItems[m_SelectedIndex]->GetWorldPosition();
         m_pArrow->SetLocalPosition(glm::vec3(itemPos.x - 40.f, itemPos.y, 0.f));
@@ -33,7 +33,7 @@ void MenuComponent::SelectPrevious()
 
 void MenuComponent::ActivateSelected()
 {
-    if (m_SelectedIndex < m_Actions.size() && m_Actions[m_SelectedIndex])
+    if (static_cast<size_t>(m_SelectedIndex) < m_Actions.size() && m_Actions[m_SelectedIndex])
     {
         m_Actions[m_SelectedIndex]();
     }

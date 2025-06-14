@@ -61,7 +61,7 @@ void NameEntryComponent::HandleSelect() {
         else {
             if (m_pWarningText) m_pWarningText->SetText(" ");
             m_playerNames.push_back(name);
-            if (m_playerNames.size() == m_requiredNames) {
+            if (m_playerNames.size() == static_cast<size_t>(m_requiredNames)) {
                 SceneManager::CreateGameScene(m_savedGameMode, m_playerNames);
                 dae::SceneManager::GetInstance().SetActiveScene("Main");
             }
