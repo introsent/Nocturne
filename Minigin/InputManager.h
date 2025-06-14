@@ -44,6 +44,8 @@ namespace dae
         void BindKeyboardCommand(int key, InputState state, std::unique_ptr<Command> command);
         void BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command);
 
+        void ClearControllerCommands();
+
     private:
         std::unordered_map<KeyBinding, std::unique_ptr<Command>, KeyBindingHash> m_KeyBindings;
         XInputManager m_XInputManager;

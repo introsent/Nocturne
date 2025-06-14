@@ -109,7 +109,6 @@ void SceneManager::HandleSwitchingToHighscoreScene(GameMode mode, PlayerDataComp
     int score = playerData->GetScore()->GetScore();
     HighscoreLoader::SaveHighScore(mode, name, score);
     CreateHighscoreScene(score, mode);
-    dae::SceneManager::GetInstance().SetActiveScene("HighScore");
 }
 
 void SceneManager::CreateNameEntryScene(GameMode mode)

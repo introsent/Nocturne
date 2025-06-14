@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include <iostream>
 #include "Scene.h"
+#include "InputManager.h"
 
 void dae::SceneManager::SetActiveScene(const std::string& name)
 {
@@ -8,6 +9,7 @@ void dae::SceneManager::SetActiveScene(const std::string& name)
 	{
 		if (scene->GetName() == name)
 		{
+			dae::InputManager::GetInstance().ClearControllerCommands();
 			m_pActiveScene = scene.get();
 			return;
 		}
@@ -56,6 +58,7 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 		}
 	}
 
+	dae::InputManager::GetInstance().ClearControllerCommands();
 	const auto& scene = std::shared_ptr<Scene>(new Scene(name));
 	m_scenes.push_back(scene);
 	return *scene;

@@ -2,6 +2,7 @@
 #include "Command.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "InputManager.h"
 
 
 class MenuSelectCommand : public dae::Command

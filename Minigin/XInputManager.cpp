@@ -11,49 +11,44 @@ namespace dae
     public:
         bool ProcessInput();
         void BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command);
+        void ResetControllerStates();
 
     private:
-        std::unordered_map<int, std::unordered_map<unsigned int, std::vector<std::pair<InputState, std::unique_ptr<Command>>>>> m_ControllerCommands;
+        std::unordered_map<int, std::unordered_map<unsigned int, std::unordered_map<InputState, std::unique_ptr<Command>>>> m_ControllerCommands;
         std::unordered_map<int, XINPUT_STATE> m_PreviousStates;
     };
 
     bool XInputManager::XInputImpl::ProcessInput()
     {
-        for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i) 
-        {
+        for (DWORD i = 0; i < XUSER_MAX_COUNT; ++i) {
             XINPUT_STATE state;
             ZeroMemory(&state, sizeof(XINPUT_STATE));
 
-            if (XInputGetState(i, &state) == ERROR_SUCCESS) 
-            {
+            if (XInputGetState(i, &state) == ERROR_SUCCESS) {
                 auto it = m_ControllerCommands.find(i);
-                if (it != m_ControllerCommands.end()) 
-                {
-                    for (const auto& [button, commands] : it->second)
-                    {
+                if (it != m_ControllerCommands.end()) {
+                    for (auto& [button, stateMap] : it->second) {
                         bool isPressed = (state.Gamepad.wButtons & button) != 0;
                         bool wasPressed = (m_PreviousStates[i].Gamepad.wButtons & button) != 0;
 
-                        for (const auto& [commandState, command] : commands)
-                        {
-                            switch (commandState)
-                            {
-                            case InputState::Down:
-                                if (isPressed && !wasPressed)
-                                    command->Execute();
-                                break;
-                            case InputState::Pressed:
-                                if (isPressed && wasPressed)
-                                    command->Execute();
-                                break;
-                            case InputState::Up:
-                                if (!isPressed && wasPressed)
-                                    command->Execute();
-                                break;
+                        // Only process if state changed
+                        if (isPressed != wasPressed) {
+                            // Handle InputState::Down
+                            if (isPressed && stateMap.contains(InputState::Down)) {
+                                stateMap.at(InputState::Down)->Execute();
+                            }
+                            // Handle InputState::Up
+                            if (!isPressed && stateMap.contains(InputState::Up)) {
+                                stateMap.at(InputState::Up)->Execute();
                             }
                         }
+
+                        // For pressed state (continuous)
+                        if (isPressed && stateMap.contains(InputState::Pressed)) {
+                            stateMap.at(InputState::Pressed)->Execute();
+                        }
                     }
-                    m_PreviousStates[i] = state; 
+                    m_PreviousStates[i] = state;
                 }
             }
         }
@@ -62,7 +57,12 @@ namespace dae
 
     void XInputManager::XInputImpl::BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command)
     {
-        m_ControllerCommands[controllerIndex][button].emplace_back(state, std::move(command));
+        m_ControllerCommands[controllerIndex][button][state] = std::move(command);
+    }
+
+    void XInputManager::XInputImpl::ResetControllerStates()
+    {
+		//m_PreviousStates.clear();
     }
 
     XInputManager::XInputManager() : m_XInputManager(std::make_unique<XInputImpl>())
@@ -76,7 +76,10 @@ namespace dae
         m_XInputManager->BindControllerCommand(controllerIndex, button, state, std::move(command));
     }
 
-   
+    void XInputManager::ResetControllerStates()
+    {
+        m_XInputManager->ResetControllerStates();
+    }
 
     bool XInputManager::ProcessInput() const
     {

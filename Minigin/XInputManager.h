@@ -20,6 +20,8 @@ namespace dae
         bool ProcessInput() const;
         void BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command) const;
 
+        void ResetControllerStates();
+
     private:
         class XInputImpl;
         std::unique_ptr<XInputImpl> m_XInputManager;

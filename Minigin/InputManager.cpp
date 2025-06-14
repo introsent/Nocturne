@@ -10,6 +10,7 @@ namespace dae
         SDL_Event e;
         while (SDL_PollEvent(&e))
         {
+
             if (e.type == SDL_QUIT)
                 return false;
 
@@ -58,5 +59,10 @@ namespace dae
     void InputManager::BindControllerCommand(int controllerIndex, unsigned int button, InputState state, std::unique_ptr<Command> command)
     {
         m_XInputManager.BindControllerCommand(controllerIndex, button, state, std::move(command));
+    }
+
+    void InputManager::ClearControllerCommands()
+    {
+        m_XInputManager.ResetControllerStates();
     }
 }
