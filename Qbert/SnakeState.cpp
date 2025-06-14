@@ -10,6 +10,7 @@
 void SnakeState::Enter(Coily*) {
     m_isDelaying = true;
     m_delayTimer = JUMP_DELAY;
+    m_isJumping = false;
 }
 
 std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {

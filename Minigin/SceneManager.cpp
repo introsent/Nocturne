@@ -9,7 +9,6 @@ void dae::SceneManager::SetActiveScene(const std::string& name)
 	{
 		if (scene->GetName() == name)
 		{
-			dae::InputManager::GetInstance().ClearControllerCommands();
 			m_pActiveScene = scene.get();
 			return;
 		}
