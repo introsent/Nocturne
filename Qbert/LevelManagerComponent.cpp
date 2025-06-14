@@ -23,6 +23,11 @@ void LevelManagerComponent::SetPlayerData(PlayerDataComponent* playerData)
     m_pPlayerData = playerData;
 }
 
+void LevelManagerComponent::SkipLevel()
+{
+    m_LevelCompletedFlag = true;
+}
+
 void LevelManagerComponent::LoadNextLevel()
 {
     GetOwner()->DestroyChildren();

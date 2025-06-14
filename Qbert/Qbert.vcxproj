@@ -292,6 +292,7 @@
     <ClInclude Include="ScoreComponent.h" />
     <ClInclude Include="ScoreDisplayObserver.h" />
     <ClInclude Include="SimpleEnemy.h" />
+    <ClInclude Include="SkipLevelCommand.h" />
     <ClInclude Include="SlickSam.h" />
     <ClInclude Include="SnakeState.h" />
     <ClInclude Include="SpawningState.h" />

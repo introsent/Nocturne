@@ -15,6 +15,8 @@ public:
     void SetPlayerData(PlayerDataComponent* playerData);
     PlayerDataComponent* GetPlayerData() const { return m_pPlayerData; }
 
+    void SkipLevel();
+
 private:
     void LoadNextLevel();
     void HandleLevelCompleted();

@@ -100,9 +100,12 @@ void LevelComponent::Update(float deltaTime) {
         }
     }
 
-    if (m_CoilyGO->IsMarkedForDestroy() && m_Mode == GameMode::Versus)
+    if (m_Mode == GameMode::Versus)
     {
-		m_CoilyGO = SpawnPlayerCoily();
+        if (m_CoilyGO->IsMarkedForDestroy())
+        {
+            m_CoilyGO = SpawnPlayerCoily();
+        }
     }
 }
 

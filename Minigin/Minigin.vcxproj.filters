@@ -224,8 +224,5 @@
     <ClCompile Include="PlaySoundCommand.cpp">
       <Filter>Source Files\Sound Source</Filter>
     </ClCompile>
-    <ClCompile Include="NullSoundService.cpp">
-      <Filter>Source Files\Sound Source</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

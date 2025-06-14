@@ -25,6 +25,7 @@
 #include "MenuComponent.h"
 #include "MenuCommands.h"
 #include "NameEntryCommands.h"
+#include "SkipLevelCommand.h"
 
 void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>& playerNames)
 {
@@ -67,6 +68,10 @@ void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>
     levelManager->OnAllLevelsCompleted.Subscribe([]() {
         std::cout << "All levels completed! You win!\n";
         });
+    dae::InputManager::GetInstance().BindKeyboardCommand(
+        SDLK_F1, InputState::Down,
+        std::make_unique<SkipLevelCommand>(levelManager)
+    );
     scene.Add(std::move(manager));
 
     auto font = dae::ResourceManager::GetInstance().LoadFont("Minecraft.ttf", 36);
@@ -86,7 +91,7 @@ void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>
 
     auto health = playerData->GetHealth();
     health->OnHealthChanged.Subscribe([mode, health, playerData]() {
-        if (health->GetLives() <= 0) {
+        if (health->GetLives() < 0) {
             std::string name = playerData->GetNickname();
             int score = playerData->GetScore()->GetScore();
             HighscoreLoader::SaveHighScore(mode, name, score);

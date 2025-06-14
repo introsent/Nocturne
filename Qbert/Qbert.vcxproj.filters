@@ -362,5 +362,8 @@
     <ClInclude Include="MultiQbertPositionProxy.h">
       <Filter>Header Files\Qbert</Filter>
     </ClInclude>
+    <ClInclude Include="SkipLevelCommand.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
