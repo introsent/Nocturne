@@ -365,5 +365,8 @@
     <ClInclude Include="SkipLevelCommand.h">
       <Filter>Header Files\Level</Filter>
     </ClInclude>
+    <ClInclude Include="MuteSoundCommand.h">
+      <Filter>Header Files\Level</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

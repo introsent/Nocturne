@@ -22,6 +22,8 @@ namespace dae
         std::mutex m_soundMutex;
         std::unordered_map<std::string, SoundInfo> m_soundInfo;
 
+        bool m_IsMuted = false;
+
         bool m_running = true;
 
         void WorkerLoop() {
@@ -83,10 +85,25 @@ namespace dae
             m_commandQueue.push(std::make_unique<PlaySoundCommand>(id, m_soundInfo, m_soundMutex));
             m_queueCV.notify_one();
         }
+
+        void ToggleMute() {
+            m_IsMuted = !m_IsMuted;
+            if (m_IsMuted) {
+                Mix_Volume(-1, 0); // Mute all channels
+            }
+            else {
+                Mix_Volume(-1, MIX_MAX_VOLUME); // Unmute all channels
+            }
+        }
+        bool IsMuted() const {
+            return m_IsMuted;
+        }
     };
 
     SoundService::SoundService() : m_mixerPimpl(std::make_unique<MixerImpl>()) {}
     SoundService::~SoundService() = default;
     void SoundService::RegisterSound(const std::string& id, const std::string& path) { m_mixerPimpl->RegisterSound(id, path); }
     void SoundService::PlaySound(const std::string& id) { m_mixerPimpl->PlaySound(id); }
+    void SoundService::ToggleMute() { m_mixerPimpl->ToggleMute(); }
+    bool SoundService::IsMuted() const { return m_mixerPimpl->IsMuted(); }
 }

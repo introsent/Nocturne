@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "GameMode.h"
+#include "PlayerDataComponent.h"
 
 namespace SceneManager
 {
@@ -12,5 +13,7 @@ namespace SceneManager
 	void CreateMenuScene();
 
 	void CreateHighscoreScene(int playerScore, GameMode mode);
+
+	void HandleSwitchingToHighscoreScene(GameMode mode, PlayerDataComponent* playerData);
 };
 

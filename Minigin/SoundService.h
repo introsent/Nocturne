@@ -16,6 +16,9 @@ namespace dae
         void RegisterSound(const std::string& id, const std::string& path) override;
         void PlaySound(const std::string& id) override;
 
+        void ToggleMute() override;
+        bool IsMuted() const override;
+
     private:
         class MixerImpl;
         std::unique_ptr<MixerImpl> m_mixerPimpl;

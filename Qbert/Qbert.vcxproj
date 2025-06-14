@@ -279,6 +279,7 @@
     <ClInclude Include="MoveCommand.h" />
     <ClInclude Include="MovementRunner.h" />
     <ClInclude Include="MultiQbertPositionProxy.h" />
+    <ClInclude Include="MuteSoundCommand.h" />
     <ClInclude Include="NameEntryCommands.h" />
     <ClInclude Include="NameEntryComponent.h" />
     <ClInclude Include="PlayerDataComponent.h" />

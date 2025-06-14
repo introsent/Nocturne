@@ -19,13 +19,13 @@
 #include "TestSoundCommand.h"
 #include "UIFactory.h"
 #include "LevelManagerComponent.h"
-#include "PlayerDataComponent.h"
 #include "HighscoreLoader.h"
 #include "NameEntryComponent.h"
 #include "MenuComponent.h"
 #include "MenuCommands.h"
 #include "NameEntryCommands.h"
 #include "SkipLevelCommand.h"
+#include "MuteSoundCommand.h"
 
 void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>& playerNames)
 {
@@ -65,12 +65,18 @@ void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>
 
     auto manager = std::make_unique<dae::GameObject>();
     auto levelManager = manager->AddComponent<LevelManagerComponent>(manager.get(), playerData, mode);
-    levelManager->OnAllLevelsCompleted.Subscribe([]() {
-        std::cout << "All levels completed! You win!\n";
-        });
+    levelManager->OnAllLevelsCompleted.Subscribe([mode, playerData]()
+        {
+            HandleSwitchingToHighscoreScene(mode, playerData);
+        }
+    );
     dae::InputManager::GetInstance().BindKeyboardCommand(
         SDLK_F1, InputState::Down,
         std::make_unique<SkipLevelCommand>(levelManager)
+    );
+    dae::InputManager::GetInstance().BindKeyboardCommand(
+        SDLK_F2, InputState::Down,
+        std::make_unique<MuteSoundCommand>()
     );
     scene.Add(std::move(manager));
 
@@ -92,13 +98,18 @@ void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>
     auto health = playerData->GetHealth();
     health->OnHealthChanged.Subscribe([mode, health, playerData]() {
         if (health->GetLives() < 0) {
-            std::string name = playerData->GetNickname();
-            int score = playerData->GetScore()->GetScore();
-            HighscoreLoader::SaveHighScore(mode, name, score);
-            CreateHighscoreScene(score, mode);
-            dae::SceneManager::GetInstance().SetActiveScene("HighScore");
+            HandleSwitchingToHighscoreScene(mode, playerData);
         }
         });
+}
+
+void SceneManager::HandleSwitchingToHighscoreScene(GameMode mode, PlayerDataComponent* playerData)
+{
+    std::string name = playerData->GetNickname();
+    int score = playerData->GetScore()->GetScore();
+    HighscoreLoader::SaveHighScore(mode, name, score);
+    CreateHighscoreScene(score, mode);
+    dae::SceneManager::GetInstance().SetActiveScene("HighScore");
 }
 
 void SceneManager::CreateNameEntryScene(GameMode mode)
@@ -251,3 +262,5 @@ void SceneManager::CreateHighscoreScene(int playerScore, GameMode mode)
     dae::InputManager::GetInstance().BindKeyboardCommand(SDLK_RETURN, InputState::Down, std::make_unique<GoToMenuCommand>());
     dae::InputManager::GetInstance().BindControllerCommand(0, dae::XInputManager::GetXInputValue(GamepadButton::South), InputState::Down, std::make_unique<GoToMenuCommand>());
 }
+
+
