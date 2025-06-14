@@ -7,11 +7,12 @@
 
 #include <Minigin.h>
 #include "SceneManager.h"
+#include <filesystem>
 
 
 int main(int, char* []) {
-
-    dae::Minigin engine("../Data/");
+    std::cout << "Working dir: " << std::filesystem::current_path() << std::endl;
+    dae::Minigin engine("Data/");
     SceneManager::CreateMenuScene();
     engine.Run();
 

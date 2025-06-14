@@ -31,18 +31,18 @@ void SceneManager::CreateGameScene(GameMode mode, const std::vector<std::string>
 {
     std::cout << "Current working directory: " << std::filesystem::current_path() << std::endl;
     dae::SoundServiceLocator::Register(std::make_unique<dae::SoundService>());
-    dae::SoundServiceLocator::GetService()->RegisterSound("qbert_jump", "../Data/Sounds/QBert Jump.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("qbert_hit", "../Data/Sounds/Qbert Hit.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("qbert_fall", "../Data/Sounds/QBert Fall.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("round_complete", "../Data/Sounds/Round Complete Tune.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("swearing", "../Data/Sounds/Swearing.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("coily_snake_jump", "../Data/Sounds/Coily Snake Jump.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("coily_egg_jump", "../Data/Sounds/Coily Egg Jump.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("coily_fall", "../Data/Sounds/Coily Fall.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("others_jump", "../Data/Sounds/Other Foes Jump.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("disk_lift", "../Data/Sounds/Disk Lift.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("disk_land", "../Data/Sounds/Disk Land.wav");
-    dae::SoundServiceLocator::GetService()->RegisterSound("slick_sam_caught", "../Data/Sounds/SlickSam Caught.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("qbert_jump",         "Data/Sounds/QBert Jump.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("qbert_hit",          "Data/Sounds/Qbert Hit.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("qbert_fall",         "Data/Sounds/QBert Fall.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("round_complete",     "Data/Sounds/Round Complete Tune.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("swearing",           "Data/Sounds/Swearing.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("coily_snake_jump",   "Data/Sounds/Coily Snake Jump.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("coily_egg_jump",     "Data/Sounds/Coily Egg Jump.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("coily_fall",         "Data/Sounds/Coily Fall.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("others_jump",        "Data/Sounds/Other Foes Jump.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("disk_lift",          "Data/Sounds/Disk Lift.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("disk_land",          "Data/Sounds/Disk Land.wav");
+    dae::SoundServiceLocator::GetService()->RegisterSound("slick_sam_caught",   "Data/Sounds/SlickSam Caught.wav");
 
     auto& scene = dae::SceneManager::GetInstance().CreateScene("Main");
     dae::SceneManager::GetInstance().SetActiveScene("Main");

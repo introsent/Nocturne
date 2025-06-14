@@ -108,5 +108,5 @@ private:
 		/*rows=*/    1
     };
 
-    static constexpr const char* levelDataPath = "../Data/Level/levels.json";
+    static constexpr const char* levelDataPath = "Data/Level/levels.json";
 };
