@@ -68,5 +68,6 @@ std::unique_ptr<CoilyState> DyingCoilyState::Update(Coily* coily, float deltaTim
 }
 
 void DyingCoilyState::Exit(Coily*) {
+    m_owner->GetComponent<dae::TextureComponent>()->SetDepth(1.f);
     m_fallMovement->Reset();
 }

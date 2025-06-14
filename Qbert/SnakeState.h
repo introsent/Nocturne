@@ -28,4 +28,6 @@ private:
 	bool m_isDelaying = false;
 	float m_delayTimer = 0.0f;
 	const float JUMP_DELAY = 0.2f;
+
+	glm::ivec2 m_lastDirection{ 0, 0 };
 };

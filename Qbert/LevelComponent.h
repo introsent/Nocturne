@@ -40,6 +40,9 @@ private:
     void OnLevelCompleted();
     void PlayEndingAnimation(float deltaTime);
     void UpdateAllTilesToAnimationState();
+	void SetupQbertPositionProxy();
+
+	void OnCollisionWithQbert(dae::GameObject* enemy);
 
     std::unique_ptr<Level> m_pLevel{};
     int m_LevelIndex{};

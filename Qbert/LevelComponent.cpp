@@ -61,7 +61,11 @@ void LevelComponent::Update(float deltaTime) {
 
     std::vector<EnemySpawnData> enemiesToSpawn;
     for (auto it = m_StageEnemies.begin(); it != m_StageEnemies.end(); ) {
-        if (m_AccumulatedTime >= it->spawn_time && m_Mode != GameMode::Versus) { // No AI enemies in Versus mode
+        if (m_AccumulatedTime >= it->spawn_time) {
+            if (it->type == "Coily" && m_Mode == GameMode::Versus) {
+                ++it;
+                continue;
+            }
             enemiesToSpawn.push_back(*it);
             it = m_StageEnemies.erase(it);
         }
@@ -85,29 +89,20 @@ void LevelComponent::Update(float deltaTime) {
         );
 
         enemyGO->GetComponent<Enemy>()->OnCollisionWithQbert.Subscribe([this](dae::GameObject* enemy) {
-            if (enemy->GetComponent<Enemy>()->ShouldDamageQBert())
-            {
-                for (auto* qbertGO : m_QbertGOs) {
-                    if (enemy->GetComponent<Enemy>()->AreEnemyAndQbertClose(enemy->GetWorldPosition(), qbertGO->GetWorldPosition()))
-                    {
-                        if (qbertGO->GetComponent<QBertPlayer>()->TakeHit()) {
-                            enemy->MarkForDestroy();
-                        }
-                    }
-                }
-            }
-            else
-            {
-                m_pPlayerData->GetScore()->AddScore(300);
-                dae::SoundServiceLocator::GetService()->PlaySound("slick_sam_caught");
-                enemy->MarkForDestroy();
-            }
-            });
+                OnCollisionWithQbert(enemy);
+        });
+
+        
 
         enemyGO->SetParent(GetOwner());
         if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
             dae::SceneManager::GetInstance().GetActiveScene()->Add(std::move(enemyGO));
         }
+    }
+
+    if (m_CoilyGO->IsMarkedForDestroy() && m_Mode == GameMode::Versus)
+    {
+		m_CoilyGO = SpawnPlayerCoily();
     }
 }
 
@@ -187,6 +182,7 @@ void LevelComponent::SpawnPlayers() {
     if (m_Mode == GameMode::Solo) {
         auto qbert = SpawnQBertAt({ 0, 0 }, InputDevice::Keyboard, false);
         m_QbertGOs.push_back(qbert);
+        SetupQbertPositionProxy();
     }
     else if (m_Mode == GameMode::Coop) {
         int rows = m_pLevel->GetRows();
@@ -194,15 +190,20 @@ void LevelComponent::SpawnPlayers() {
         auto qbert2 = SpawnQBertAt({ rows - 1, rows - 1 }, InputDevice::Controller1, true);
         m_QbertGOs.push_back(qbert1);
         m_QbertGOs.push_back(qbert2);
+        SetupQbertPositionProxy();
     }
     else if (m_Mode == GameMode::Versus) {
         auto qbert = SpawnQBertAt({ 0, 0 }, InputDevice::Keyboard, false);
         m_QbertGOs.push_back(qbert);
+        SetupQbertPositionProxy();
         m_CoilyGO = SpawnPlayerCoily();
     }
 
-    BindCommands();
+    BindCommands(); 
+}
 
+void LevelComponent::SetupQbertPositionProxy()
+{
     if (!m_QbertGOs.empty()) {
         auto multiProxy = std::make_unique<MultiQbertPositionProxy>();
         for (auto* qbertGO : m_QbertGOs) {
@@ -217,6 +218,28 @@ void LevelComponent::SpawnPlayers() {
         m_pQbertPositionProxy = std::move(multiProxy);
     }
 }
+
+void LevelComponent::OnCollisionWithQbert(dae::GameObject* enemy)
+{
+    if (enemy->GetComponent<Enemy>()->ShouldDamageQBert())
+    {
+        for (auto* qbertGO : m_QbertGOs) {
+            if (enemy->GetComponent<Enemy>()->AreEnemyAndQbertClose(enemy->GetWorldPosition(), qbertGO->GetWorldPosition()))
+            {
+                if (qbertGO->GetComponent<QBertPlayer>()->TakeHit()) {
+                    enemy->MarkForDestroy();
+                }
+            }
+        }
+    }
+    else
+    {
+        m_pPlayerData->GetScore()->AddScore(300);
+        dae::SoundServiceLocator::GetService()->PlaySound("slick_sam_caught");
+        enemy->MarkForDestroy();
+    }
+}
+
 
 dae::GameObject* LevelComponent::SpawnQBertAt(const glm::ivec2& gridPos, InputDevice, bool isSecondPLayer) {
     glm::vec2 worldPos = GridToWorldCharacter(gridPos);
@@ -248,11 +271,17 @@ dae::GameObject* LevelComponent::SpawnPlayerCoily() {
     auto coilyGO = m_enemyPrefabs->CreateEnemy("Coily", m_pLevel.get(), { 0, 0 }, *m_pQbertPositionProxy);
     coilyGO->GetComponent<Coily>()->SetPlayerControlled(true);
     coilyGO->SetParent(GetOwner());
+    coilyGO->GetComponent<Enemy>()->SetScoreComponent(
+        m_pPlayerData ? m_pPlayerData->GetScore() : nullptr
+    );
+
+    coilyGO->GetComponent<Coily>()->OnCollisionWithQbert.Subscribe([this](dae::GameObject* enemy) {
+        OnCollisionWithQbert(enemy);
+            });
 	dae::GameObject* coilyGOPtr = coilyGO.get();
     if (auto scene = dae::SceneManager::GetInstance().GetActiveScene()) {
         scene->Add(std::move(coilyGO));
     }
-
     return coilyGOPtr;
 }
 
@@ -262,13 +291,14 @@ void LevelComponent::BindCommands() {
         BindQBertInputs(m_QbertGOs[0], InputDevice::Controller0);
     }
     else if (m_Mode == GameMode::Coop) {
-        BindQBertInputs(m_QbertGOs[0], InputDevice::Keyboard);
+        BindQBertInputs(m_QbertGOs[1], InputDevice::Keyboard);
         BindQBertInputs(m_QbertGOs[0], InputDevice::Controller0);
         BindQBertInputs(m_QbertGOs[1], InputDevice::Controller1);
     }
     else if (m_Mode == GameMode::Versus) {
         BindQBertInputs(m_QbertGOs[0], InputDevice::Keyboard);
-        BindCoilyInputs(m_CoilyGO, InputDevice::Controller0);
+        BindQBertInputs(m_QbertGOs[0], InputDevice::Controller0);
+        BindCoilyInputs(m_CoilyGO, InputDevice::Controller1);
     }
 }
 
@@ -363,3 +393,4 @@ void LevelComponent::UpdateAllTilesToAnimationState() {
         }
     }
 }
+

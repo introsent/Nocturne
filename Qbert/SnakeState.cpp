@@ -18,6 +18,7 @@ std::unique_ptr<CoilyState> SnakeState::Update(Coily* coily, float deltaTime) {
             if (m_jump.Update(deltaTime)) {
                 coily->MoveTo(m_targetGridPosition);
                 m_isJumping = false;
+                coily->UpdateAnimation(DirectionToFrame(m_lastDirection));
                 if (ShouldDie(coily)) {
                     return std::make_unique<DyingCoilyState>(m_owner);
                 }
@@ -69,11 +70,14 @@ void SnakeState::HandleInput(Coily* coily, const glm::ivec2& direction)
 {
     if (!m_isJumping) {
         m_targetGridPosition = coily->GetGridPosition() + direction;
+        
         m_jump.Start(coily->GetGridPosition(), m_targetGridPosition);
         m_isJumping = true;
         dae::SoundServiceLocator::GetService()->PlaySound("coily_snake_jump");
         coily->LookAt(direction);
         coily->UpdateAnimation(DirectionToFrame(direction));
+
+		m_lastDirection = direction;
     }
 }
 
