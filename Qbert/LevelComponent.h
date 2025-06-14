@@ -33,6 +33,7 @@ private:
     dae::GameObject* SpawnQBertAt(const glm::ivec2& gridPos, InputDevice device, bool isSecondPLayer);
     dae::GameObject* SpawnPlayerCoily();
     void BindCommands();
+
     void BindQBertInputs(dae::GameObject* qbertGO, InputDevice device);
     void BindCoilyInputs(dae::GameObject* coilyGO, InputDevice device);
     void OnTileColored(const Tile& tile) const;

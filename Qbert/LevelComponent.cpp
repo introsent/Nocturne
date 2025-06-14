@@ -105,6 +105,7 @@ void LevelComponent::Update(float deltaTime) {
         if (m_CoilyGO->IsMarkedForDestroy())
         {
             m_CoilyGO = SpawnPlayerCoily();
+			BindCoilyInputs(m_CoilyGO, InputDevice::Controller1);
         }
     }
 }
@@ -304,6 +305,7 @@ void LevelComponent::BindCommands() {
         BindCoilyInputs(m_CoilyGO, InputDevice::Controller1);
     }
 }
+
 
 void LevelComponent::BindQBertInputs(dae::GameObject* qbertGO, InputDevice device) {
     if (device == InputDevice::Keyboard) {
