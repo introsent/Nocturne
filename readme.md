@@ -1,9 +1,3 @@
-## Source Control
-The project is maintained in a GitHub repository:
-- **Repository URL**: [https://github.com/introsent/game_engine_programming_4](https://github.com/introsent/game_engine_programming_4)
-
-by Ivans Minajevs
-
 ## Project Overview
 The game replicates the classic QBert mechanics where players control QBert, a character navigating a pyramid of tiles to change their colors while avoiding enemies like Coily, Slick, Sam, Ugg, and Wrongway. The engine supports:
 - **Dynamic Level Management**: Procedurally generated levels with varying tile color rules (OneHit, TwoHit, Toggle).
